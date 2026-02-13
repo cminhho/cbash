@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CBASH CLI – Developer command-line tools</title>
+  <style>
+    :root {
+      --bg: #0f1419;
+      --surface: #1a2332;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --accent: #58a6ff;
+      --green: #3fb950;
+      --orange: #d29922;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      margin: 0;
+      padding: 2rem 1rem;
+      min-height: 100vh;
+    }
+    .wrap { max-width: 720px; margin: 0 auto; }
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin: 0 0 0.5rem;
+      letter-spacing: -0.02em;
+    }
+    .tagline {
+      color: var(--muted);
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+    .hero {
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .hero pre {
+      margin: 0;
+      font-size: 0.9rem;
+      overflow-x: auto;
+      color: var(--green);
+    }
+    .hero code { font-family: ui-monospace, monospace; }
+    h2 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin: 1.5rem 0 0.75rem;
+      color: var(--accent);
+    }
+    ul { margin: 0; padding-left: 1.25rem; }
+    li { margin-bottom: 0.35rem; }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+    .badge {
+      display: inline-block;
+      background: var(--orange);
+      color: var(--bg);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      margin-left: 0.5rem;
+    }
+    footer {
+      margin-top: 2.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255,255,255,.06);
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>CBASH CLI</h1>
+    <p class="tagline">Command-line tools for developers (macOS/Linux). Automate tasks, manage git, run dev services, and use helpers for AWS, K8s, and docs.</p>
+
+    <section class="hero">
+      <p style="margin:0 0 0.5rem; color: var(--muted); font-size: 0.9rem;">Quick install (macOS):</p>
+      <pre><code>brew tap cminhho/cbash https://github.com/cminhho/cbash
+brew install cbash-cli</code></pre>
+      <p style="margin: 0.75rem 0 0; color: var(--muted); font-size: 0.9rem;">Or:</p>
+      <pre><code>sh -c "$(curl -fsSL https://raw.githubusercontent.com/cminhho/cbash/master/tools/install.sh)"</code></pre>
+    </section>
+
+    <h2>What it does</h2>
+    <ul>
+      <li><strong>Setup</strong> – Check dev environment, install tools (brew), create workspace</li>
+      <li><strong>Git</strong> – Branches, squash, pull-all, backup, open in browser</li>
+      <li><strong>Dev</strong> – Start/stop Docker services, logs, exec, stats</li>
+      <li><strong>Docker</strong> – Aliases and helpers (dps, drm, prune, kill-all)</li>
+      <li><strong>AWS</strong> – SSH via SSM, SQS (localstack), SSM params</li>
+      <li><strong>Kubernetes</strong> – Pods, logs, exec, rollout restart, cheat</li>
+      <li><strong>Generators</strong> – Troubleshooting/feature dirs, workspace, project, docs</li>
+      <li><strong>Docs & Cheat</strong> – View/edit docs and cheatsheets</li>
+      <li><strong>AI</strong> – Chat with Ollama, list/pull models</li>
+      <li><strong>macOS</strong> – Lock, speedtest, ports, IPs, passgen, tree, find/replace</li>
+      <li><strong>Proxy</strong> – Enable/disable proxy (env, npm, git)</li>
+    </ul>
+
+    <h2>Usage</h2>
+    <pre style="background: var(--surface); padding: 1rem; border-radius: 8px; overflow-x: auto;"><code>cbash                  # Show help
+cbash &lt;plugin&gt;         # Run plugin (e.g. git, dev, aws)
+cbash list-plugins     # List available plugins</code></pre>
+
+    <h2>Links</h2>
+    <ul>
+      <li><a href="https://github.com/cminhho/cbash">GitHub repo</a> <span class="badge">source &amp; README</span></li>
+      <li><a href="https://github.com/cminhho/cbash/blob/master/README.md">Full README</a> – install options, all commands, upgrade/uninstall</li>
+    </ul>
+
+    <footer>
+      CBASH CLI · MIT License · <a href="https://github.com/cminhho/cbash">cminhho/cbash</a>
+    </footer>
+  </div>
+</body>
+</html>
