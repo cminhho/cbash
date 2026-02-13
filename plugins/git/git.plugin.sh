@@ -23,11 +23,8 @@ _git_in_repo() {
     }
 }
 
-# Dim/gray for secondary text (path, command echo) — industry convention
-_dim='\033[2;37m'
-
 # -----------------------------------------------------------------------------
-# Commands
+# Commands (colors: lib/utils.sh + style_* theme)
 # -----------------------------------------------------------------------------
 
 git_config() {
@@ -111,14 +108,14 @@ git_auto_commit() {
 
     local branch
     branch=$(git rev-parse --abbrev-ref HEAD)
-    local timestamp
-    timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    local date
+    date=$(date '+%Y-%m-%d')
 
     echo "Changes:"
     git status --short
 
     git add .
-    git commit -m "Auto-commit: $timestamp"
+    git commit -m "chore: auto-commit work in progress ($date)"
     git push origin "$branch"
     success "Pushed to $branch"
 }
@@ -176,21 +173,25 @@ git_auto_squash() {
 git_pull_all() {
     local root="${1:-$(pwd)}"
     local repo_dir name out ret
-    printf "\n${bldblu}▸ Pulling all repos${clr} ${_dim}in %s${clr}\n\n" "$root"
+    _gap
+    _heading_muted "▸ Pulling all repos" "in %s" "$root"
+    _br
 
     find "$root" -maxdepth 2 -name ".git" -type d | while read -r gitdir; do
         repo_dir=$(dirname "$gitdir")
         name=$(basename "$repo_dir")
-        printf "${bldcyn}▸ %s${clr} ${_dim}(%s)${clr}\n" "$name" "$repo_dir"
-        printf "  ${_dim}\$ git pull --rebase || git pull${clr}\n"
+        _label "▸ $name"
+        _muted " ($repo_dir)"
+        _br
+        _muted_nl "  \$ git pull --rebase || git pull"
         out=$(cd "$repo_dir" && (git pull --rebase 2>&1 || git pull 2>&1)); ret=$?
-        echo "$out" | sed 's/^/  /'
+        echo "$out" | _indent
         if [[ $ret -eq 0 ]]; then
-            printf "  ${txtgrn}✓ ok${clr}\n"
+            _ok "ok"
         else
-            printf "  ${txtred}✗ failed (exit %d)${clr}\n" "$ret"
+            _err "failed (exit $ret)"
         fi
-        echo ""
+        _gap
     done
 
     success "Done"
@@ -205,22 +206,27 @@ git_for() {
     local root="${2:-$(pwd)}"
     local repo_dir name out ret
 
-    printf "\n${bldblu}▸ Running in all repos${clr} ${_dim}(%s)${clr}\n" "$root"
-    printf "${bldylw}  Command:${clr} ${_dim}%s${clr}\n\n" "$cmd"
+    _gap
+    _heading_muted "▸ Running in all repos" "(%s)" "$root"
+    _label "  Command:"
+    _muted_nl " $cmd"
+    _br
 
     find "$root" -maxdepth 2 -name ".git" -type d | while read -r gitdir; do
         repo_dir=$(dirname "$gitdir")
         name=$(basename "$repo_dir")
-        printf "${bldcyn}▸ %s${clr} ${_dim}(%s)${clr}\n" "$name" "$repo_dir"
-        printf "  ${_dim}\$ %s${clr}\n" "$cmd"
+        _label "▸ $name"
+        _muted " ($repo_dir)"
+        _br
+        _muted_nl "  \$ $cmd"
         out=$(cd "$repo_dir" && eval "$cmd" 2>&1); ret=$?
-        echo "$out" | sed 's/^/  /'
+        echo "$out" | _indent
         if [[ $ret -eq 0 ]]; then
-            printf "  ${txtgrn}✓ ok${clr}\n"
+            _ok "ok"
         else
-            printf "  ${txtred}✗ failed (exit %d)${clr}\n" "$ret"
+            _err "failed (exit $ret)"
         fi
-        echo ""
+        _gap
     done
 
     success "Done"

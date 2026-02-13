@@ -23,6 +23,19 @@ bldblu='\033[1;34m'
 bldcyn='\033[1;36m'
 bldwht='\033[1;37m'
 
+# Muted / secondary (dim)
+dim='\033[2;37m'
+
+# =============================================================================
+# Semantic theme (reusable; change here for theming)
+# =============================================================================
+style_heading="$bldblu"
+style_label="$bldcyn"
+style_ok="$txtgrn"
+style_err="$txtred"
+style_warn="$txtylw"
+style_muted="$dim"
+
 # Background
 bakred='\033[41m'
 bakgrn='\033[42m'

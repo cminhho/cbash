@@ -13,11 +13,12 @@ cli_help() {
 Usage: cbash cli <command>
 
 Commands:
-  help        Show this help
-  version     Show version
-  plugins     List available plugins
-  update      Update CBASH
-  reload      Reload shell
+  help          Show this help
+  version       Show version
+  plugins       List available plugins
+  install-local [dir]  Copy local dev copy to install dir (for testing)
+  update        Update CBASH
+  reload        Reload shell
 EOF
 }
 
@@ -39,8 +40,24 @@ cli_plugins() {
     done | sort -u
 }
 
-cli_update() {
-    [[ -f "$CBASH_DIR/tools/upgrade.sh" ]] && source "$CBASH_DIR/tools/upgrade.sh"
+# Copy local folder into CBASH_DIR (for testing without commit/push).
+# Usage: cbash cli install-local [source_dir]
+#   If source_dir omitted, uses current directory (pwd).
+cli_install_local() {
+    local src="${1:-$(pwd)}"
+    local src_abs dest_abs
+    src_abs=$(cd "$src" 2>/dev/null && pwd) || { echo "Error: Invalid source dir: $src" >&2; return 1; }
+    dest_abs=$(cd "$CBASH_DIR" 2>/dev/null && pwd) || { echo "Error: CBASH_DIR not valid" >&2; return 1; }
+
+    if [[ "$src_abs" == "$dest_abs" ]]; then
+        echo "Source and install dir are the same. Nothing to do."
+        return 0
+    fi
+    [[ -f "$src_abs/cbash.sh" ]] || { echo "Error: Not a cbash tree (no cbash.sh in $src_abs)" >&2; return 1; }
+
+    echo "Copying: $src_abs -> $dest_abs"
+    rsync -a --delete --exclude='.git' "$src_abs/" "$dest_abs/" || { echo "Error: rsync failed" >&2; return 1; }
+    echo "Done. Run 'cbash reload' or restart terminal to use the updated copy."
 }
 
 cli_reload() {
@@ -57,22 +74,24 @@ _main() {
 
     if [[ -z "$cmd" ]]; then
         _describe command 'cli' \
-            'help        Show help' \
-            'version     Show version' \
-            'plugins     List plugins' \
-            'update      Update CBASH' \
-            'reload      Reload shell' \
+            'help          Show help' \
+            'version       Show version' \
+            'plugins       List plugins' \
+            'install-local [dir] Copy local dev to install (testing)' \
+            'update        Update CBASH' \
+            'reload        Reload shell' \
             'CLI management'
         return 0
     fi
 
     case "$cmd" in
-        help)    cli_help ;;
-        version) cli_version ;;
-        plugins) cli_plugins ;;
-        update)  cli_update ;;
-        reload)  cli_reload ;;
-        *)       echo "Unknown command: $cmd" >&2; cli_help; return 1 ;;
+        help)           cli_help ;;
+        version)        cli_version ;;
+        plugins)        cli_plugins ;;
+        install-local)  shift; cli_install_local "$@" ;;
+        update)         cli_update ;;
+        reload)         cli_reload ;;
+        *)              echo "Unknown command: $cmd" >&2; cli_help; return 1 ;;
     esac
 }
 

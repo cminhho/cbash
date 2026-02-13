@@ -18,19 +18,39 @@ alias sws='setup_workspace'
 # Commands
 # -----------------------------------------------------------------------------
 
+_show_line() {
+    local label="$1" value="$2" missing="${3:-Not installed}" use_err="${4:-}"
+    printf "  ${style_label}%-7s${clr} " "$label:"
+    if [[ -n "$value" ]]; then
+        printf "${style_ok}%s${clr}\n" "$value"
+    else
+        [[ -n "$use_err" ]] && printf "${style_err}%s${clr}\n" "$missing" || printf "${style_muted}%s${clr}\n" "$missing"
+    fi
+}
+
 setup_check() {
-    echo "Development Environment"
-    echo "======================="
-    echo "Git:     $(git --version 2>/dev/null || echo 'Not installed')"
-    echo "Node:    $(node -v 2>/dev/null || echo 'Not installed')"
-    echo "Python:  $(python3 --version 2>/dev/null || echo 'Not installed')"
-    echo "Docker:  $(docker --version 2>/dev/null || echo 'Not installed')"
-    echo "Java:    $(java -version 2>&1 | head -n 1 || echo 'Not installed')"
-    echo ""
-    echo "Git Config"
-    echo "=========="
-    echo "Name:    $(git config --global user.name 2>/dev/null || echo '<not set>')"
-    echo "Email:   $(git config --global user.email 2>/dev/null || echo '<not set>')"
+    local v
+    _gap
+    _box "Development Environment"
+    _br
+    v=$(git --version 2>/dev/null)
+    _show_line "Git" "$v" "Not installed" "err"
+    v=$(node -v 2>/dev/null)
+    _show_line "Node" "$v" "Not installed" "err"
+    v=$(python3 --version 2>/dev/null)
+    _show_line "Python" "$v" "Not installed" "err"
+    v=$(docker --version 2>/dev/null)
+    _show_line "Docker" "$v" "Not installed" "err"
+    v=$(java -version 2>&1 | head -n 1)
+    _show_line "Java" "$v" "Not installed" "err"
+    _br
+    _box "Git Config"
+    _br
+    v=$(git config --global user.name 2>/dev/null)
+    _show_line "Name" "$v" "<not set>"
+    v=$(git config --global user.email 2>/dev/null)
+    _show_line "Email" "$v" "<not set>"
+    _br
 }
 
 # Cask packages (GUI) — use "brew install --cask"; others use "brew install"
@@ -39,14 +59,13 @@ readonly SETUP_BREW_CASKS="visual-studio-code intellij-idea-ce pycharm-ce postma
 setup_brew() {
     local group="${1:-dev}"
 
-    # Ensure brew in PATH (e.g. after first install)
     if ! command -v brew &>/dev/null; then
-        echo "Installing Homebrew..."
+        info "Installing Homebrew..."
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         [[ -x /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
         [[ -x /usr/local/bin/brew ]] && eval "$(/usr/local/bin/brew shellenv)"
     fi
-    command -v brew &>/dev/null || { echo "Homebrew not found. See https://brew.sh" >&2; return 1; }
+    command -v brew &>/dev/null || { err "Homebrew not found. See https://brew.sh"; return 1; }
 
     local -a dev_tools=(zsh zsh-completions bash-completion openssl git tree wget curl jq nvm pnpm python pyenv pycharm-ce maven intellij-idea-ce dbeaver-community nosql-workbench)
     local -a cloud_tools=(awscli terraform docker docker-completion docker-compose-completion)
@@ -60,28 +79,37 @@ setup_brew() {
         ide)   tools=("${ide_tools[@]}") ;;
         apps)  tools=("${apps_tools[@]}") ;;
         all)   tools=("${dev_tools[@]}" "${cloud_tools[@]}" "${ide_tools[@]}" "${apps_tools[@]}") ;;
-        *)     echo "Groups: dev, cloud, ide, apps, all"; return 1 ;;
+        *)     err "Groups: dev, cloud, ide, apps, all"; return 1 ;;
     esac
 
-    echo "Installing $group tools..."
+    _gap
+    _box "Installing $group tools"
+    _br
     for tool in "${tools[@]}"; do
         if brew list "$tool" &>/dev/null || brew list --cask "$tool" &>/dev/null; then
-            echo "  $tool: ok"
+            _label "  $tool"
+            printf " ${style_ok}✓ ok${clr}\n"
         else
-            echo "  Installing $tool..."
             if [[ " $SETUP_BREW_CASKS " == *" $tool "* ]]; then
+                _label "  $tool"
+                _muted " \$ brew install --cask $tool"
+                _br
                 brew install --cask "$tool"
             else
+                _label "  $tool"
+                _muted " \$ brew install $tool"
+                _br
                 brew install "$tool"
             fi
         fi
     done
+    _br
     success "Done"
 }
 
 setup_workspace() {
     local name="${1:-workspace}"
-    [[ -f "$CBASH_DIR/plugins/gen/gen.plugin.sh" ]] || { echo "Gen plugin not found"; return 1; }
+    [[ -f "$CBASH_DIR/plugins/gen/gen.plugin.sh" ]] || { err "Gen plugin not found"; return 1; }
     "$CBASH_DIR/plugins/gen/gen.plugin.sh" workspace "$name"
 }
 
@@ -99,10 +127,16 @@ setup_help() {
 }
 
 setup_list_aliases() {
-    echo "Setup aliases: scheck, sbrew, sws"
-    echo "  scheck  = setup check"
-    echo "  sbrew   = setup brew [group]"
-    echo "  sws     = setup workspace [name]"
+    _gap
+    _box "Setup aliases"
+    _br
+    _label "  scheck"
+    _muted_nl " = setup check"
+    _label "  sbrew"
+    _muted_nl " = setup brew [group]"
+    _label "  sws"
+    _muted_nl " = setup workspace [name]"
+    _br
 }
 
 _main() {
@@ -119,7 +153,7 @@ _main() {
         check)          setup_check ;;
         brew)           shift; setup_brew "$@" ;;
         workspace)      shift; setup_workspace "$@" ;;
-        *)              echo "Unknown command: $cmd"; return 1 ;;
+        *)              err "Unknown command: $cmd"; return 1 ;;
     esac
 }
 
