@@ -6,8 +6,7 @@
 
 **via Homebrew (macOS):**
 ```bash
-brew tap cminhho/tap https://github.com/cminhho/homebrew-tap
-brew install cbash-cli
+brew install cminhho/tap/cbash-cli
 ```
 
 **via curl:**
@@ -28,8 +27,8 @@ sh -c "$(wget -qO- https://raw.githubusercontent.com/cminhho/cbash/master/tools/
 
 ## What Gets Installed
 
-- `~/.cbash/` - Installation directory
-- Shell config updated (`.zshrc`, `.bashrc`, `.bash_profile`)
+- **Homebrew:** installs to Cellar, `cbash` on PATH. Optional: add `source "$(brew --prefix cbash-cli)/libexec/cbash.sh"` to `~/.zshrc` for aliases.
+- **curl/wget:** installs to `~/.cbash/`, updates `.zshrc`/`.bashrc`/`.bash_profile`.
 
 After install, restart terminal and run `cbash` for help.
 
@@ -207,6 +206,13 @@ Run cbash <plugin> or cbash <plugin> help for detailed help.
 
 ## Upgrade & Uninstall
 
+**Homebrew:**
+```bash
+brew upgrade cbash-cli    # upgrade
+brew uninstall cbash-cli  # uninstall
+```
+
+**curl/wget install:**
 ```bash
 # Upgrade
 cbash cli update
