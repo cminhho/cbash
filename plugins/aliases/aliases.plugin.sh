@@ -2,7 +2,7 @@
 # Aliases plugin for CBASH
 # Shell aliases management
 
-source "$CBASH_DIR/lib/common.sh"
+[[ -n "$CBASH_DIR" ]] && source "$CBASH_DIR/lib/common.sh"
 
 readonly ALIASES_DIR="$CBASH_DIR/plugins/aliases"
 
@@ -23,17 +23,17 @@ aliases_list() {
 
 aliases_show() {
     local name="$1"
-    [[ -z "$name" ]] && { echo "Usage: aliases show <name>"; return 1; }
+    [[ -z "$name" ]] && { log_error "Usage: aliases show <name>"; return 1; }
 
     local file="$ALIASES_DIR/${name}.sh"
-    [[ -f "$file" ]] || { echo "Not found: $name"; return 1; }
+    [[ -f "$file" ]] || { log_error "Not found: $name"; return 1; }
 
     grep "^alias " "$file" | sed 's/alias /  /'
 }
 
 aliases_edit() {
     local name="$1"
-    [[ -z "$name" ]] && { echo "Usage: aliases edit <name>"; return 1; }
+    [[ -z "$name" ]] && { log_error "Usage: aliases edit <name>"; return 1; }
 
     local file="$ALIASES_DIR/${name}.sh"
     ${EDITOR:-vim} "$file"
@@ -46,7 +46,7 @@ aliases_load() {
         [[ "$name" == "aliases.plugin.sh" ]] && continue
         source "$f"
     done
-    success "Aliases loaded"
+    log_success "Aliases loaded"
 }
 
 # -----------------------------------------------------------------------------
@@ -71,7 +71,7 @@ _main() {
         show)           shift; aliases_show "$@" ;;
         edit)           shift; aliases_edit "$@" ;;
         load)           aliases_load ;;
-        *)              echo "Unknown command: $cmd"; return 1 ;;
+        *)              log_error "Unknown command: $cmd"; return 1 ;;
     esac
 }
 

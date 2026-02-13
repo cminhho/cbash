@@ -58,20 +58,20 @@ cheat_setup() {
     _cheat_ensure_dirs
 
     if [[ -d "$CHEAT_COMMUNITY_DIR/.git" ]]; then
-        echo "Updating community cheatsheets..."
+        log_info "Updating community cheatsheets..."
         git -C "$CHEAT_COMMUNITY_DIR" pull --quiet
     else
-        echo "Downloading community cheatsheets..."
+        log_info "Downloading community cheatsheets..."
         rm -rf "$CHEAT_COMMUNITY_DIR"
         git clone --quiet "$CHEAT_REPO" "$CHEAT_COMMUNITY_DIR"
     fi
 
-    success "Cheatsheets ready at $CHEAT_COMMUNITY_DIR"
+    log_success "Cheatsheets ready at $CHEAT_COMMUNITY_DIR"
 }
 
 cheat_edit() {
     local name="$1"
-    [[ -z "$name" ]] && { echo "Usage: cheat edit <name>"; return 1; }
+    [[ -z "$name" ]] && { log_error "Usage: cheat edit <name>"; return 1; }
 
     _cheat_ensure_dirs
     local file="$CHEAT_PERSONAL_DIR/$name"
@@ -80,7 +80,7 @@ cheat_edit() {
 
 cheat_view() {
     local name="$1"
-    [[ -z "$name" ]] && { echo "Usage: cheat <name>"; return 1; }
+    [[ -z "$name" ]] && { log_error "Usage: cheat <name>"; return 1; }
 
     local file
     file=$(_cheat_find "$name")
@@ -88,8 +88,8 @@ cheat_view() {
     if [[ -n "$file" && -f "$file" ]]; then
         cat "$file"
     else
-        echo "Cheatsheet '$name' not found."
-        echo "Run 'cbash cheat setup' to download community cheatsheets."
+        log_error "Cheatsheet '$name' not found."
+        log_info "Run 'cbash cheat setup' to download community cheatsheets."
         return 1
     fi
 }

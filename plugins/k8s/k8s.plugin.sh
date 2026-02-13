@@ -28,27 +28,27 @@ k8s_pods() {
 
 k8s_logs() {
     local pod="$1"
-    [[ -z "$pod" ]] && { echo "Usage: k8s logs <pod>"; return 1; }
+    [[ -z "$pod" ]] && { log_error "Usage: k8s logs <pod>"; return 1; }
     kubectl logs -f "$pod" -n "$K8S_NS" --tail=100
 }
 
 k8s_desc() {
     local pod="$1"
-    [[ -z "$pod" ]] && { echo "Usage: k8s desc <pod>"; return 1; }
+    [[ -z "$pod" ]] && { log_error "Usage: k8s desc <pod>"; return 1; }
     kubectl describe pod "$pod" -n "$K8S_NS"
 }
 
 k8s_exec() {
     local pod="$1"
-    [[ -z "$pod" ]] && { echo "Usage: k8s exec <pod>"; return 1; }
+    [[ -z "$pod" ]] && { log_error "Usage: k8s exec <pod>"; return 1; }
     kubectl exec -it "$pod" -n "$K8S_NS" -- /bin/sh
 }
 
 k8s_restart() {
     local deploy="$1"
-    [[ -z "$deploy" ]] && { echo "Usage: k8s restart <deployment>"; return 1; }
+    [[ -z "$deploy" ]] && { log_error "Usage: k8s restart <deployment>"; return 1; }
     kubectl rollout restart deployment "$deploy" -n "$K8S_NS"
-    success "Restarted $deploy"
+    log_success "Restarted $deploy"
 }
 
 k8s_cheat() {

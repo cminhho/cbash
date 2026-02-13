@@ -57,7 +57,8 @@ cli_install_local() {
 
     echo "Copying: $src_abs -> $dest_abs"
     rsync -a --delete --exclude='.git' "$src_abs/" "$dest_abs/" || { echo "Error: rsync failed" >&2; return 1; }
-    echo "Done. Run 'cbash reload' or restart terminal to use the updated copy."
+    echo "Done."
+    cli_reload
 }
 
 cli_reload() {

@@ -9,22 +9,28 @@
 # Helper Functions
 # -----------------------------------------------------------------------------
 
-_git_check() {
-    command -v git &>/dev/null || {
-        echo "Error: Git not installed"
-        return 1
-    }
+_git_in_repo() {
+    git rev-parse --git-dir &>/dev/null || { log_error "Not a git repository"; return 1; }
 }
 
-_git_in_repo() {
-    git rev-parse --git-dir &>/dev/null || {
-        echo "Error: Not a git repository"
-        return 1
-    }
+# Run cmd in each repo. Per-repo: log_info (context); end: log_success.
+# Usage: _git_each_repo <root> <cmd> [action]. action e.g. "pulled", "completed".
+_git_each_repo() {
+    local root="$1" cmd="$2" action="${3:-done}" repo_dir name out ret
+    while read -r gitdir; do
+        repo_dir=$(dirname "$gitdir"); name=$(basename "$repo_dir")
+        _label "▸ $name"; _muted " ($repo_dir)"; _br
+        _muted_nl "  \$ $cmd"
+        out=$(cd "$repo_dir" && eval "$cmd" 2>&1); ret=$?
+        echo "$out" | _indent
+        [[ $ret -eq 0 ]] && log_info "$name: $action" || log_error "$name: failed (exit $ret)"
+        _gap
+    done < <(find "$root" -maxdepth 2 -name ".git" -type d)
+    log_success "Done"
 }
 
 # -----------------------------------------------------------------------------
-# Commands (colors: lib/utils.sh + style_* theme)
+# Commands
 # -----------------------------------------------------------------------------
 
 git_config() {
@@ -38,7 +44,7 @@ git_log() {
 git_undo() {
     _git_in_repo || return 1
     git reset --soft HEAD~
-    echo "Undone last commit (changes preserved)"
+    log_success "Undone last commit (changes preserved)"
 }
 
 git_branches() {
@@ -49,60 +55,60 @@ git_branches() {
 
 git_branch() {
     local name="$1"
-    [[ -z "$name" ]] && { echo "Usage: git branch <name>"; return 1; }
+    [[ -z "$name" ]] && { log_error "Usage: git branch <name>"; return 1; }
 
     _git_in_repo || return 1
     git checkout master && git pull && git checkout -b "$name"
-    success "Created branch: $name"
+    log_success "Created branch: $name"
 }
 
 git_rename() {
     local name="$1"
-    [[ -z "$name" ]] && { echo "Usage: git rename <new-name>"; return 1; }
+    [[ -z "$name" ]] && { log_error "Usage: git rename <new-name>"; return 1; }
 
     _git_in_repo || return 1
     git branch -m "$name"
-    success "Renamed current branch to: $name"
+    log_success "Renamed current branch to: $name"
 }
 
 git_size() {
     _git_in_repo || return 1
     git bundle create tmp.bundle --all 2>/dev/null
-    echo "Repository size:"
+    log_info "Repository size:"
     du -sh tmp.bundle
     rm -f tmp.bundle
 }
 
 git_clean() {
     _git_in_repo || return 1
-    echo "Cleaning repository..."
+    log_info "Cleaning repository..."
     git remote prune origin
     git repack
     git prune-packed
     git reflog expire --expire=1.month.ago
     git gc --aggressive
-    success "Repository cleaned"
+    log_success "Repository cleaned"
 }
 
 git_backup() {
     _git_in_repo || return 1
 
     if [[ -z "$(git status --porcelain)" ]]; then
-        echo "Nothing to commit"
+        log_info "Nothing to commit"
         return 0
     fi
 
     git add --all
     git commit -m "chore: backup $(date +%Y-%m-%d)"
     git push
-    success "Backup complete"
+    log_success "Backup complete"
 }
 
 git_auto_commit() {
     _git_in_repo || return 1
 
     if [[ -z "$(git status --porcelain)" ]]; then
-        echo "Nothing to commit"
+        log_info "Nothing to commit"
         return 0
     fi
 
@@ -111,13 +117,13 @@ git_auto_commit() {
     local date
     date=$(date '+%Y-%m-%d')
 
-    echo "Changes:"
+    log_info "Changes:"
     git status --short
 
     git add .
     git commit -m "chore: auto-commit work in progress ($date)"
     git push origin "$branch"
-    success "Pushed to $branch"
+    log_success "Pushed to $branch"
 }
 
 git_squash() {
@@ -125,15 +131,15 @@ git_squash() {
 
     local branch msg
     read -rp "Branch to squash: " branch
-    [[ -z "$branch" ]] && { echo "Branch required"; return 1; }
+    [[ -z "$branch" ]] && { log_error "Branch required"; return 1; }
 
     read -rp "Commit message: " msg
-    [[ -z "$msg" ]] && { echo "Message required"; return 1; }
+    [[ -z "$msg" ]] && { log_error "Message required"; return 1; }
 
     local temp_branch="${branch}_temp"
     local backup_branch="${branch}_backup"
 
-    echo "Squashing $branch..."
+    log_info "Squashing $branch..."
     git branch -D "$backup_branch" 2>/dev/null
     git checkout master
     git checkout -b "$temp_branch"
@@ -143,7 +149,7 @@ git_squash() {
     git branch -m "$temp_branch" "$branch"
     git push --force
 
-    success "Squashed $branch"
+    log_success "Squashed $branch"
 }
 
 git_auto_squash() {
@@ -153,13 +159,13 @@ git_auto_squash() {
     current_branch=$(git rev-parse --abbrev-ref HEAD)
     default_branch=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@' || echo "master")
 
-    [[ "$current_branch" == "$default_branch" ]] && { echo "Already on $default_branch"; return 1; }
+    [[ "$current_branch" == "$default_branch" ]] && { log_info "Already on $default_branch"; return 1; }
 
     local commit_count
     commit_count=$(git rev-list --count "$default_branch".."$current_branch")
-    [[ "$commit_count" -eq 0 ]] && { echo "No commits to squash"; return 0; }
+    [[ "$commit_count" -eq 0 ]] && { log_info "No commits to squash"; return 0; }
 
-    echo "Squashing $commit_count commits on $current_branch..."
+    log_info "Squashing $commit_count commits on $current_branch..."
     read -rp "Commit message: " msg
     [[ -z "$msg" ]] && msg="Squashed $current_branch"
 
@@ -167,77 +173,28 @@ git_auto_squash() {
     git commit -m "$msg"
     git push --force
 
-    success "Squashed $commit_count commits into 1"
+    log_success "Squashed $commit_count commits into 1"
 }
 
 git_pull_all() {
     local root="${1:-$(pwd)}"
-    local repo_dir name out ret
-    _gap
-    _heading_muted "▸ Pulling all repos" "in %s" "$root"
-    _br
-
-    find "$root" -maxdepth 2 -name ".git" -type d | while read -r gitdir; do
-        repo_dir=$(dirname "$gitdir")
-        name=$(basename "$repo_dir")
-        _label "▸ $name"
-        _muted " ($repo_dir)"
-        _br
-        _muted_nl "  \$ git pull --rebase || git pull"
-        out=$(cd "$repo_dir" && (git pull --rebase 2>&1 || git pull 2>&1)); ret=$?
-        echo "$out" | _indent
-        if [[ $ret -eq 0 ]]; then
-            _ok "ok"
-        else
-            _err "failed (exit $ret)"
-        fi
-        _gap
-    done
-
-    success "Done"
+    _gap; _heading_muted "▸ Pulling all repos" "in %s" "$root"; _br
+    _git_each_repo "$root" "git pull --rebase 2>&1 || git pull 2>&1" "pulled"
 }
 
-# Run a command in every git repo under a directory (default: current dir).
-# Example: cbash git for "git pull"
-# Example: cbash git for "git reset --hard && git pull"
-# Example: cbash git for "git status" ~/workspace
 git_for() {
-    local cmd="${1:?Usage: git for \"<command>\" [root_dir]}"
-    local root="${2:-$(pwd)}"
-    local repo_dir name out ret
-
-    _gap
-    _heading_muted "▸ Running in all repos" "(%s)" "$root"
-    _label "  Command:"
-    _muted_nl " $cmd"
-    _br
-
-    find "$root" -maxdepth 2 -name ".git" -type d | while read -r gitdir; do
-        repo_dir=$(dirname "$gitdir")
-        name=$(basename "$repo_dir")
-        _label "▸ $name"
-        _muted " ($repo_dir)"
-        _br
-        _muted_nl "  \$ $cmd"
-        out=$(cd "$repo_dir" && eval "$cmd" 2>&1); ret=$?
-        echo "$out" | _indent
-        if [[ $ret -eq 0 ]]; then
-            _ok "ok"
-        else
-            _err "failed (exit $ret)"
-        fi
-        _gap
-    done
-
-    success "Done"
+    local cmd="${1:?Usage: git for \"<command>\" [root_dir]}" root="${2:-$(pwd)}"
+    _gap; _heading_muted "▸ Running in all repos" "(%s)" "$root"; _br
+    _label "  Command:"; _muted_nl " $cmd"; _br
+    _git_each_repo "$root" "$cmd" "completed"
 }
 
 git_sync() {
     _git_in_repo || return 1
-    echo "Syncing..."
-    git fetch --all --prune || return 1
-    git pull || return 1
-    success "Synced"
+    log_info "Syncing..."
+    git fetch --all --prune || { log_error "Fetch failed"; return 1; }
+    git pull || { log_error "Pull failed"; return 1; }
+    log_success "Synced"
 }
 
 git_open() {
@@ -245,7 +202,7 @@ git_open() {
 
     local url
     url=$(git config --get remote.origin.url)
-    [[ -z "$url" ]] && { echo "No remote.origin.url"; return 1; }
+    [[ -z "$url" ]] && { log_error "No remote.origin.url"; return 1; }
 
     # Convert SSH to HTTPS
     url=${url/git@github.com:/https://github.com/}
@@ -302,7 +259,7 @@ _main() {
         size)           git_size ;;
         sync)           git_sync ;;
         open)           git_open ;;
-        *)              echo "Unknown command: $cmd"; return 1 ;;
+        *)              log_error "Unknown command: $cmd"; return 1 ;;
     esac
 }
 

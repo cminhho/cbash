@@ -14,26 +14,26 @@ docker_running() {
 
 docker_stop_all() {
     docker stop $(docker ps -q) 2>/dev/null || true
-    echo "All running containers stopped."
+    log_success "All running containers stopped."
 }
 
 docker_remove_stopped() {
     docker rm $(docker ps -a -q) 2>/dev/null || true
-    echo "All stopped containers removed."
+    log_success "All stopped containers removed."
 }
 
 docker_remove_unused_images() {
     docker image prune -a -f
-    echo "All unused images removed."
+    log_success "All unused images removed."
 }
 
 docker_kill_all() {
-    echo "Performing action 'kill all services'"
+    log_info "Performing action 'kill all services'"
     docker ps -a -q | xargs -n 1 -P 8 -I {} docker stop {} 2>/dev/null || true
     docker kill $(docker ps -q) 2>/dev/null || true
     docker rm $(docker ps -a -q) 2>/dev/null || true
     docker volume rm $(docker volume ls -q) 2>/dev/null || true
-    echo "Successfully killed all services"
+    log_success "Successfully killed all services"
 }
 
 # -----------------------------------------------------------------------------

@@ -16,7 +16,7 @@ mvn-or-mvnw() {
     done
 
     if [[ -x "$dir/mvnw" ]]; then
-        echo "Running \`$dir/mvnw\`..." >&2
+        log_info "Running \`$dir/mvnw\`..." >&2
         "$dir/mvnw" "$@"
         return $?
     fi

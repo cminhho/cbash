@@ -28,22 +28,22 @@ alias devkill='dev_kill_all'
 # -----------------------------------------------------------------------------
 
 _dev_check_docker() {
-    command -v docker &>/dev/null || { echo "Docker not installed"; return 1; }
+    command -v docker &>/dev/null || { log_error "Docker not installed"; return 1; }
     docker info &>/dev/null || {
-        echo "Starting Docker..."
+        log_info "Starting Docker..."
         open -a Docker 2>/dev/null
         for i in {1..30}; do
             docker info &>/dev/null && return 0
             sleep 1
         done
-        echo "Docker failed to start"
+        log_error "Docker failed to start"
         return 1
     }
 }
 
 _dev_compose() {
     _dev_check_docker || return 1
-    [[ -f "$COMPOSE_FILE" ]] || { echo "Compose file not found: $COMPOSE_FILE"; return 1; }
+    [[ -f "$COMPOSE_FILE" ]] || { log_error "Compose file not found: $COMPOSE_FILE"; return 1; }
     docker compose -f "$COMPOSE_FILE" "$@"
 }
 
@@ -81,7 +81,7 @@ dev_logs() {
 
 dev_exec() {
     local service="$1"
-    [[ -z "$service" ]] && { echo "Usage: dev exec <service> [cmd]"; return 1; }
+    [[ -z "$service" ]] && { log_error "Usage: dev exec <service> [cmd]"; return 1; }
     shift
     _dev_compose exec "$service" "${@:-/bin/sh}"
 }
@@ -90,7 +90,7 @@ dev_stats() {
     _dev_check_docker || return 1
     local containers
     containers=$(docker ps -q)
-    [[ -z "$containers" ]] && { echo "No running containers"; return 0; }
+    [[ -z "$containers" ]] && { log_info "No running containers"; return 0; }
     docker stats --no-stream --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.NetIO}}"
 }
 
@@ -98,7 +98,7 @@ dev_ip() {
     _dev_check_docker || return 1
     local containers
     containers=$(_dev_compose ps -q 2>/dev/null)
-    [[ -z "$containers" ]] && { echo "No running containers"; return 0; }
+    [[ -z "$containers" ]] && { log_info "No running containers"; return 0; }
 
     for c in $containers; do
         local name networks
@@ -110,11 +110,11 @@ dev_ip() {
 
 dev_kill_all() {
     _dev_check_docker || return 1
-    echo "Stopping all containers..."
+    log_info "Stopping all containers..."
     docker stop $(docker ps -q) 2>/dev/null
     docker rm $(docker ps -aq) 2>/dev/null
     docker volume rm $(docker volume ls -q) 2>/dev/null
-    success "Cleaned all containers and volumes"
+    log_success "Cleaned all containers and volumes"
 }
 
 # -----------------------------------------------------------------------------
@@ -164,7 +164,7 @@ _main() {
         stats)          dev_stats ;;
         ip)             dev_ip ;;
         kill-all)       dev_kill_all ;;
-        *)              echo "Unknown command: $cmd"; return 1 ;;
+        *)              log_error "Unknown command: $cmd"; return 1 ;;
     esac
 }
 

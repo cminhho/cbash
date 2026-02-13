@@ -23,7 +23,7 @@ proxy_enable() {
     if [[ -z "$proxy" ]]; then
         read -rp "Proxy URL (e.g. http://proxy:8080): " proxy
     fi
-    [[ -z "$proxy" ]] && { echo "Proxy URL required"; return 1; }
+    [[ -z "$proxy" ]] && { log_error "Proxy URL required"; return 1; }
 
     export http_proxy="$proxy"
     export https_proxy="$proxy"
@@ -45,7 +45,7 @@ proxy_enable() {
         git config --global https.proxy "$proxy"
     fi
 
-    success "Proxy enabled: $proxy"
+    log_success "Proxy enabled: $proxy"
 }
 
 proxy_disable() {
@@ -63,7 +63,7 @@ proxy_disable() {
         git config --global --unset https.proxy 2>/dev/null
     fi
 
-    success "Proxy disabled"
+    log_success "Proxy disabled"
 }
 
 proxy_show() {
@@ -121,7 +121,7 @@ _main() {
         enable)         shift; proxy_enable "$@" ;;
         disable)        proxy_disable ;;
         show)           proxy_show ;;
-        *)              echo "Unknown command: $cmd"; return 1 ;;
+        *)              log_error "Unknown command: $cmd"; return 1 ;;
     esac
 }
 

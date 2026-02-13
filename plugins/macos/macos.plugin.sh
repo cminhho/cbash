@@ -34,7 +34,7 @@ macos_lock() {
 }
 
 macos_speedtest() {
-    echo "Testing internet speed..."
+    log_info "Testing internet speed..."
     networkQuality -v
 }
 
@@ -74,7 +74,7 @@ macos_clean_empty() {
     empty_dirs=$(find . -type d -empty 2>/dev/null)
 
     if [[ -z "$empty_dirs" ]]; then
-        echo "No empty directories found"
+        log_info "No empty directories found"
         return 0
     fi
 
@@ -84,7 +84,7 @@ macos_clean_empty() {
 
     if [[ "$answer" =~ ^[Yy]$ ]]; then
         find . -type d -empty -delete
-        success "Cleaned"
+        log_success "Cleaned"
     fi
 }
 
@@ -108,24 +108,24 @@ macos_replace() {
     [[ -z "$replace" ]] && { read -rp "Replace: " replace; }
 
     sed -i '' "s#${search}#${replace}#g" "$file"
-    success "Replaced in $file"
+    log_success "Replaced in $file"
 }
 
 macos_update() {
-    echo "Updating Homebrew..."
+    log_info "Updating Homebrew..."
     brew update && brew upgrade && brew upgrade --cask && brew cleanup
 
     if command -v npm &>/dev/null; then
-        echo "Updating npm packages..."
+        log_info "Updating npm packages..."
         npm update -g
     fi
 
     if command -v pip3 &>/dev/null; then
-        echo "Updating pip packages..."
+        log_info "Updating pip packages..."
         pip3 list --outdated --format=freeze 2>/dev/null | cut -d= -f1 | xargs -n1 pip3 install -U 2>/dev/null
     fi
 
-    success "Update complete"
+    log_success "Update complete"
 }
 
 # -----------------------------------------------------------------------------
@@ -138,7 +138,7 @@ macos_ips() {
     elif command -v ip &>/dev/null; then
         ip addr | grep -oP 'inet \K[\d.]+'
     else
-        echo "ifconfig or ip command not found"
+        log_error "ifconfig or ip command not found"
     fi
 }
 
@@ -151,7 +151,7 @@ macos_myip() {
             return 0
         fi
     done
-    echo "Could not determine public IP"
+    log_error "Could not determine public IP"
 }
 
 macos_passgen() {
@@ -228,7 +228,7 @@ _main() {
         ips)            macos_ips ;;
         myip)           macos_myip ;;
         passgen)        shift; macos_passgen "$@" ;;
-        *)              echo "Unknown command: $cmd"; return 1 ;;
+        *)              log_error "Unknown command: $cmd"; return 1 ;;
     esac
 }
 

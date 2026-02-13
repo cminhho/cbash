@@ -42,7 +42,7 @@ ai_list() {
 ai_pull() {
     ai_check || return 1
     local model="$1"
-    [[ -z "$model" ]] && { echo "Usage: ai pull <model>"; return 1; }
+    [[ -z "$model" ]] && { log_error "Usage: ai pull <model>"; return 1; }
     ollama pull "$model"
 }
 
@@ -81,7 +81,7 @@ _main() {
         chat|deepseek)  shift; ai_chat "$@" ;;
         list)            ai_list ;;
         pull)            shift; ai_pull "$@" ;;
-        *)              echo "Unknown command: $cmd"; return 1 ;;
+        *)              log_error "Unknown command: $cmd"; return 1 ;;
     esac
 }
 

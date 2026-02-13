@@ -2,7 +2,7 @@
 # Docs plugin for CBASH
 # View and manage internal documentation
 
-source "$CBASH_DIR/lib/common.sh"
+[[ -n "$CBASH_DIR" ]] && source "$CBASH_DIR/lib/common.sh"
 
 # Configuration
 readonly DOCS_DIR="${DOCS_DIR:-$HOME/.config/cbash/docs}"
@@ -35,17 +35,17 @@ docs_list() {
     _docs_ensure_dir
 
     if [[ -d "$DOCS_DIR" ]] && [[ -n "$(ls -A "$DOCS_DIR" 2>/dev/null)" ]]; then
-        echo "Documents: $DOCS_DIR"
+        log_info "Documents: $DOCS_DIR"
         ls "$DOCS_DIR"
     else
-        echo "No documents found in $DOCS_DIR"
-        echo "Create documents with: cbash docs edit <name>"
+        log_info "No documents found in $DOCS_DIR"
+        log_info "Create documents with: cbash docs edit <name>"
     fi
 }
 
 docs_edit() {
     local name="$1"
-    [[ -z "$name" ]] && { echo "Usage: docs edit <name>"; return 1; }
+    [[ -z "$name" ]] && { log_error "Usage: docs edit <name>"; return 1; }
 
     _docs_ensure_dir
     local file="$DOCS_DIR/$name.md"
@@ -54,7 +54,7 @@ docs_edit() {
 
 docs_view() {
     local name="$1"
-    [[ -z "$name" ]] && { echo "Usage: docs <name>"; return 1; }
+    [[ -z "$name" ]] && { log_error "Usage: docs <name>"; return 1; }
 
     local file
     file=$(_docs_find "$name")
@@ -62,7 +62,7 @@ docs_view() {
     if [[ -n "$file" && -f "$file" ]]; then
         cat "$file"
     else
-        echo "Document '$name' not found in $DOCS_DIR"
+        log_error "Document '$name' not found in $DOCS_DIR"
         return 1
     fi
 }

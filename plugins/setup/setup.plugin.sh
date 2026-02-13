@@ -30,9 +30,7 @@ _show_line() {
 
 setup_check() {
     local v
-    _gap
-    _box "Development Environment"
-    _br
+    _gap; _box "Development Environment"; _br
     v=$(git --version 2>/dev/null)
     _show_line "Git" "$v" "Not installed" "err"
     v=$(node -v 2>/dev/null)
@@ -43,9 +41,7 @@ setup_check() {
     _show_line "Docker" "$v" "Not installed" "err"
     v=$(java -version 2>&1 | head -n 1)
     _show_line "Java" "$v" "Not installed" "err"
-    _br
-    _box "Git Config"
-    _br
+    _br; _box "Git Config"; _br
     v=$(git config --global user.name 2>/dev/null)
     _show_line "Name" "$v" "<not set>"
     v=$(git config --global user.email 2>/dev/null)
@@ -60,12 +56,12 @@ setup_brew() {
     local group="${1:-dev}"
 
     if ! command -v brew &>/dev/null; then
-        info "Installing Homebrew..."
+        log_info "Installing Homebrew..."
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         [[ -x /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
         [[ -x /usr/local/bin/brew ]] && eval "$(/usr/local/bin/brew shellenv)"
     fi
-    command -v brew &>/dev/null || { err "Homebrew not found. See https://brew.sh"; return 1; }
+    command -v brew &>/dev/null || { log_error "Homebrew not found. See https://brew.sh"; return 1; }
 
     local -a dev_tools=(zsh zsh-completions bash-completion openssl git tree wget curl jq nvm pnpm python pyenv pycharm-ce maven intellij-idea-ce dbeaver-community nosql-workbench)
     local -a cloud_tools=(awscli terraform docker docker-completion docker-compose-completion)
@@ -79,37 +75,24 @@ setup_brew() {
         ide)   tools=("${ide_tools[@]}") ;;
         apps)  tools=("${apps_tools[@]}") ;;
         all)   tools=("${dev_tools[@]}" "${cloud_tools[@]}" "${ide_tools[@]}" "${apps_tools[@]}") ;;
-        *)     err "Groups: dev, cloud, ide, apps, all"; return 1 ;;
+        *)     log_error "Groups: dev, cloud, ide, apps, all"; return 1 ;;
     esac
 
-    _gap
-    _box "Installing $group tools"
-    _br
+    _gap; _box "Installing $group tools"; _br
     for tool in "${tools[@]}"; do
         if brew list "$tool" &>/dev/null || brew list --cask "$tool" &>/dev/null; then
-            _label "  $tool"
-            printf " ${style_ok}✓ ok${clr}\n"
+            _label "  $tool"; printf " ${style_ok}✓ ok${clr}\n"
         else
-            if [[ " $SETUP_BREW_CASKS " == *" $tool "* ]]; then
-                _label "  $tool"
-                _muted " \$ brew install --cask $tool"
-                _br
-                brew install --cask "$tool"
-            else
-                _label "  $tool"
-                _muted " \$ brew install $tool"
-                _br
-                brew install "$tool"
-            fi
+            _label "  $tool"
+            [[ " $SETUP_BREW_CASKS " == *" $tool "* ]] && { _muted " \$ brew install --cask $tool"; _br; brew install --cask "$tool"; } || { _muted " \$ brew install $tool"; _br; brew install "$tool"; }
         fi
     done
-    _br
-    success "Done"
+    _br; log_success "Done"
 }
 
 setup_workspace() {
     local name="${1:-workspace}"
-    [[ -f "$CBASH_DIR/plugins/gen/gen.plugin.sh" ]] || { err "Gen plugin not found"; return 1; }
+    [[ -f "$CBASH_DIR/plugins/gen/gen.plugin.sh" ]] || { log_error "Gen plugin not found"; return 1; }
     "$CBASH_DIR/plugins/gen/gen.plugin.sh" workspace "$name"
 }
 
@@ -127,15 +110,10 @@ setup_help() {
 }
 
 setup_list_aliases() {
-    _gap
-    _box "Setup aliases"
-    _br
-    _label "  scheck"
-    _muted_nl " = setup check"
-    _label "  sbrew"
-    _muted_nl " = setup brew [group]"
-    _label "  sws"
-    _muted_nl " = setup workspace [name]"
+    _gap; _box "Setup aliases"; _br
+    _label "  scheck";  _muted_nl " = setup check"
+    _label "  sbrew";   _muted_nl " = setup brew [group]"
+    _label "  sws";     _muted_nl " = setup workspace [name]"
     _br
 }
 
@@ -153,7 +131,7 @@ _main() {
         check)          setup_check ;;
         brew)           shift; setup_brew "$@" ;;
         workspace)      shift; setup_workspace "$@" ;;
-        *)              err "Unknown command: $cmd"; return 1 ;;
+        *)              log_error "Unknown command: $cmd"; return 1 ;;
     esac
 }
 

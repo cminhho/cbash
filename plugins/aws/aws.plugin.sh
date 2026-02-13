@@ -32,7 +32,7 @@ _aws_validate_env() {
 
 _aws_check_cli() {
     command -v aws &>/dev/null || {
-        err "AWS CLI not installed. Run: brew install awscli"
+        log_error "AWS CLI not installed. Run: brew install awscli"
         return 1
     }
 }
@@ -40,7 +40,7 @@ _aws_check_cli() {
 _aws_check_profile() {
     local profile="$1"
     aws configure list --profile "$profile" &>/dev/null || {
-        err "Profile '$profile' not found. Run: aws configure --profile $profile"
+        log_error "Profile '$profile' not found. Run: aws configure --profile $profile"
         return 1
     }
 }
@@ -51,21 +51,21 @@ _aws_check_profile() {
 
 aws_ssh_gateway() {
     [[ $# -eq 2 ]] || {
-        err "Usage: cbash aws ssh <profile> <env>"
+        log_error "Usage: cbash aws ssh <profile> <env>"
         return 1
     }
 
     local profile="$1" env="$2"
 
     _aws_validate_env "$env" || {
-        err "Invalid environment. Use: ${VALID_ENVS[*]}"
+        log_error "Invalid environment. Use: ${VALID_ENVS[*]}"
         return 1
     }
 
     _aws_check_cli || return 1
     _aws_check_profile "$profile" || return 1
 
-    info "Connecting to $env using profile $profile..."
+    log_info "Connecting to $env using profile $profile..."
     aws ssm start-session \
         --profile "$profile" \
         --target "ssh-gateway-$env" \
@@ -77,7 +77,7 @@ aws_sqs_create() {
 
     read -rp "Queue name: " queue_name
     [[ -n "$queue_name" ]] || {
-        echo "Error: Queue name required"
+        log_error "Queue name required"
         return 1
     }
 
@@ -87,9 +87,9 @@ aws_sqs_create() {
         --endpoint-url "$AWS_LOCALSTACK_ENDPOINT" 2>&1)
 
     if [[ $? -eq 0 ]]; then
-        echo "Queue created: $response"
+        log_success "Queue created: $response"
     else
-        echo "Error: $response"
+        log_error "$response"
         return 1
     fi
 }
@@ -97,14 +97,14 @@ aws_sqs_create() {
 aws_sqs_test() {
     _aws_check_cli || return 1
     command -v jq &>/dev/null || {
-        echo "Error: jq not installed. Run: brew install jq"
+        log_error "jq not installed. Run: brew install jq"
         return 1
     }
 
     read -rp "Queue name: " queue_name
     read -rp "Message: " message
     [[ -n "$queue_name" && -n "$message" ]] || {
-        echo "Error: Queue name and message required"
+        log_error "Queue name and message required"
         return 1
     }
 
@@ -116,7 +116,7 @@ aws_sqs_test() {
         --queue-url "$queue_url" \
         --message-body "$message" \
         --endpoint-url "$AWS_LOCALSTACK_ENDPOINT" 2>&1) || {
-        echo "Error sending message: $send_response"
+        log_error "Error sending message: $send_response"
         return 1
     }
 
@@ -128,7 +128,7 @@ aws_sqs_test() {
         --wait-time-seconds 20 \
         --query "Messages[0]" \
         --endpoint-url "$AWS_LOCALSTACK_ENDPOINT" 2>&1) || {
-        echo "Error receiving message: $receive_response"
+        log_error "Error receiving message: $receive_response"
         return 1
     }
 
@@ -138,9 +138,9 @@ aws_sqs_test() {
 
     # Verify
     if [[ "$received_body" == "$message" ]]; then
-        echo "✓ Message sent and received successfully"
+        log_success "Message sent and received successfully"
     else
-        echo "✗ Message mismatch"
+        log_error "Message mismatch"
         return 1
     fi
 
@@ -157,7 +157,7 @@ aws_ssm_get() {
     read -rp "Profile: " profile
     read -rp "Parameter name: " param_name
     [[ -n "$profile" && -n "$param_name" ]] || {
-        echo "Error: Profile and parameter name required"
+        log_error "Profile and parameter name required"
         return 1
     }
 
@@ -171,9 +171,9 @@ aws_ssm_get() {
         --output text 2>&1)
 
     if [[ $? -eq 0 ]]; then
-        echo "$param_name: $value"
+        log_info "$param_name: $value"
     else
-        echo "Error: $value"
+        log_error "$value"
         return 1
     fi
 }
@@ -214,7 +214,7 @@ _main() {
         sqs-create)     shift; aws_sqs_create "$@" ;;
         sqs-test)       shift; aws_sqs_test "$@" ;;
         ssm-get)        shift; aws_ssm_get "$@" ;;
-        *)              abort "Invalid command: $cmd" ;;
+        *)              log_error "Invalid command: $cmd"; return 1 ;;
     esac
 }
 
