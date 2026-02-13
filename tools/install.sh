@@ -45,13 +45,13 @@ fi
 # Make executable
 chmod +x "$CBASH_DIR/cbash.sh"
 
-# Add to shell config
+# Add to shell config (CBASH_DIR is set automatically by cbash.sh)
 add_to_shell() {
     local config="$1"
-    local line="export CBASH_DIR=\"$CBASH_DIR\" && source \"\$CBASH_DIR/cbash.sh\""
+    local line="source \"$CBASH_DIR/cbash.sh\""
     
     if [ -f "$config" ]; then
-        if ! grep -q "CBASH_DIR" "$config" 2>/dev/null; then
+        if ! grep -q "cbash.sh" "$config" 2>/dev/null; then
             echo "" >> "$config"
             echo "# CBASH CLI" >> "$config"
             echo "$line" >> "$config"

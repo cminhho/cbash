@@ -4,6 +4,12 @@
 
 ## Quick Install
 
+**via Homebrew (macOS):**
+```bash
+brew tap cminhho/cbash https://github.com/cminhho/cbash
+brew install cbash-cli
+```
+
 **via curl:**
 ```bash
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/cminhho/cbash/master/tools/install.sh)"
@@ -17,7 +23,7 @@ sh -c "$(wget -qO- https://raw.githubusercontent.com/cminhho/cbash/master/tools/
 **Manual:**
 ```bash
 git clone https://github.com/cminhho/cbash.git ~/.cbash
-echo 'export CBASH_DIR="$HOME/.cbash" && source "$CBASH_DIR/cbash.sh"' >> ~/.zshrc
+echo 'source "$HOME/.cbash/cbash.sh"' >> ~/.zshrc
 source ~/.zshrc
 ```
 
@@ -78,6 +84,7 @@ GIT
   git squash                            Squash commits interactively
   git auto-squash                       Squash feature branch
   git pull-all           [dir]          Pull all repos in directory
+  git for                "<cmd>" [dir]  Run command in every repo (e.g. "git pull")
   git clean                             Clean and optimize repo
   git size                              Show repo size
   git sync                              Fetch and pull

@@ -41,6 +41,10 @@ To use it, the plugin is automatically loaded by CBASH. No additional configurat
 * `cbash git open`: opens the repository in browser. Converts SSH URLs to HTTPS and opens in
   default browser. Supports GitHub, GitLab, and Bitbucket.
 
+* `cbash git pull-all [dir]`: pulls (rebase or merge) in all git repos under the given directory (default: current dir).
+
+* `cbash git for "<command>" [dir]`: runs the given command in every git repo under the directory (default: current dir). Use for batch operations like `git pull` or `git reset --hard && git pull`.
+
 ## Prerequisites
 
 The plugin requires [Git](https://git-scm.com/) to be installed:
@@ -95,6 +99,14 @@ Open repository in browser:
 
 ```bash
 cbash git open
+```
+
+Run a command in every repo (e.g. pull latest):
+
+```bash
+cbash git for "git pull"
+cbash git for "git reset --hard && git pull"
+cbash git for "git status" ~/workspace
 ```
 
 ## Troubleshooting

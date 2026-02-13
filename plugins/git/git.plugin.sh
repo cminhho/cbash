@@ -23,6 +23,9 @@ _git_in_repo() {
     }
 }
 
+# Dim/gray for secondary text (path, command echo) — industry convention
+_dim='\033[2;37m'
+
 # -----------------------------------------------------------------------------
 # Commands
 # -----------------------------------------------------------------------------
@@ -172,23 +175,62 @@ git_auto_squash() {
 
 git_pull_all() {
     local root="${1:-$(pwd)}"
-    echo "Pulling all repos in $root..."
-    
+    local repo_dir name out ret
+    printf "\n${bldblu}▸ Pulling all repos${clr} ${_dim}in %s${clr}\n\n" "$root"
+
     find "$root" -maxdepth 2 -name ".git" -type d | while read -r gitdir; do
-        local repo_dir
         repo_dir=$(dirname "$gitdir")
-        echo "→ $(basename "$repo_dir")"
-        (cd "$repo_dir" && git pull --rebase 2>/dev/null || git pull 2>/dev/null) || true
+        name=$(basename "$repo_dir")
+        printf "${bldcyn}▸ %s${clr} ${_dim}(%s)${clr}\n" "$name" "$repo_dir"
+        printf "  ${_dim}\$ git pull --rebase || git pull${clr}\n"
+        out=$(cd "$repo_dir" && (git pull --rebase 2>&1 || git pull 2>&1)); ret=$?
+        echo "$out" | sed 's/^/  /'
+        if [[ $ret -eq 0 ]]; then
+            printf "  ${txtgrn}✓ ok${clr}\n"
+        else
+            printf "  ${txtred}✗ failed (exit %d)${clr}\n" "$ret"
+        fi
+        echo ""
     done
-    
+
+    success "Done"
+}
+
+# Run a command in every git repo under a directory (default: current dir).
+# Example: cbash git for "git pull"
+# Example: cbash git for "git reset --hard && git pull"
+# Example: cbash git for "git status" ~/workspace
+git_for() {
+    local cmd="${1:?Usage: git for \"<command>\" [root_dir]}"
+    local root="${2:-$(pwd)}"
+    local repo_dir name out ret
+
+    printf "\n${bldblu}▸ Running in all repos${clr} ${_dim}(%s)${clr}\n" "$root"
+    printf "${bldylw}  Command:${clr} ${_dim}%s${clr}\n\n" "$cmd"
+
+    find "$root" -maxdepth 2 -name ".git" -type d | while read -r gitdir; do
+        repo_dir=$(dirname "$gitdir")
+        name=$(basename "$repo_dir")
+        printf "${bldcyn}▸ %s${clr} ${_dim}(%s)${clr}\n" "$name" "$repo_dir"
+        printf "  ${_dim}\$ %s${clr}\n" "$cmd"
+        out=$(cd "$repo_dir" && eval "$cmd" 2>&1); ret=$?
+        echo "$out" | sed 's/^/  /'
+        if [[ $ret -eq 0 ]]; then
+            printf "  ${txtgrn}✓ ok${clr}\n"
+        else
+            printf "  ${txtred}✗ failed (exit %d)${clr}\n" "$ret"
+        fi
+        echo ""
+    done
+
     success "Done"
 }
 
 git_sync() {
     _git_in_repo || return 1
     echo "Syncing..."
-    git fetch --all --prune
-    git pull
+    git fetch --all --prune || return 1
+    git pull || return 1
     success "Synced"
 }
 
@@ -228,6 +270,7 @@ _main() {
             'squash          Squash commits interactively' \
             'auto-squash     Squash all commits on feature branch' \
             'pull-all [dir]  Pull all repos in directory' \
+            'for "cmd" [dir] Run command in every repo (e.g. for "git pull")' \
             'clean           Clean and optimize repo' \
             'size            Show repo size' \
             'sync            Sync current repo' \
@@ -248,6 +291,7 @@ _main() {
         squash)         git_squash ;;
         auto-squash)    git_auto_squash ;;
         pull-all)       shift; git_pull_all "$@" ;;
+        for)            shift; git_for "$@" ;;
         clean)          git_clean ;;
         size)           git_size ;;
         sync)           git_sync ;;

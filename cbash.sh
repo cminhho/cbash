@@ -5,7 +5,17 @@
 [[ -z "$BASH_VERSION" && -z "$ZSH_VERSION" ]] && { echo "Error: cbash requires bash or zsh" >&2; return 1 2>/dev/null || exit 1; }
 
 readonly CBASH_VERSION="1.0.0"
-export CBASH_DIR="${CBASH_DIR:-$HOME/.cbash}"
+# Default: directory of this script if it looks like cbash install, else ~/.cbash
+if [[ -z "$CBASH_DIR" ]]; then
+  _cbash_script="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
+  if [[ -f "$_cbash_script/lib/plugin.sh" ]]; then
+    export CBASH_DIR="$_cbash_script"
+  else
+    export CBASH_DIR="${HOME}/.cbash"
+  fi
+  unset _cbash_script
+fi
+export CBASH_DIR
 
 # -----------------------------------------------------------------------------
 # Init
