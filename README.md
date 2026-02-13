@@ -6,8 +6,7 @@
 
 **via Homebrew (macOS):**
 ```bash
-brew tap cminhho/cbash https://github.com/cminhho/cbash
-brew install cbash-cli
+brew install cminhho/tap/cbash-cli
 ```
 
 **via curl:**
@@ -77,6 +76,7 @@ GIT
   git squash                            Squash commits interactively
   git auto-squash                       Squash feature branch
   git pull-all           [dir]          Pull all repos in directory
+  git clone-all          <file> [dir]   Clone repos from file (one URL per line)
   git for                "<cmd>" [dir]  Run command in every repo (e.g. "git pull")
   git clean                             Clean and optimize repo
   git size                              Show repo size
