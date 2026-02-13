@@ -53,26 +53,26 @@ aliases_load() {
 # Main Router
 # -----------------------------------------------------------------------------
 
-_main() {
-    local cmd="$1"
+_aliases_help() {
+    _describe command 'aliases' \
+        'list            List alias files' \
+        'show <name>     Show aliases in file' \
+        'edit <name>     Edit alias file' \
+        'load            Load all aliases' \
+        'Shell aliases manager'
+}
 
-    if [[ -z "$cmd" ]]; then
-        _describe command 'aliases' \
-            'list            List alias files' \
-            'show <name>     Show aliases in file' \
-            'edit <name>     Edit alias file' \
-            'load            Load all aliases' \
-            'Shell aliases manager'
-        return 0
-    fi
+_main() {
+    local cmd="${1:-help}"
 
     case "$cmd" in
-        list) aliases_list ;;
-        show) shift; aliases_show "$@" ;;
-        edit) shift; aliases_edit "$@" ;;
-        load) aliases_load ;;
-        *)    echo "Unknown command: $cmd"; return 1 ;;
+        help|--help|-h) _aliases_help ;;
+        list)           aliases_list ;;
+        show)           shift; aliases_show "$@" ;;
+        edit)           shift; aliases_edit "$@" ;;
+        load)           aliases_load ;;
+        *)              echo "Unknown command: $cmd"; return 1 ;;
     esac
 }
 
-_main "$@"
+[[ "${BASH_SOURCE[0]}" == "${0}" ]] && _main "$@"

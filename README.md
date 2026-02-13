@@ -37,75 +37,127 @@ After install, restart terminal and run `cbash` for help.
 ## Usage
 
 ```bash
-cbash                   # Show all commands
+cbash                   # Show help (same as cbash help)
+cbash help              # Show help
 cbash <plugin>          # Run plugin (auto-discovery)
+cbash <plugin> help     # Plugin-specific help
 cbash list-plugins      # List available plugins
 ```
 
+Sample output of `cbash` / `cbash help`:
+
 ```
-cbash
-CBASH CLI (1.0) – macOS command line tools for developers
+CBASH CLI (1.0.0) – macOS command line tools for developers
 
 USAGE
   cbash [COMMAND] [SUBCOMMAND] [OPTIONS]
 
-DEVELOPMENT
-  dev start                     Start Docker services
-  dev stop / restart            Stop or restart services
-  dev logs           [service]  View container logs
-  dev exec           <service>  Execute command in container
-  dev status / stats            Service status, container stats
-  Aliases: start, stop, restart, devlogs, devstatus, devkill
-
-SETUP (Mac Setup Guide)
-  setup check                   Check dev environment
-  setup brew         [group]    Install tools (dev|cloud|ide|apps|all)
-  setup workspace    [dir]      Create workspace structure
-  setup dotfiles                Import dotfiles
-  Aliases: scheck, sbrew, sws, sdot
-
-GIT
-  git                            Git plugin (aliases: g, gst, gco, commit, auto_squash, ...)
-  git squash / auto-commit       Squash commits, auto commit and push
-  git open / sync                Open repo in browser, pull latest
-  git branches                   List branches with dates
-
-AWS
-  aws login / aws keys           Login, manage credentials
-  ssm                <env>      SSH to environment (sit|uat|prod)
-
-GENERATORS (gen — structure + doc)
-  gen feat           [name]     Create feature directory
-  gen trouble        [name]     Create troubleshooting directory
-  gen workspace      [name]     Create workspace structure
-  gen project        [name]     Create project structure
-  gen doc            [type]     Generate doc from template (adr|meeting|design|cab|...)
-  Aliases: gtrouble, gfeat, gws, gproject, gdoc
-
-UTILITIES
-  macos / misc                  MacOS plugin (ips, myip, passgen, lock, update, ...)
-  macos update / ports          Update Homebrew npm pip, list ports
-  macos ip-local / ip-public     Local and public IP
-  docker                        Docker helpers (dps, dr, drm, docker running, kill-all)
-  mvn / npm                     Maven (mvnw) and npm/npx aliases
-  doc / docs                    Docs plugin: list, edit, view
-  k8s                <pod>      Kubernetes helper
-  cheat              <name>     View cheatsheet
-  ai chat                       Chat with AI
+SETUP
+  setup                      Show help
+  setup check                Check dev environment                    → scheck
+  setup brew       [group]   Install tools (dev|cloud|ide|apps|all)   → sbrew
+  setup workspace  [dir]     Create workspace structure               → sws
+  setup dotfiles             Import dotfiles                          → sdot
 
 ALIASES
-  aliases list / show <name>    List or show alias files
-  proxy enable [url] / disable  Enable or disable proxy
+  aliases                    Show help
+  aliases list               List alias files
+  aliases show     <name>    Show aliases in file
+  aliases edit     <name>    Edit alias file
+  aliases load               Load all aliases
 
-QUICK COMMANDS
-  start, stop, restart, devlogs     Dev / Docker
-  scheck, sbrew, sws, sdot          Setup
-  gfeat, gtrouble, gws, gdoc        Gen
-  sit, uat, prod                    SSH to AWS
-  commit, auto_squash               Git
-  chat                              AI chat
+GIT
+  git                        Show help (aliases: g, gst, gco, commit, …)
+  git config                 Show git config
+  git log                    Recent commits
+  git branches               List branches with dates
+  git open                   Open repo in browser
+  clone            <url>     Git clone (cbash clone)
+  pull                      Git pull (cbash pull)
 
-Run cbash <plugin> for detailed help on each plugin.
+DEVELOPMENT
+  dev                        Show help
+  dev start        [svc]     Start Docker services                     → start
+  dev stop         [svc]     Stop services                             → stop
+  dev logs         [svc]     Follow logs                               → devlogs
+  dev kill-all               Stop and remove all                       → devkill
+
+DOCKER
+  docker                     Show help (aliases: d, dps, dr, drm, dlo, …)
+  docker running             List running containers
+  docker stop-all            Stop all containers
+  docker kill-all            Stop, remove all and volumes
+
+MAVEN
+  mvn                        Maven wrapper + aliases (mci, build, run, …)
+  mvn list                   List Maven aliases
+
+NPM
+  npm                        npm/npx aliases (ni, nr, nx, nls, nt, …)
+  npm list                   List npm/npx aliases
+
+AWS
+  aws                        Show help
+  aws ssh          <profile> <env>  Connect to SSH gateway (SSM)       → awsssh
+  aws sqs-create             Create SQS queue (localstack)             → awssqscreate
+  aws ssm-get                Get SSM parameter                         → awsssmget
+
+KUBERNETES (K8S)
+  k8s                        Show help
+  k8s pods         [opts]    List pods                                 → k8pods
+  k8s logs         <pod>     Follow pod logs                           → k8logs
+  k8s exec         <pod>     Shell into pod                            → k8exec
+  k8s cheat        [pod]     Show kubectl commands                     → k8cheat
+
+GENERATORS (GEN)
+  gen                        Show help
+  gen trouble      [name]    Create troubleshooting dir                → gtrouble
+  gen feat         [name]    Create feature dir                        → gfeat
+  gen project      [name]    Create project structure                  → gproject
+  gen doc          [type] [name]  Generate doc from template           → gdoc
+
+DOCS
+  doc              <name>    View doc (cbash doc|docs <name>)
+  docs list                  List documents
+  docs edit        <name>    Edit document
+
+CHEAT
+  cheat            <name>    View cheatsheet                           → ch
+  cheat list                  List cheatsheets                         → chlist
+  cheat setup                 Download community cheatsheets           → chsetup
+
+AI
+  ai                         Show help
+  ai chat          [model]   Chat with AI (Ollama)                     → chat, aichat
+  ai list                    List Ollama models                        → ailist
+  ai pull          <model>   Pull model                                → aipull
+
+MACOS / MISC
+  macos / misc               Show help
+  macos lock                 Lock screen                               → mlock
+  macos ports                List listening ports                      → mports
+  macos update               Update Homebrew, npm, pip                 → mupdate
+  macos myip                 Public IP (fallbacks)
+
+PROXY
+  proxy enable     [url]     Enable proxy (env, npm, git)              → proxon
+  proxy disable              Disable proxy                             → proxoff
+  proxy show                 Show proxy settings                       → proxshow
+
+QUICK REFERENCE (ALIAS → SECTION)
+  scheck, sbrew, sws, sdot                Setup
+  start, stop, devlogs, devkill           Dev
+  commit, auto_squash                     Git
+  d, dps, dr, drm, dlo                    Docker
+  gfeat, gtrouble, gws, gproject, gdoc    Gen
+  awsssh, awssqscreate, awsssmget         AWS
+  k8pods, k8logs, k8exec, k8cheat         K8s
+  ch, chlist, chsetup                     Cheat
+  chat, aichat, ailist                    AI
+  mlock, mip, mports, mupdate, minfo      MacOS
+  proxon, proxoff, proxshow               Proxy
+
+Run cbash <plugin> or cbash <plugin> help for detailed help.
 ```
 
 ## Upgrade & Uninstall

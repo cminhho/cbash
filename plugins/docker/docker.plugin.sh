@@ -40,6 +40,7 @@ docker_kill_all() {
 # Short aliases (ohmyzsh-style)
 # -----------------------------------------------------------------------------
 
+alias d='docker'
 alias dbl='docker build'
 alias dcin='docker container inspect'
 alias dcls='docker container ls'

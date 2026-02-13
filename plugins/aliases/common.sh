@@ -32,7 +32,6 @@ alias c=cat
 alias m=more
 alias j=jobs
 alias k=kill
-alias d=dirs
 alias h=history
 alias his=history
 alias hm='history | less'
@@ -44,14 +43,7 @@ alias ciao=exit
 alias o='open -a TextEdit'
 alias open='open -a TextEdit'
 
-## Colorize the grep command output for ease of use (good for log files)##
+## Colorize the grep command output for ease of use (good for log files)
 alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
-
-# App aliases
-alias kill='kill $(lsof -ti $2)'
-
-# Docker
-alias d='docker'
-
