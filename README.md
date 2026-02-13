@@ -20,13 +20,6 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/cminhho/cbash/master/tools
 sh -c "$(wget -qO- https://raw.githubusercontent.com/cminhho/cbash/master/tools/install.sh)"
 ```
 
-**Manual:**
-```bash
-git clone https://github.com/cminhho/cbash.git ~/.cbash
-echo 'source "$HOME/.cbash/cbash.sh"' >> ~/.zshrc
-source ~/.zshrc
-```
-
 ## Requirements
 
 - Unix-like OS (macOS, Linux, WSL2)

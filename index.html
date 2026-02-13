@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="CBASH CLI – Command-line tools for developers. Git, Docker, AWS, K8s, dev workflows, and more. macOS & Linux.">
-  <title>CBASH CLI – Developer command-line tools</title>
+  <meta name="description" content="CBASH CLI – Command-line toolkit for developers. Git, Docker, AWS, Kubernetes, generators, and more. macOS and Linux.">
+  <title>CBASH CLI – Command-line toolkit for developers</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -19,30 +19,46 @@
       --accent: #58a6ff;
       --accent-dim: #388bfd;
       --success: #3fb950;
-      --success-dim: #238636;
       --radius: 8px;
       --radius-lg: 12px;
       --font-sans: 'DM Sans', system-ui, -apple-system, sans-serif;
       --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+      /* Consistent layout */
+      --wrap: min(1120px, 100% - 2rem);
+      --pad: 1.5rem;
+      --section-pad: 3.5rem 0;
+      --gap: 1.25rem;
+      --text-base: 1rem;
+      --text-sm: 0.875rem;
+      --text-xs: 0.8125rem;
+      --heading-lg: clamp(1.75rem, 4vw, 2.25rem);
+      --heading-md: 1.375rem;
     }
     *, *::before, *::after { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
       font-family: var(--font-sans);
+      font-size: var(--text-base);
+      line-height: 1.6;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.6;
       margin: 0;
-      padding: 0;
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap {
+      width: var(--wrap);
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 0 var(--pad);
     }
 
     .site-header {
       position: sticky;
       top: 0;
       z-index: 10;
-      background: rgba(13, 17, 23, .85);
+      background: rgba(13, 17, 23, .9);
       backdrop-filter: saturate(180%) blur(12px);
       border-bottom: 1px solid var(--border);
     }
@@ -51,18 +67,17 @@
       align-items: center;
       justify-content: space-between;
       height: 56px;
-      padding: 0 1.5rem;
     }
     .logo {
       font-weight: 700;
-      font-size: 1.125rem;
+      font-size: var(--text-base);
       letter-spacing: -0.02em;
       color: var(--text);
       text-decoration: none;
     }
     .logo:hover { color: var(--accent); }
     .nav a {
-      font-size: 0.875rem;
+      font-size: var(--text-sm);
       font-weight: 500;
       color: var(--text-muted);
       text-decoration: none;
@@ -70,75 +85,97 @@
     }
     .nav a:hover { color: var(--accent); }
 
-    .wrap { max-width: 960px; margin: 0 auto; padding: 0 1.5rem; }
     .hero {
-      padding: 4rem 0 3rem;
+      padding: 4rem 0 3.5rem;
       text-align: center;
     }
     .hero h1 {
-      font-size: clamp(2rem, 5vw, 3rem);
+      font-size: var(--heading-lg);
       font-weight: 700;
       letter-spacing: -0.03em;
-      margin: 0 0 1rem;
+      margin: 0 0 var(--gap);
       line-height: 1.2;
     }
     .hero .tagline {
-      font-size: 1.25rem;
+      font-size: var(--text-base);
       color: var(--text-muted);
-      max-width: 540px;
-      margin: 0 auto 2.5rem;
-    }
-    .install-block {
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 1.25rem 1.5rem;
-      text-align: left;
-      max-width: 560px;
+      max-width: 36em;
       margin: 0 auto;
+      line-height: 1.6;
     }
-    .install-block .label {
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-muted);
-      margin-bottom: 0.5rem;
-    }
-    .install-block pre {
-      margin: 0;
-      font-family: var(--font-mono);
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: var(--success);
-      overflow-x: auto;
-      white-space: pre-wrap;
-      word-break: break-all;
-    }
-    .install-block pre code { color: inherit; }
-    .install-more {
-      margin-top: 1rem;
-      font-size: 0.8125rem;
-      color: var(--text-muted);
-    }
-    .install-more a { color: var(--accent); text-decoration: none; }
-    .install-more a:hover { text-decoration: underline; }
 
     .section {
-      padding: 3rem 0;
+      padding: var(--section-pad);
       border-top: 1px solid var(--border);
     }
     .section-title {
-      font-size: 1.5rem;
+      font-size: var(--heading-md);
       font-weight: 600;
       letter-spacing: -0.02em;
       margin: 0 0 1.5rem;
       text-align: center;
     }
+    .section-desc {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      text-align: center;
+      max-width: 40em;
+      margin: -0.5rem auto 1.5rem;
+      line-height: 1.5;
+    }
+
+    #install-options { scroll-margin-top: 4rem; }
+    .install-tabs-wrap { position: relative; }
+    .install-tabs-wrap input { position: absolute; opacity: 0; pointer-events: none; }
+    .install-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .install-tabs label {
+      font-size: var(--text-sm);
+      font-weight: 500;
+      color: var(--text-muted);
+      padding: 0.75rem 1.25rem;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color .15s ease, border-color .15s ease;
+    }
+    .install-tabs label:hover { color: var(--text); }
+    .install-tabs-wrap #install-homebrew:checked ~ .install-tabs label:nth-child(1),
+    .install-tabs-wrap #install-curl:checked ~ .install-tabs label:nth-child(2),
+    .install-tabs-wrap #install-wget:checked ~ .install-tabs label:nth-child(3) {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    .install-panels { position: relative; }
+    .install-panel {
+      display: none;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+      padding: 1.25rem 1.5rem;
+    }
+    .install-panel pre {
+      margin: 0;
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      color: var(--success);
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .install-panel pre code { color: inherit; }
+    .install-tabs-wrap #install-homebrew:checked ~ .install-panels .panel-homebrew,
+    .install-tabs-wrap #install-curl:checked ~ .install-panels .panel-curl,
+    .install-tabs-wrap #install-wget:checked ~ .install-panels .panel-wget { display: block; }
+
     .features {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: var(--gap);
     }
     .feature-card {
       background: var(--bg-card);
@@ -147,44 +184,103 @@
       padding: 1.25rem;
       transition: border-color .15s ease;
     }
-    .feature-card:hover { border-color: rgba(88, 166, 255, .3); }
+    .feature-card:hover { border-color: rgba(88, 166, 255, .25); }
     .feature-card .name {
       font-weight: 600;
-      font-size: 1rem;
-      margin-bottom: 0.25rem;
+      font-size: var(--text-base);
+      margin-bottom: 0.35rem;
     }
     .feature-card .desc {
-      font-size: 0.875rem;
+      font-size: var(--text-sm);
       color: var(--text-muted);
       margin: 0;
       line-height: 1.5;
     }
 
-    .quick-start {
+    .code-block {
       background: var(--bg-elevated);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
-      padding: 1.5rem;
+      padding: 1.25rem 1.5rem;
     }
-    .quick-start pre {
+    .code-block pre {
+      margin: 0;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      overflow-x: auto;
+    }
+    .code-block .cmd { color: var(--text); }
+    .code-block .comment { color: var(--text-muted); }
+
+    .terminal-intro {
+      font-size: var(--text-sm);
+      color: var(--text-muted);
+      margin: 1rem 0 0.75rem;
+    }
+    .terminal-intro code { color: var(--accent); }
+
+    .terminal {
+      background: #0c0d0e;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,.4);
+    }
+    .terminal-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      background: #1a1b1e;
+      border-bottom: 1px solid var(--border);
+    }
+    .terminal-dots {
+      display: flex;
+      gap: 6px;
+    }
+    .terminal-dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .terminal-dots span:nth-child(1) { background: #ff5f56; }
+    .terminal-dots span:nth-child(2) { background: #ffbd2e; }
+    .terminal-dots span:nth-child(3) { background: #27c93f; }
+    .terminal-title {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-left: 8px;
+    }
+    .terminal-body {
+      padding: 1rem 1.25rem;
+      overflow-x: auto;
+      background: #0d1117;
+    }
+    .terminal-body pre {
       margin: 0;
       font-family: var(--font-mono);
       font-size: 0.8125rem;
-      color: var(--text-muted);
-      overflow-x: auto;
+      line-height: 1.45;
+      white-space: pre;
+      color: #a9b1d6;
     }
-    .quick-start code { color: var(--text); }
+    .terminal-body pre code { color: inherit; }
+    .terminal-body .t-title { color: #e5c07b; font-weight: 600; }
+    .terminal-body .t-hdr { color: #7dcfff; font-weight: 600; }
+    .terminal-body .t-cmd { color: #9ece6a; }
+    .terminal-body .t-desc { color: #ffffff; }
+    .terminal-body .t-alias { color: #a9a6a6; }
 
     .cta-bar {
       text-align: center;
-      padding: 2rem 0 3rem;
+      padding: 2.5rem 0 3rem;
     }
     .cta-bar a {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
       font-weight: 600;
-      font-size: 0.9375rem;
+      font-size: var(--text-sm);
       color: var(--text);
       background: var(--bg-card);
       border: 1px solid var(--border);
@@ -201,7 +297,7 @@
     .site-footer {
       border-top: 1px solid var(--border);
       padding: 1.5rem 0;
-      font-size: 0.8125rem;
+      font-size: var(--text-xs);
       color: var(--text-muted);
       text-align: center;
     }
@@ -223,56 +319,80 @@
   <main>
     <section class="hero">
       <div class="wrap">
-        <h1>One CLI for your daily dev workflow</h1>
-        <p class="tagline">Git, Docker, AWS, Kubernetes, generators, docs, and more. Install once, use everywhere on macOS and Linux.</p>
-        <div class="install-block">
-          <div class="label">Install (macOS)</div>
-          <pre><code>brew tap cminhho/cbash https://github.com/cminhho/cbash
+        <h1>Command-line toolkit for developers</h1>
+        <p class="tagline">A single CLI to automate daily tasks, manage Git and Docker, run dev services, and work with AWS and Kubernetes. Built for macOS and Linux. Install once, use from any terminal.</p>
+      </div>
+    </section>
+
+    <section class="section" id="install-options">
+      <div class="wrap">
+        <h2 class="section-title">Install</h2>
+        <p class="section-desc">Choose your preferred method. Requires Bash 4+ or Zsh, and Git. After install, restart your terminal and run <code>cbash</code> to see the help.</p>
+        <div class="install-tabs-wrap">
+          <input type="radio" name="install-method" id="install-homebrew" checked>
+          <input type="radio" name="install-method" id="install-curl">
+          <input type="radio" name="install-method" id="install-wget">
+          <div class="install-tabs">
+            <label for="install-homebrew">Homebrew</label>
+            <label for="install-curl">curl</label>
+            <label for="install-wget">wget</label>
+          </div>
+          <div class="install-panels">
+            <div class="install-panel panel-homebrew">
+              <pre><code>brew tap cminhho/cbash https://github.com/cminhho/cbash
 brew install cbash-cli</code></pre>
-          <p class="install-more">Other options: <a href="https://github.com/cminhho/cbash#quick-install">curl, wget, manual</a></p>
+            </div>
+            <div class="install-panel panel-curl">
+              <pre><code>sh -c "$(curl -fsSL https://raw.githubusercontent.com/cminhho/cbash/master/tools/install.sh)"</code></pre>
+            </div>
+            <div class="install-panel panel-wget">
+              <pre><code>sh -c "$(wget -qO- https://raw.githubusercontent.com/cminhho/cbash/master/tools/install.sh)"</code></pre>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
     <section class="section">
       <div class="wrap">
-        <h2 class="section-title">What’s included</h2>
+        <h2 class="section-title">Features</h2>
+        <p class="section-desc">Plugins and aliases for setup, Git, Docker, cloud, and local workflows. Run <code>cbash list-plugins</code> to see everything available.</p>
         <div class="features">
           <div class="feature-card">
             <div class="name">Setup</div>
-            <p class="desc">Check dev environment, install tools via Homebrew, create workspace structure.</p>
+            <p class="desc">Check your dev environment, install tools via Homebrew (dev, cloud, IDE, apps), and scaffold a standard workspace layout.</p>
           </div>
           <div class="feature-card">
             <div class="name">Git</div>
-            <p class="desc">Branches, squash, pull-all repos, backup, open in browser, aliases.</p>
+            <p class="desc">Manage branches, squash commits, pull across multiple repos, quick backup and push, open repo in browser. Includes short aliases (g, gst, gco, commit, etc.).</p>
           </div>
           <div class="feature-card">
             <div class="name">Dev & Docker</div>
-            <p class="desc">Start/stop services, logs, exec, stats. Aliases: dps, drm, prune, kill-all.</p>
+            <p class="desc">Start, stop, and inspect Docker-based dev services. Follow logs, exec into containers, view stats. Shortcuts for common tasks (dps, drm, prune, kill-all).</p>
           </div>
           <div class="feature-card">
             <div class="name">AWS</div>
-            <p class="desc">SSH via SSM, SQS (localstack), SSM parameters.</p>
+            <p class="desc">SSH into instances via SSM Session Manager, work with SQS (including LocalStack), and read SSM parameters from the CLI.</p>
           </div>
           <div class="feature-card">
             <div class="name">Kubernetes</div>
-            <p class="desc">Pods, logs, exec, rollout restart, kubectl cheat sheet.</p>
+            <p class="desc">List pods, follow logs, exec into pods, rollout restart deployments. Includes a quick kubectl cheat sheet for common commands.</p>
           </div>
           <div class="feature-card">
             <div class="name">Generators</div>
-            <p class="desc">Troubleshooting/feature dirs, workspace, project, doc templates.</p>
+            <p class="desc">Scaffold directories for troubleshooting or features, workspace layout, project structure, and doc templates from the CLI.</p>
           </div>
           <div class="feature-card">
-            <div class="name">Docs & Cheat</div>
-            <p class="desc">View and edit docs and cheatsheets from the terminal.</p>
+            <div class="name">Docs & Cheatsheets</div>
+            <p class="desc">View and edit project docs and cheatsheets from the terminal. Optional community cheatsheets via <code>cheat setup</code>.</p>
           </div>
           <div class="feature-card">
             <div class="name">AI (Ollama)</div>
-            <p class="desc">Chat, list and pull models from the CLI.</p>
+            <p class="desc">Chat with local models via Ollama, list and pull models from the CLI. Handy for quick prompts without leaving the terminal.</p>
           </div>
           <div class="feature-card">
             <div class="name">macOS & Proxy</div>
-            <p class="desc">Lock, speedtest, ports, IPs, passgen, tree. Enable/disable proxy.</p>
+            <p class="desc">Lock screen, run speedtest, list listening ports and IPs, generate passwords, directory tree. Toggle proxy for env, npm, and git.</p>
           </div>
         </div>
       </div>
@@ -280,11 +400,179 @@ brew install cbash-cli</code></pre>
 
     <section class="section">
       <div class="wrap">
-        <h2 class="section-title">Quick start</h2>
-        <div class="quick-start">
-          <pre><code>cbash                  <span style="color: var(--text-muted)"># Show help</span>
-cbash &lt;plugin&gt;         <span style="color: var(--text-muted)"># Run plugin (git, dev, aws, …)</span>
-cbash list-plugins      <span style="color: var(--text-muted)"># List available plugins</span></code></pre>
+        <h2 class="section-title">Usage</h2>
+        <p class="section-desc">Commands are plugin-based. Run <code>cbash</code> or <code>cbash help</code> for the full reference; <code>cbash &lt;plugin&gt; help</code> for plugin-specific help.</p>
+        <div class="code-block">
+          <pre><code><span class="cmd">cbash</span>                  <span class="comment"># Show main help</span>
+<span class="cmd">cbash &lt;plugin&gt;</span>         <span class="comment"># Run a plugin (e.g. git, dev, aws, k8s)</span>
+<span class="cmd">cbash list-plugins</span>     <span class="comment"># List all available plugins</span></code></pre>
+        </div>
+        <p class="terminal-intro">Running <code>cbash</code> or <code>cbash help</code> prints the full command reference below:</p>
+        <div class="terminal">
+          <div class="terminal-header">
+            <div class="terminal-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <span class="terminal-title">cbash help</span>
+          </div>
+          <div class="terminal-body">
+            <pre><code><span class="t-title">CBASH CLI (1.0) – macOS command line tools for developers</span>
+
+<span class="t-hdr">USAGE</span>
+  <span class="t-cmd">cbash [COMMAND] [SUBCOMMAND] [OPTIONS]</span>
+
+<span class="t-hdr">SETUP</span>
+  <span class="t-cmd">setup</span>                                 <span class="t-desc">Show help</span>
+  <span class="t-cmd">setup check</span>                           <span class="t-desc">Check dev environment</span> <span class="t-alias">→ scheck</span>
+  <span class="t-cmd">setup brew             [group]</span>        <span class="t-desc">Install tools (dev|cloud|ide|apps|all)</span> <span class="t-alias">→ sbrew</span>
+  <span class="t-cmd">setup workspace        [dir]</span>          <span class="t-desc">Create workspace structure</span> <span class="t-alias">→ sws</span>
+
+<span class="t-hdr">ALIASES</span>
+  <span class="t-cmd">aliases</span>                               <span class="t-desc">Show help</span>
+  <span class="t-cmd">aliases list</span>                          <span class="t-desc">List alias files</span>
+  <span class="t-cmd">aliases show           &lt;name&gt;</span>         <span class="t-desc">Show aliases in file</span>
+  <span class="t-cmd">aliases edit           &lt;name&gt;</span>         <span class="t-desc">Edit alias file</span>
+  <span class="t-cmd">aliases load</span>                          <span class="t-desc">Load all aliases</span>
+
+<span class="t-hdr">GIT</span>
+  <span class="t-cmd">git</span>                                   <span class="t-desc">Show help (aliases: g, gst, gco, commit, …)</span>
+  <span class="t-cmd">git config</span>                            <span class="t-desc">Show git config</span>
+  <span class="t-cmd">git log</span>                               <span class="t-desc">Recent commits</span>
+  <span class="t-cmd">git branches</span>                          <span class="t-desc">List branches with dates</span>
+  <span class="t-cmd">git branch             &lt;name&gt;</span>         <span class="t-desc">Create branch from master</span>
+  <span class="t-cmd">git rename             &lt;name&gt;</span>         <span class="t-desc">Rename current branch</span>
+  <span class="t-cmd">git undo</span>                              <span class="t-desc">Undo last commit (soft)</span>
+  <span class="t-cmd">git backup</span>                            <span class="t-desc">Quick commit and push</span>
+  <span class="t-cmd">git auto-commit</span>                       <span class="t-desc">Auto commit and push</span>
+  <span class="t-cmd">git squash</span>                            <span class="t-desc">Squash commits interactively</span>
+  <span class="t-cmd">git auto-squash</span>                       <span class="t-desc">Squash feature branch</span>
+  <span class="t-cmd">git pull-all           [dir]</span>          <span class="t-desc">Pull all repos in directory</span>
+  <span class="t-cmd">git for                "&lt;cmd&gt;" [dir]</span>  <span class="t-desc">Run command in every repo (e.g. "git pull")</span>
+  <span class="t-cmd">git clean</span>                             <span class="t-desc">Clean and optimize repo</span>
+  <span class="t-cmd">git size</span>                              <span class="t-desc">Show repo size</span>
+  <span class="t-cmd">git sync</span>                              <span class="t-desc">Fetch and pull</span>
+  <span class="t-cmd">git open</span>                              <span class="t-desc">Open repo in browser</span>
+  <span class="t-cmd">clone                  &lt;url&gt;</span>          <span class="t-desc">Git clone (cbash clone)</span>
+  <span class="t-cmd">pull</span>                                  <span class="t-desc">Git pull (cbash pull)</span>
+
+<span class="t-hdr">DEVELOPMENT</span>
+  <span class="t-cmd">dev</span>                                   <span class="t-desc">Show help</span>
+  <span class="t-cmd">dev start              [svc]</span>          <span class="t-desc">Start Docker services</span> <span class="t-alias">→ start</span>
+  <span class="t-cmd">dev stop               [svc]</span>          <span class="t-desc">Stop services</span> <span class="t-alias">→ stop</span>
+  <span class="t-cmd">dev restart            [svc]</span>          <span class="t-desc">Restart services</span> <span class="t-alias">→ restart</span>
+  <span class="t-cmd">dev reload             [svc]</span>          <span class="t-desc">Recreate and start</span> <span class="t-alias">→ devreload</span>
+  <span class="t-cmd">dev status</span>                            <span class="t-desc">Service status</span> <span class="t-alias">→ devstatus</span>
+  <span class="t-cmd">dev list</span>                              <span class="t-desc">List services</span> <span class="t-alias">→ devlist</span>
+  <span class="t-cmd">dev logs               [svc]</span>          <span class="t-desc">Follow logs</span> <span class="t-alias">→ devlogs</span>
+  <span class="t-cmd">dev exec               &lt;svc&gt;</span>          <span class="t-desc">Shell into service</span> <span class="t-alias">→ devexec</span>
+  <span class="t-cmd">dev stats</span>                             <span class="t-desc">Container stats</span> <span class="t-alias">→ devstats</span>
+  <span class="t-cmd">dev ip</span>                                <span class="t-desc">Container IPs</span> <span class="t-alias">→ devip</span>
+  <span class="t-cmd">dev kill-all</span>                          <span class="t-desc">Stop and remove all</span> <span class="t-alias">→ devkill</span>
+
+<span class="t-hdr">DOCKER</span>
+  <span class="t-cmd">docker</span>                                <span class="t-desc">Show help (aliases: d, dps, dr, drm, dlo, …)</span>
+  <span class="t-cmd">docker list</span>                           <span class="t-desc">List Docker aliases</span>
+  <span class="t-cmd">docker running</span>                        <span class="t-desc">List running containers</span>
+  <span class="t-cmd">docker stop-all</span>                       <span class="t-desc">Stop all containers</span>
+  <span class="t-cmd">docker remove-stopped</span>                 <span class="t-desc">Remove stopped containers</span>
+  <span class="t-cmd">docker prune-images</span>                   <span class="t-desc">Remove unused images</span>
+  <span class="t-cmd">docker kill-all</span>                       <span class="t-desc">Stop, remove all and volumes</span>
+
+<span class="t-hdr">MAVEN</span>
+  <span class="t-cmd">mvn</span>                                   <span class="t-desc">Maven wrapper + aliases (mci, build, run, …)</span>
+  <span class="t-cmd">mvn list</span>                              <span class="t-desc">List Maven aliases</span>
+
+<span class="t-hdr">NPM</span>
+  <span class="t-cmd">npm</span>                                   <span class="t-desc">npm/npx aliases (ni, nr, nx, nls, nt, …)</span>
+  <span class="t-cmd">npm list</span>                              <span class="t-desc">List npm/npx aliases</span>
+
+<span class="t-hdr">AWS</span>
+  <span class="t-cmd">aws</span>                                   <span class="t-desc">Show help</span>
+  <span class="t-cmd">aws ssh                &lt;profile&gt; &lt;env&gt;</span> <span class="t-desc">Connect to SSH gateway (SSM)</span> <span class="t-alias">→ awsssh</span>
+  <span class="t-cmd">aws sqs-create</span>                        <span class="t-desc">Create SQS queue (localstack)</span> <span class="t-alias">→ awssqscreate</span>
+  <span class="t-cmd">aws sqs-test</span>                          <span class="t-desc">Test SQS (localstack)</span> <span class="t-alias">→ awssqstest</span>
+  <span class="t-cmd">aws ssm-get</span>                           <span class="t-desc">Get SSM parameter</span> <span class="t-alias">→ awsssmget</span>
+
+<span class="t-hdr">KUBERNETES (K8S)</span>
+  <span class="t-cmd">k8s</span>                                   <span class="t-desc">Show help</span>
+  <span class="t-cmd">k8s pods               [opts]</span>         <span class="t-desc">List pods</span> <span class="t-alias">→ k8pods</span>
+  <span class="t-cmd">k8s logs               &lt;pod&gt;</span>          <span class="t-desc">Follow pod logs</span> <span class="t-alias">→ k8logs</span>
+  <span class="t-cmd">k8s desc               &lt;pod&gt;</span>          <span class="t-desc">Describe pod</span> <span class="t-alias">→ k8desc</span>
+  <span class="t-cmd">k8s exec               &lt;pod&gt;</span>          <span class="t-desc">Shell into pod</span> <span class="t-alias">→ k8exec</span>
+  <span class="t-cmd">k8s restart            &lt;deploy&gt;</span>       <span class="t-desc">Rollout restart deployment</span> <span class="t-alias">→ k8restart</span>
+  <span class="t-cmd">k8s cheat              [pod]</span>          <span class="t-desc">Show kubectl commands</span> <span class="t-alias">→ k8cheat</span>
+
+<span class="t-hdr">GENERATORS (GEN)</span>
+  <span class="t-cmd">gen</span>                                   <span class="t-desc">Show help</span>
+  <span class="t-cmd">gen trouble            [name]</span>         <span class="t-desc">Create troubleshooting dir</span> <span class="t-alias">→ gtrouble</span>
+  <span class="t-cmd">gen feat               [name]</span>         <span class="t-desc">Create feature dir</span> <span class="t-alias">→ gfeat</span>
+  <span class="t-cmd">gen workspace          [name]</span>         <span class="t-desc">Create workspace structure</span> <span class="t-alias">→ gws</span>
+  <span class="t-cmd">gen project            [name]</span>         <span class="t-desc">Create project structure</span> <span class="t-alias">→ gproject</span>
+  <span class="t-cmd">gen doc                [type] [name]</span>  <span class="t-desc">Generate doc from template</span> <span class="t-alias">→ gdoc</span>
+
+<span class="t-hdr">DOCS</span>
+  <span class="t-cmd">doc                    &lt;name&gt;</span>         <span class="t-desc">View doc (cbash doc|docs &lt;name&gt;)</span>
+  <span class="t-cmd">docs</span>                                  <span class="t-desc">Show help</span>
+  <span class="t-cmd">docs list</span>                             <span class="t-desc">List documents</span>
+  <span class="t-cmd">docs edit              &lt;name&gt;</span>         <span class="t-desc">Edit document</span>
+  <span class="t-cmd">docs conf</span>                             <span class="t-desc">Show docs config</span>
+
+<span class="t-hdr">CHEAT</span>
+  <span class="t-cmd">cheat                  &lt;name&gt;</span>         <span class="t-desc">View cheatsheet</span> <span class="t-alias">→ ch</span>
+  <span class="t-cmd">cheat list</span>                            <span class="t-desc">List cheatsheets</span> <span class="t-alias">→ chlist</span>
+  <span class="t-cmd">cheat setup</span>                           <span class="t-desc">Download community cheatsheets</span> <span class="t-alias">→ chsetup</span>
+  <span class="t-cmd">cheat edit             &lt;name&gt;</span>         <span class="t-desc">Edit personal cheatsheet</span> <span class="t-alias">→ chedit</span>
+  <span class="t-cmd">cheat conf</span>                            <span class="t-desc">Show cheat config</span> <span class="t-alias">→ chconf</span>
+
+<span class="t-hdr">AI</span>
+  <span class="t-cmd">ai</span>                                    <span class="t-desc">Show help</span>
+  <span class="t-cmd">ai chat                [model]</span>        <span class="t-desc">Chat with AI (Ollama)</span> <span class="t-alias">→ chat, aichat</span>
+  <span class="t-cmd">ai list</span>                               <span class="t-desc">List Ollama models</span> <span class="t-alias">→ ailist</span>
+  <span class="t-cmd">ai pull                &lt;model&gt;</span>        <span class="t-desc">Pull model</span> <span class="t-alias">→ aipull</span>
+
+<span class="t-hdr">MACOS / MISC</span>
+  <span class="t-cmd">macos</span>                                 <span class="t-desc">Show help</span>
+  <span class="t-cmd">misc</span>                                  <span class="t-desc">Same as macos</span>
+  <span class="t-cmd">macos info</span>                            <span class="t-desc">macOS version</span> <span class="t-alias">→ minfo</span>
+  <span class="t-cmd">macos lock</span>                            <span class="t-desc">Lock screen</span> <span class="t-alias">→ mlock</span>
+  <span class="t-cmd">macos speedtest</span>                       <span class="t-desc">Internet speed</span> <span class="t-alias">→ mspeedtest</span>
+  <span class="t-cmd">macos memory</span>                          <span class="t-desc">Processes by memory</span> <span class="t-alias">→ mmemory</span>
+  <span class="t-cmd">macos ports</span>                           <span class="t-desc">List listening ports</span> <span class="t-alias">→ mports</span>
+  <span class="t-cmd">macos ip-local</span>                        <span class="t-desc">Local IP</span> <span class="t-alias">→ mip</span>
+  <span class="t-cmd">macos ip-public</span>                       <span class="t-desc">Public IP</span> <span class="t-alias">→ mipublic</span>
+  <span class="t-cmd">macos update</span>                           <span class="t-desc">Update Homebrew, npm, pip</span> <span class="t-alias">→ mupdate</span>
+  <span class="t-cmd">macos ips</span>                             <span class="t-desc">All local IPs</span>
+  <span class="t-cmd">macos myip</span>                            <span class="t-desc">Public IP (fallbacks)</span>
+  <span class="t-cmd">macos passgen          [n]</span>            <span class="t-desc">Random password (n words)</span>
+  <span class="t-cmd">macos list</span>                            <span class="t-desc">List macos aliases</span>
+  <span class="t-cmd">macos users</span>                           <span class="t-desc">Logged-in users</span> <span class="t-alias">→ musers</span>
+  <span class="t-cmd">macos size             [path]</span>         <span class="t-desc">Directory size</span> <span class="t-alias">→ msize</span>
+  <span class="t-cmd">macos tree             [path]</span>         <span class="t-desc">Tree view</span> <span class="t-alias">→ mtree</span>
+  <span class="t-cmd">macos clean-empty</span>                     <span class="t-desc">Remove empty dirs</span> <span class="t-alias">→ mcleanempty</span>
+  <span class="t-cmd">macos find             &lt;path&gt; &lt;name&gt;</span>  <span class="t-desc">Find files</span>
+  <span class="t-cmd">macos replace</span>                         <span class="t-desc">Find and replace in files</span>
+
+<span class="t-hdr">PROXY</span>
+  <span class="t-cmd">proxy</span>                                 <span class="t-desc">Show help</span>
+  <span class="t-cmd">proxy enable           [url]</span>          <span class="t-desc">Enable proxy (env, npm, git)</span> <span class="t-alias">→ proxon</span>
+  <span class="t-cmd">proxy disable</span>                         <span class="t-desc">Disable proxy</span> <span class="t-alias">→ proxoff</span>
+  <span class="t-cmd">proxy show</span>                            <span class="t-desc">Show proxy settings</span> <span class="t-alias">→ proxshow</span>
+
+<span class="t-hdr">QUICK REFERENCE (ALIAS → SECTION)</span>
+  <span class="t-cmd">scheck, sbrew, sws</span>           <span class="t-desc">Setup</span>
+  <span class="t-cmd">start, stop, devlogs, devkill</span> <span class="t-desc">Dev</span>
+  <span class="t-cmd">commit, auto_squash</span>          <span class="t-desc">Git</span>
+  <span class="t-cmd">d, dps, dr, drm, dlo</span>         <span class="t-desc">Docker</span>
+  <span class="t-cmd">gfeat, gtrouble, gws, gproject, gdoc</span> <span class="t-desc">Gen</span>
+  <span class="t-cmd">awsssh, awssqscreate, awsssmget</span> <span class="t-desc">AWS</span>
+  <span class="t-cmd">k8pods, k8logs, k8exec, k8cheat</span> <span class="t-desc">K8s</span>
+  <span class="t-cmd">ch, chlist, chsetup</span>          <span class="t-desc">Cheat</span>
+  <span class="t-cmd">chat, aichat, ailist</span>         <span class="t-desc">AI</span>
+  <span class="t-cmd">mlock, mip, mports, mupdate, minfo</span> <span class="t-desc">MacOS</span>
+  <span class="t-cmd">proxon, proxoff, proxshow</span>    <span class="t-desc">Proxy</span>
+
+<span class="t-desc">Run cbash &lt;plugin&gt; or cbash &lt;plugin&gt; help for detailed help.</span></code></pre>
+          </div>
         </div>
       </div>
     </section>
@@ -301,7 +589,7 @@ cbash list-plugins      <span style="color: var(--text-muted)"># List available 
 
   <footer class="site-footer">
     <div class="wrap">
-      MIT License · <a href="https://github.com/cminhho/cbash">cminhho/cbash</a>
+      Open source · MIT License · <a href="https://github.com/cminhho/cbash">cminhho/cbash</a>
     </div>
   </footer>
 </body>
