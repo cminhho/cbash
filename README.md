@@ -223,10 +223,6 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/cminhho/cbash/master/tools
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/cminhho/cbash/master/tools/uninstall.sh)"
 ```
 
-## GitHub Pages
-
-Intro site is on branch `gh-pages`. To enable: **Settings → Pages → Source**: Deploy from a branch → Branch: `gh-pages` → Save. Site will be at `https://<user>.github.io/cbash/`.
-
 ## License
 
 MIT — see [LICENSE](LICENSE).
