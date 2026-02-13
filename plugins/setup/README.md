@@ -12,7 +12,7 @@ Loaded at init when you source CBASH (aliases available in shell).
 | `cbash setup aliases` | List setup aliases |
 | `cbash setup check` | Check dev environment (Git, Node, Python, Docker, Java, git config) |
 | `cbash setup brew [group]` | Install tools. Groups: `dev`, `cloud`, `ide`, `apps`, `all` |
-| `cbash setup workspace [dir]` | Create workspace (default `~/workspace`) with projects, tools, docs, scripts, sandbox |
+| `cbash setup workspace [name]` | Create `~/<name>` via `cbash gen workspace` (default: workspace) |
 
 ## Aliases
 
@@ -20,7 +20,7 @@ Loaded at init when you source CBASH (aliases available in shell).
 |-------|--------|
 | `scheck` | setup check |
 | `sbrew` | setup brew (use: sbrew dev \| cloud \| ide \| apps \| all) |
-| `sws` | setup workspace (optional: sws /path/to/dir) |
+| `sws` | setup workspace (optional: sws &lt;name&gt; e.g. dev) |
 
 ## Brew groups
 
@@ -41,8 +41,8 @@ Loaded at init when you source CBASH (aliases available in shell).
 scheck              # check installed tools and git config
 sbrew dev           # install dev group
 sbrew all           # install all groups
-sws                 # create ~/workspace structure
-sws ~/myworkspace   # create workspace at custom path
+sws                 # create ~/workspace (full structure)
+sws dev             # create ~/dev
 cbash setup aliases
 ```
 

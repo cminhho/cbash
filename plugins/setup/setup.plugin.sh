@@ -33,50 +33,25 @@ setup_check() {
     echo "Email:   $(git config --global user.email 2>/dev/null || echo '<not set>')"
 }
 
+# Cask packages (GUI) — use "brew install --cask"; others use "brew install"
+readonly SETUP_BREW_CASKS="visual-studio-code intellij-idea-ce pycharm-ce postman mockoon dbeaver-community nosql-workbench google-chrome slack microsoft-teams zoom notion devtoys docker"
+
 setup_brew() {
     local group="${1:-dev}"
 
-    # Tool groups
-    local -a dev_tools=(
-        # Shell & Common
-        "zsh" "zsh-completions" "bash-completion" "openssl"
-        # General
-        "git" "tree" "wget" "curl" "jq"
-        # Node.js
-        "nvm" "pnpm"
-        # Python
-        "python" "pyenv" "pycharm-ce"
-        # Java
-        "maven" "intellij-idea-ce"
-        # Database
-        "dbeaver-community" "nosql-workbench"
-    )
-    local -a cloud_tools=(
-        # AWS & Cloud
-        "awscli" "terraform"
-        # Docker
-        "docker" "docker-completion" "docker-compose-completion"
-    )
-    local -a ide_tools=(
-        # IDEs
-        "visual-studio-code" "intellij-idea-ce" "pycharm-ce"
-        # Dev Apps
-        "postman" "mockoon"
-    )
-    local -a apps_tools=(
-        # Browser
-        "google-chrome"
-        # Communication
-        "slack" "microsoft-teams" "zoom" "notion"
-        # Productivity
-        "devtoys" "mas"
-    )
-
-    # Check/install Homebrew
+    # Ensure brew in PATH (e.g. after first install)
     if ! command -v brew &>/dev/null; then
         echo "Installing Homebrew..."
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        [[ -x /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
+        [[ -x /usr/local/bin/brew ]] && eval "$(/usr/local/bin/brew shellenv)"
     fi
+    command -v brew &>/dev/null || { echo "Homebrew not found. See https://brew.sh" >&2; return 1; }
+
+    local -a dev_tools=(zsh zsh-completions bash-completion openssl git tree wget curl jq nvm pnpm python pyenv pycharm-ce maven intellij-idea-ce dbeaver-community nosql-workbench)
+    local -a cloud_tools=(awscli terraform docker docker-completion docker-compose-completion)
+    local -a ide_tools=(visual-studio-code intellij-idea-ce pycharm-ce postman mockoon)
+    local -a apps_tools=(google-chrome slack microsoft-teams zoom notion devtoys mas)
 
     local -a tools
     case "$group" in
@@ -90,16 +65,14 @@ setup_brew() {
 
     echo "Installing $group tools..."
     for tool in "${tools[@]}"; do
-        if brew list "$tool" &>/dev/null; then
-            echo "  $tool: installed"
+        if brew list "$tool" &>/dev/null || brew list --cask "$tool" &>/dev/null; then
+            echo "  $tool: ok"
         else
             echo "  Installing $tool..."
-            # Cask apps (GUI applications)
-            local cask_apps="visual-studio-code intellij-idea intellij-idea-ce pycharm-ce postman mockoon dbeaver-community nosql-workbench google-chrome slack microsoft-teams zoom notion devtoys docker"
-            if [[ " $cask_apps " == *" $tool "* ]]; then
-                brew install --cask "$tool" 2>/dev/null
+            if [[ " $SETUP_BREW_CASKS " == *" $tool "* ]]; then
+                brew install --cask "$tool"
             else
-                brew install "$tool" 2>/dev/null
+                brew install "$tool"
             fi
         fi
     done
@@ -107,15 +80,9 @@ setup_brew() {
 }
 
 setup_workspace() {
-    local base="${1:-$HOME/workspace}"
-    local dirs=("projects" "tools" "docs" "scripts" "sandbox")
-
-    echo "Creating workspace at $base..."
-    for dir in "${dirs[@]}"; do
-        mkdir -p "$base/$dir"
-        echo "  Created: $base/$dir"
-    done
-    success "Workspace ready"
+    local name="${1:-workspace}"
+    [[ -f "$CBASH_DIR/plugins/gen/gen.plugin.sh" ]] || { echo "Gen plugin not found"; return 1; }
+    "$CBASH_DIR/plugins/gen/gen.plugin.sh" workspace "$name"
 }
 
 # -----------------------------------------------------------------------------
@@ -126,7 +93,7 @@ setup_help() {
     _describe command 'setup' \
         'check           Check dev environment' \
         'brew [group]    Install tools (dev|cloud|ide|apps|all)' \
-        'workspace [dir] Create workspace structure' \
+        'workspace [name] Create ~/<name> via gen (default: workspace)' \
         'aliases         List setup aliases' \
         'New Mac Setup - development environment'
 }
@@ -135,7 +102,7 @@ setup_list_aliases() {
     echo "Setup aliases: scheck, sbrew, sws"
     echo "  scheck  = setup check"
     echo "  sbrew   = setup brew [group]"
-    echo "  sws     = setup workspace [dir]"
+    echo "  sws     = setup workspace [name]"
 }
 
 _main() {

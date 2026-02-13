@@ -32,7 +32,7 @@ title "Setup"
 cmd "setup"            ""              "Show help"
 cmd "setup check"      ""              "Check dev environment"                    "scheck"
 cmd "setup brew"       "[group]"       "Install tools (dev|cloud|ide|apps|all)"    "sbrew"
-cmd "setup workspace"  "[dir]"         "Create workspace (projects, tools, docs)" "sws"
+cmd "setup workspace"  "[name]"        "Create ~/<name> via gen workspace"          "sws"
 # -----------------------------------------------------------------------------
 # Aliases
 # -----------------------------------------------------------------------------

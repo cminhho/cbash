@@ -2,6 +2,8 @@
 
 Step-by-step setup for a new MacBook. Follow in order.
 
+**Prerequisite for Step 5:** Homebrew must be installed (see [Manual — Homebrew](#manual--homebrew) at the bottom).
+
 ---
 
 ## Step 1 — System preferences (optional)
@@ -27,27 +29,7 @@ Click **Install** in the dialog and wait.
 
 ---
 
-## Step 3 — Homebrew
-
-Open **Terminal**. Run:
-
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-
-On Apple Silicon, then run:
-
-```bash
-(echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> "$HOME/.zprofile"
-eval "$(/opt/homebrew/bin/brew shellenv)"
-brew tap homebrew/cask
-brew tap buo/cask-upgrade
-brew doctor
-```
-
----
-
-## Step 4 — CBASH CLI
+## Step 3 — CBASH CLI
 
 Open **Terminal**. Run:
 
@@ -60,7 +42,7 @@ Confirm: run `cbash` and you should see help.
 
 ---
 
-## Step 5 — Workspace
+## Step 4 — Workspace
 
 Open **Terminal**. Create workspace (e.g. `~/workspace` or `~/dev`):
 
@@ -84,9 +66,9 @@ Structure created:
 
 ---
 
-## Step 6 — Development tools
+## Step 5 — Development tools
 
-Open **Terminal**. Run:
+Open **Terminal**. Run (uses `cbash setup brew` — requires Homebrew, see Manual below):
 
 ```bash
 cbash setup brew all
@@ -96,7 +78,7 @@ If you use Node: `nvm install stable`
 
 ---
 
-## Step 7 — Git configuration
+## Step 6 — Git configuration
 
 Open **Terminal**.
 
@@ -120,7 +102,7 @@ Add key: **GitHub** → **Settings** → **SSH and GPG keys** → **New SSH key*
 
 ---
 
-## Step 8 — Verify
+## Step 7 — Verify
 
 Open **Terminal**. Run:
 
@@ -129,3 +111,25 @@ cbash setup check
 ```
 
 Confirm Git, Node/Python/Docker (if used), and Git name/email.
+
+---
+
+# Manual — Homebrew
+
+Do this after Step 2 (Xcode CLI). You need Homebrew before Step 5 (Development tools).
+
+Open **Terminal**. Run:
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+On Apple Silicon, then run:
+
+```bash
+(echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> "$HOME/.zprofile"
+eval "$(/opt/homebrew/bin/brew shellenv)"
+brew tap homebrew/cask
+brew tap buo/cask-upgrade
+brew doctor
+```
