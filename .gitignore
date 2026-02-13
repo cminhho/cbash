@@ -1,0 +1,25 @@
+# CBASH CLI .gitignore
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Logs & temp
+*.log
+/tmp/
+
+# Sensitive / local
+*.local
+.env
+.env.*
+**/secrets/
+**/cred-*.md
+**/*credentials*
+**/*password*

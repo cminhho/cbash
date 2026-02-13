@@ -1,0 +1,54 @@
+[alias]
+	## show me my diff while writing the commit message
+	ct = commit --verbose
+	## "commit add" add all files then commit
+	cta = commit -a --verbose
+	## amend is slightly long but it felt natural this way
+	amend = commit --verbose --amend
+	## you can combine actions like this:
+	## "add amend" - first add, then amend
+	aamend = !git add -A && git commit --amend
+	## "add untracked amend" - add files except for untracked, then amend
+	aumned = !git add -u && git commit --amend
+
+	# diffs
+	## plain old diff
+	df = diff
+	## "diff working with stage" - diff with the staging area
+	dfws = diff --staged
+	## "diff stage with last commit"
+	dfsc = diff --staged HEAD
+	## "diff current with last commit"
+	dflc = diff HEAD^ HEAD
+	## "diff names" - show diff only with file names
+	dfnames = diff --name-only
+
+	# logs
+	## "log pretty" - dont worry too much about the formatting
+	lgp = log --oneline --graph --decorate --pretty=format:\"%C(auto)%d%C(reset) %s %C(magenta)(%ar)%C(reset) %C(cyan)%h%C(reset) %C(red)[%cn]%C(reset)\"
+
+[core]
+	excludesfile = ~/.gitignore_global
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path =
+[push]
+	default = current
+[user]
+	name = YOUR_NAME
+	email = YOUR_EMAIL@example.com 
+[pull]
+	rebase = true
+[fetch]
+	prune = true
+[diff]
+	colorMoved = zebra
+[credential]
+	helper = osxkeychain
+[color]
+  diff = auto
+  status = auto
+  branch = auto
+  interactive = auto
+  ui = true
+  pager = true
