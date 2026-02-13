@@ -17,6 +17,19 @@ _init() {
     for f in "$CBASH_DIR/plugins/aliases"/*.sh; do
         [[ -f "$f" && "${f##*/}" != "aliases.plugin.sh" ]] && source "$f"
     done
+    [[ -f "$CBASH_DIR/plugins/mvn/mvn.plugin.sh" ]] && source "$CBASH_DIR/plugins/mvn/mvn.plugin.sh"
+    [[ -f "$CBASH_DIR/plugins/npm/npm.plugin.sh" ]] && source "$CBASH_DIR/plugins/npm/npm.plugin.sh"
+    [[ -f "$CBASH_DIR/plugins/docker/docker.plugin.sh" ]] && source "$CBASH_DIR/plugins/docker/docker.plugin.sh"
+    [[ -f "$CBASH_DIR/plugins/git/git.plugin.sh" ]] && source "$CBASH_DIR/plugins/git/git.plugin.sh"
+    [[ -f "$CBASH_DIR/plugins/macos/macos.plugin.sh" ]] && source "$CBASH_DIR/plugins/macos/macos.plugin.sh"
+    [[ -f "$CBASH_DIR/plugins/dev/dev.plugin.sh" ]] && source "$CBASH_DIR/plugins/dev/dev.plugin.sh"
+    [[ -f "$CBASH_DIR/plugins/setup/setup.plugin.sh" ]] && source "$CBASH_DIR/plugins/setup/setup.plugin.sh"
+    [[ -f "$CBASH_DIR/plugins/gen/gen.plugin.sh" ]] && source "$CBASH_DIR/plugins/gen/gen.plugin.sh"
+    [[ -f "$CBASH_DIR/plugins/cheat/cheat.plugin.sh" ]] && source "$CBASH_DIR/plugins/cheat/cheat.plugin.sh"
+    [[ -f "$CBASH_DIR/plugins/aws/aws.plugin.sh" ]] && source "$CBASH_DIR/plugins/aws/aws.plugin.sh"
+    [[ -f "$CBASH_DIR/plugins/k8s/k8s.plugin.sh" ]] && source "$CBASH_DIR/plugins/k8s/k8s.plugin.sh"
+    [[ -f "$CBASH_DIR/plugins/proxy/proxy.plugin.sh" ]] && source "$CBASH_DIR/plugins/proxy/proxy.plugin.sh"
+    [[ -f "$CBASH_DIR/plugins/ai/ai.plugin.sh" ]] && source "$CBASH_DIR/plugins/ai/ai.plugin.sh"
 }
 
 # -----------------------------------------------------------------------------
@@ -54,7 +67,7 @@ _run() {
             
             # Aliases
             case "$cmd" in
-                misc)                       "$CBASH_DIR/plugins/base/base.plugin.sh" "$@" ;;
+                mac|misc)                   "$CBASH_DIR/plugins/macos/macos.plugin.sh" "$@" ;;
                 doc|docs)                   "$CBASH_DIR/plugins/docs/docs.plugin.sh" "$@" ;;
                 alias|aliases)              "$CBASH_DIR/plugins/aliases/aliases.plugin.sh" "$@" ;;
                 clone|pull|open)            "$CBASH_DIR/plugins/git/git.plugin.sh" "$cmd" "$@" ;;

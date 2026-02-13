@@ -2,10 +2,26 @@
 # Dev plugin for CBASH
 # Docker Compose development environment management
 
-source "$CBASH_DIR/lib/common.sh"
+[[ -n "$CBASH_DIR" ]] && source "$CBASH_DIR/lib/common.sh"
 
 # Configuration
 readonly COMPOSE_FILE="$CBASH_DIR/plugins/dev/development.yml"
+
+# -----------------------------------------------------------------------------
+# Aliases
+# -----------------------------------------------------------------------------
+
+alias start='dev_start'
+alias stop='dev_stop'
+alias restart='dev_restart'
+alias devreload='dev_reload'
+alias devstatus='dev_status'
+alias devlist='dev_list'
+alias devlogs='dev_logs'
+alias devexec='dev_exec'
+alias devstats='dev_stats'
+alias devip='dev_ip'
+alias devkill='dev_kill_all'
 
 # -----------------------------------------------------------------------------
 # Helper Functions
@@ -105,40 +121,51 @@ dev_kill_all() {
 # Main Router
 # -----------------------------------------------------------------------------
 
+dev_help() {
+    _describe command 'dev' \
+        'start [svc]     Start services' \
+        'stop [svc]      Stop services' \
+        'restart [svc]   Restart services' \
+        'reload [svc]    Recreate services' \
+        'status          Show service status' \
+        'list            List services' \
+        'aliases         List dev aliases' \
+        'logs [svc]      Follow logs' \
+        'exec <svc>      Shell into service' \
+        'stats           Container stats' \
+        'ip              Show container IPs' \
+        'kill-all        Remove all containers' \
+        'Docker Compose dev environment'
+}
+
+dev_list_aliases() {
+    echo "Dev aliases: start, stop, restart, devreload, devstatus, devlist, devlogs, devexec, devstats, devip, devkill"
+}
+
 _main() {
     local cmd="$1"
 
     if [[ -z "$cmd" ]]; then
-        _describe command 'dev' \
-            'start [svc]     Start services' \
-            'stop [svc]      Stop services' \
-            'restart [svc]   Restart services' \
-            'reload [svc]    Recreate services' \
-            'status          Show service status' \
-            'list            List services' \
-            'logs [svc]      Follow logs' \
-            'exec <svc>      Shell into service' \
-            'stats           Container stats' \
-            'ip              Show container IPs' \
-            'kill-all        Remove all containers' \
-            'Docker Compose dev environment'
+        dev_help
         return 0
     fi
 
     case "$cmd" in
-        start)    shift; dev_start "$@" ;;
-        stop)     shift; dev_stop "$@" ;;
-        restart)  shift; dev_restart "$@" ;;
-        reload)   shift; dev_reload "$@" ;;
-        status)   dev_status ;;
-        list)     dev_list ;;
-        logs)     shift; dev_logs "$@" ;;
-        exec)     shift; dev_exec "$@" ;;
-        stats)    dev_stats ;;
-        ip)       dev_ip ;;
-        kill-all) dev_kill_all ;;
-        *)        echo "Unknown command: $cmd"; return 1 ;;
+        help|--help|-h) dev_help ;;
+        list)           dev_list ;;
+        aliases)        dev_list_aliases ;;
+        start)          shift; dev_start "$@" ;;
+        stop)           shift; dev_stop "$@" ;;
+        restart)        shift; dev_restart "$@" ;;
+        reload)         shift; dev_reload "$@" ;;
+        status)         dev_status ;;
+        logs)           shift; dev_logs "$@" ;;
+        exec)           shift; dev_exec "$@" ;;
+        stats)          dev_stats ;;
+        ip)             dev_ip ;;
+        kill-all)       dev_kill_all ;;
+        *)              echo "Unknown command: $cmd"; return 1 ;;
     esac
 }
 
-_main "$@"
+[[ "${BASH_SOURCE[0]}" == "${0}" ]] && _main "$@"

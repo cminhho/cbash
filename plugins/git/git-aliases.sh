@@ -1,3 +1,14 @@
+# Git aliases for CBASH (sourced by git plugin)
+# Keep in sync with plugin: get_default_branch used by aliases
+
+get_default_branch() {
+    if git branch 2>/dev/null | grep -q '^. main\s*$'; then
+        echo main
+    else
+        echo master
+    fi
+}
+
 alias g='git'
 alias get='git'
 
@@ -16,15 +27,14 @@ alias gbt='git branch --track'
 alias gdel='git branch -D'
 
 # for-each-ref
-alias gbc='git for-each-ref --format="%(authorname) %09 %(if)%(HEAD)%(then)*%(else)%(refname:short)%(end) %09 %(creatordate)" refs/remotes/ --sort=authorname DESC' # FROM https://stackoverflow.com/a/58623139/10362396
+alias gbc='git for-each-ref --format="%(authorname) %09 %(if)%(HEAD)%(then)*%(else)%(refname:short)%(end) %09 %(creatordate)" refs/remotes/ --sort=authorname DESC'
 
 # commit
 alias gc='git commit -v'
 alias gca='git commit -v -a'
-alias gcaa='git commit -a --amend -C HEAD' # Add uncommitted and unstaged changes to the last commit
+alias gcaa='git commit -a --amend -C HEAD'
 alias gcam='git commit -v -am'
 alias gcamd='git commit --amend'
-alias gcm='git commit -v -m'
 alias gci='git commit --interactive'
 alias gcsam='git commit -S -am'
 
@@ -68,25 +78,21 @@ alias gup='git fetch && git rebase'
 alias gg='git log --graph --pretty=format:'\''%C(bold)%h%Creset%C(magenta)%d%Creset %s %C(yellow)<%an> %C(cyan)(%cr)%Creset'\'' --abbrev-commit --date=relative'
 alias ggf='git log --graph --date=short --pretty=format:'\''%C(auto)%h %Cgreen%an%Creset %Cblue%cd%Creset %C(auto)%d %s'\'''
 alias ggs='gg --stat'
-alias ggup='git log --branches --not --remotes --no-walk --decorate --oneline' # FROM https://stackoverflow.com/questions/39220870/in-git-list-names-of-branches-with-unpushed-commits
+alias ggup='git log --branches --not --remotes --no-walk --decorate --oneline'
 alias gll='git log --graph --pretty=oneline --abbrev-commit'
-alias gnew='git log HEAD@{1}..HEAD@{0}' # Show commits since last pull, see http://blogs.atlassian.com/2014/10/advanced-git-aliases/
+alias gnew='git log HEAD@{1}..HEAD@{0}'
 alias gwc='git whatchanged'
 
 # ls-files
-alias gu='git ls-files . --exclude-standard --others' # Show untracked files
+alias gu='git ls-files . --exclude-standard --others'
 alias glsut='gu'
-alias glsum='git diff --name-only --diff-filter=U' # Show unmerged (conflicted) files
+alias glsum='git diff --name-only --diff-filter=U'
 
 # gui
 alias ggui='git gui'
 
 # home
-alias ghm='cd "$(git rev-parse --show-toplevel)"' # Git home
-# appendage to ghm
-# if ! _command_exists gh; then
-# 	alias gh='ghm'
-# fi
+alias ghm='cd "$(git rev-parse --show-toplevel)"'
 
 # merge
 alias gm='git merge'
@@ -126,10 +132,9 @@ alias grm='git rm'
 # rebase
 alias grb='git rebase'
 alias grbc='git rebase --continue'
-alias grm='git rebase $(get_default_branch)'
 alias grmi='git rebase $(get_default_branch) -i'
-alias grma='GIT_SEQUENCE_EDITOR=: git rebase  $(get_default_branch) -i --autosquash'
-alias gprom='git fetch origin $(get_default_branch) && git rebase origin/$(get_default_branch) && git update-ref refs/heads/$(get_default_branch) origin/$(get_default_branch)' # Rebase with latest remote
+alias grma='GIT_SEQUENCE_EDITOR=: git rebase $(get_default_branch) -i --autosquash'
+alias gprom='git fetch origin $(get_default_branch) && git rebase origin/$(get_default_branch) && git update-ref refs/heads/$(get_default_branch) origin/$(get_default_branch)'
 
 # reset
 alias gus='git reset HEAD'
@@ -148,29 +153,24 @@ alias gsh='git show'
 
 # svn
 alias gsd='git svn dcommit'
-alias gsr='git svn rebase' # Git SVN
+alias gsr='git svn rebase'
 
 # stash
 alias gst='git stash'
 alias gstb='git stash branch'
 alias gstd='git stash drop'
 alias gstl='git stash list'
-alias gstp='git stash pop'  # kept due to long-standing usage
-alias gstpo='git stash pop' # recommended for it's symmetry with gstpu (push)
-
-## 'stash push' introduced in git v2.13.2
+alias gstp='git stash pop'
+alias gstpo='git stash pop'
 alias gstpu='git stash push'
 alias gstpum='git stash push -m'
-
-## 'stash save' deprecated since git v2.16.0, alias is now push
 alias gsts='git stash push'
 alias gstsm='git stash push -m'
 
 # submodules
 alias gsu='git submodule update --init --recursive'
 
-# switch
-# these aliases requires git v2.23+
+# switch (git 2.23+)
 alias gsw='git switch'
 alias gswc='git switch --create'
 alias gswm='git switch $(get_default_branch)'
@@ -182,31 +182,25 @@ alias gta='git tag -a'
 alias gtd='git tag -d'
 alias gtl='git tag -l'
 
-case $OSTYPE in
-	darwin*)
-		alias gtls="git tag -l | gsort -V"
-		;;
-	*)
-		alias gtls='git tag -l | sort -V'
-		;;
+case "$OSTYPE" in
+    darwin*)
+        alias gtls="git tag -l | gsort -V"
+        ;;
+    *)
+        alias gtls='git tag -l | sort -V'
+        ;;
 esac
 
-# functions
-function gdv() {
-	git diff --ignore-all-space "$@" | vim -R -
+# helper
+gdv() {
+    git diff --ignore-all-space "$@" | vim -R -
 }
 
-function get_default_branch() {
-	if git branch | grep -q '^. main\s*$'; then
-		echo main
-	else
-		echo master
-	fi
+# CBASH shortcuts (call git plugin)
+[[ -n "$CBASH_DIR" ]] && [[ -f "$CBASH_DIR/plugins/git/git.plugin.sh" ]] && {
+    alias auto_squash="$CBASH_DIR/plugins/git/git.plugin.sh auto-squash"
+    alias auto_commit="$CBASH_DIR/plugins/git/git.plugin.sh auto-commit"
+    alias commit="$CBASH_DIR/plugins/git/git.plugin.sh auto-commit"
+    alias for_git_pull="$CBASH_DIR/plugins/git/git.plugin.sh pull-all"
+    alias repos_pull="$CBASH_DIR/plugins/git/git.plugin.sh pull-all \$WORKSPACE_ROOT"
 }
-
-# CBASH shortcuts
-alias auto_squash='$CBASH_DIR/plugins/git/git.plugin.sh auto-squash'
-alias auto_commit='$CBASH_DIR/plugins/git/git.plugin.sh auto-commit'
-alias commit='$CBASH_DIR/plugins/git/git.plugin.sh auto-commit'
-alias for_git_pull='$CBASH_DIR/plugins/git/git.plugin.sh pull-all'
-alias repos_pull='$CBASH_DIR/plugins/git/git.plugin.sh pull-all $WORKSPACE_ROOT'

@@ -51,59 +51,59 @@ USAGE
 
 DEVELOPMENT
   dev start                     Start Docker services
-  dev stop                      Stop Docker services
-  dev restart                   Restart services
+  dev stop / restart            Stop or restart services
   dev logs           [service]  View container logs
   dev exec           <service>  Execute command in container
-  dev status                    Show service status
-  dev stats                     Show container resource usage
+  dev status / stats            Service status, container stats
+  Aliases: start, stop, restart, devlogs, devstatus, devkill
 
-SETUP
+SETUP (Mac Setup Guide)
   setup check                   Check dev environment
-  setup brew         [group]    Install tools (dev|cloud|ide|all)
+  setup brew         [group]    Install tools (dev|cloud|ide|apps|all)
   setup workspace    [dir]      Create workspace structure
   setup dotfiles                Import dotfiles
+  Aliases: scheck, sbrew, sws, sdot
 
 GIT
-  git squash                    Squash commits interactively
-  git auto:commit               Auto commit and push changes
-  git open                      Open repo in browser
-  git sync                      Pull latest changes
-  git prune                     Delete merged branches
-  git branches                  List branches with dates
+  git                            Git plugin (aliases: g, gst, gco, commit, auto_squash, ...)
+  git squash / auto-commit       Squash commits, auto commit and push
+  git open / sync                Open repo in browser, pull latest
+  git branches                   List branches with dates
 
 AWS
-  aws login                     Login with Azure AD SSO
-  aws keys                      Manage AWS credentials
+  aws login / aws keys           Login, manage credentials
   ssm                <env>      SSH to environment (sit|uat|prod)
 
-GENERATORS
+GENERATORS (gen — structure + doc)
   gen feat           [name]     Create feature directory
   gen trouble        [name]     Create troubleshooting directory
   gen workspace      [name]     Create workspace structure
-  boilr doc          <type>     Generate document (adr|meeting|design|cab)
+  gen project        [name]     Create project structure
+  gen doc            [type]     Generate doc from template (adr|meeting|design|cab|...)
+  Aliases: gtrouble, gfeat, gws, gproject, gdoc
 
 UTILITIES
-  mac update                    Update macOS, Homebrew, npm
-  mac ports                     List used ports
-  mac ip:local                  Get local IP
-  mac ip:public                 Get public IP
+  macos / misc                  MacOS plugin (ips, myip, passgen, lock, update, ...)
+  macos update / ports          Update Homebrew npm pip, list ports
+  macos ip-local / ip-public     Local and public IP
+  docker                        Docker helpers (dps, dr, drm, docker running, kill-all)
+  mvn / npm                     Maven (mvnw) and npm/npx aliases
+  doc / docs                    Docs plugin: list, edit, view
   k8s                <pod>      Kubernetes helper
   cheat              <name>     View cheatsheet
   ai chat                       Chat with AI
 
 ALIASES
-  aliases list                  List alias files
-  aliases show       <name>     Show aliases in file
-  proxy enable       [url]      Enable proxy
-  proxy disable                 Disable proxy
+  aliases list / show <name>    List or show alias files
+  proxy enable [url] / disable  Enable or disable proxy
 
 QUICK COMMANDS
-  start, stop, restart      Docker services
-  sit, uat, prod            SSH to AWS environment
-  chat                      Chat with AI
-  commit                    Auto commit and push
-  auto_squash               Squash feature branch
+  start, stop, restart, devlogs     Dev / Docker
+  scheck, sbrew, sws, sdot          Setup
+  gfeat, gtrouble, gws, gdoc        Gen
+  sit, uat, prod                    SSH to AWS
+  commit, auto_squash               Git
+  chat                              AI chat
 
 Run cbash <plugin> for detailed help on each plugin.
 ```

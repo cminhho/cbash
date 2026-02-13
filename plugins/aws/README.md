@@ -1,11 +1,28 @@
-# aws
+# AWS Plugin — AWS infrastructure utilities
 
-This plugin provides utilities for AWS infrastructure management including SSH gateway access,
-SQS queue operations, and SSM parameter retrieval.
+SSH gateway (SSM), SQS (localstack), and SSM Parameter Store. Source CBASH to get aliases.
 
-To use it, the plugin is automatically loaded by CBASH. No additional configuration required.
+## Commands
 
-## Plugin commands
+| Command | Description |
+|---------|-------------|
+| `cbash aws` / `help` | Show help |
+| `cbash aws aliases` | List aliases |
+| `cbash aws ssh <profile> <env>` | Connect to SSH gateway (SSM). Env: dev, test, staging, production |
+| `cbash aws sqs-create` | Create SQS queue (localstack, prompts for name) |
+| `cbash aws sqs-test` | Test SQS send/receive (localstack, requires jq) |
+| `cbash aws ssm-get` | Get SSM parameter (prompts for profile and param name) |
+
+## Aliases
+
+| Alias | Command |
+|-------|--------|
+| `awsssh <profile> <env>` | aws ssh |
+| `awssqscreate` | aws sqs-create |
+| `awssqstest` | aws sqs-test |
+| `awsssmget` | aws ssm-get |
+
+## Plugin commands (detail)
 
 * `cbash aws ssh <profile> <env>`: connects to EC2 instances via AWS Systems Manager Session Manager.
   The `<profile>` is your AWS profile name from `~/.aws/credentials`. The `<env>` must be one of:

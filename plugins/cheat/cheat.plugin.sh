@@ -2,12 +2,22 @@
 # Cheat plugin for CBASH
 # View and manage command-line cheatsheets
 
-source "$CBASH_DIR/lib/common.sh"
+[[ -n "$CBASH_DIR" ]] && source "$CBASH_DIR/lib/common.sh"
 
 # Configuration
 readonly CHEAT_COMMUNITY_DIR="${CHEAT_COMMUNITY_DIR:-$HOME/.config/cbash/cheatsheets/community}"
 readonly CHEAT_PERSONAL_DIR="${CHEAT_PERSONAL_DIR:-$HOME/.config/cbash/cheatsheets/personal}"
 readonly CHEAT_REPO="https://github.com/cheat/cheatsheets"
+
+# -----------------------------------------------------------------------------
+# Aliases
+# -----------------------------------------------------------------------------
+
+ch() { cheat_view "$@"; }
+alias chlist='cheat_list'
+alias chsetup='cheat_setup'
+alias chedit='cheat_edit'
+alias chconf='cheat_conf'
 
 # -----------------------------------------------------------------------------
 # Helper Functions
@@ -100,27 +110,43 @@ EOF
 # Main Router
 # -----------------------------------------------------------------------------
 
+cheat_help() {
+    _describe command 'cheat' \
+        '<name>          View cheatsheet' \
+        'list            List available cheatsheets' \
+        'edit <name>     Edit or create personal cheatsheet' \
+        'setup           Download community cheatsheets' \
+        'conf            Show configuration' \
+        'aliases         List cheat aliases' \
+        'Command-line cheatsheet viewer'
+}
+
+cheat_list_aliases() {
+    echo "Cheat aliases: ch, chlist, chsetup, chedit, chconf"
+    echo "  ch <name>     = view cheatsheet"
+    echo "  chlist       = list cheatsheets"
+    echo "  chsetup      = download/update community cheatsheets"
+    echo "  chedit <name>= edit personal cheatsheet"
+    echo "  chconf       = show config"
+}
+
 _main() {
     local cmd="$1"
 
     if [[ -z "$cmd" ]]; then
-        _describe command 'cheat' \
-            '<name>          View cheatsheet' \
-            'list            List available cheatsheets' \
-            'edit <name>     Edit or create personal cheatsheet' \
-            'setup           Download community cheatsheets' \
-            'conf            Show configuration' \
-            'Command-line cheatsheet viewer'
+        cheat_help
         return 0
     fi
 
     case "$cmd" in
-        list)   cheat_list ;;
-        setup)  cheat_setup ;;
-        edit)   shift; cheat_edit "$@" ;;
-        conf)   cheat_conf ;;
-        *)      cheat_view "$cmd" ;;
+        help|--help|-h) cheat_help ;;
+        aliases)        cheat_list_aliases ;;
+        list)           cheat_list ;;
+        setup)          cheat_setup ;;
+        edit)           shift; cheat_edit "$@" ;;
+        conf)           cheat_conf ;;
+        *)              cheat_view "$cmd" ;;
     esac
 }
 
-_main "$@"
+[[ "${BASH_SOURCE[0]}" == "${0}" ]] && _main "$@"

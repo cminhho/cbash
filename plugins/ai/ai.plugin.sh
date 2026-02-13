@@ -2,9 +2,18 @@
 # AI plugin for CBASH
 # Chat with AI models via Ollama
 
-source "$CBASH_DIR/lib/common.sh"
+[[ -n "$CBASH_DIR" ]] && source "$CBASH_DIR/lib/common.sh"
 
 readonly DEFAULT_MODEL="deepseek-r1:14b"
+
+# -----------------------------------------------------------------------------
+# Aliases
+# -----------------------------------------------------------------------------
+
+alias aichat='ai_chat'
+alias ailist='ai_list'
+alias aipull='ai_pull'
+alias chat='ai_chat'
 
 # -----------------------------------------------------------------------------
 # Commands
@@ -41,24 +50,39 @@ ai_pull() {
 # Main Router
 # -----------------------------------------------------------------------------
 
+ai_help() {
+    _describe command 'ai' \
+        'chat [model]    Chat with AI (default: deepseek-r1:14b)' \
+        'list            List available models' \
+        'pull <model>    Pull a model' \
+        'aliases         List AI aliases' \
+        'AI chat via Ollama'
+}
+
+ai_list_aliases() {
+    echo "AI aliases: aichat, ailist, aipull, chat"
+    echo "  aichat [model] = ai chat"
+    echo "  ailist        = ai list"
+    echo "  aipull <model>= ai pull"
+    echo "  chat [model]  = ai chat"
+}
+
 _main() {
     local cmd="$1"
 
     if [[ -z "$cmd" ]]; then
-        _describe command 'ai' \
-            'chat [model]    Chat with AI (default: deepseek-r1)' \
-            'list            List available models' \
-            'pull <model>    Pull a model' \
-            'AI chat via Ollama'
+        ai_help
         return 0
     fi
 
     case "$cmd" in
-        chat|deepseek) shift; ai_chat "$@" ;;
-        list)          ai_list ;;
-        pull)          shift; ai_pull "$@" ;;
-        *)             echo "Unknown command: $cmd"; return 1 ;;
+        help|--help|-h) ai_help ;;
+        aliases)        ai_list_aliases ;;
+        chat|deepseek)  shift; ai_chat "$@" ;;
+        list)            ai_list ;;
+        pull)            shift; ai_pull "$@" ;;
+        *)              echo "Unknown command: $cmd"; return 1 ;;
     esac
 }
 
-_main "$@"
+[[ "${BASH_SOURCE[0]}" == "${0}" ]] && _main "$@"

@@ -1,169 +1,54 @@
-# Mac Setup Guide
+# Setup Plugin
 
-New Mac setup workflow - follow steps in order.
+CBASH plugin for development environment setup: check tools, install via Homebrew (by group), create workspace, import dotfiles. Used by the [Mac Setup Guide](Mac-Setup-Guide.md).
 
----
+Loaded at init when you source CBASH (aliases available in shell).
 
-## 1. System Preferences
+## Commands
 
-```
-System Preferences > Mouse         → Tracking speed: Fast
-System Preferences > Trackpad      → Uncheck "Natural" scroll
-System Preferences > Dock          → Size: Small, Magnification: On
-System Preferences > General       → Appearance: Auto (light/dark)
-```
+| Command | Description |
+|---------|-------------|
+| `cbash setup` / `help` | Show help |
+| `cbash setup aliases` | List setup aliases |
+| `cbash setup check` | Check dev environment (Git, Node, Python, Docker, Java, git config) |
+| `cbash setup brew [group]` | Install tools. Groups: `dev`, `cloud`, `ide`, `apps`, `all` |
+| `cbash setup workspace [dir]` | Create workspace (default `~/workspace`) with projects, tools, docs, scripts, sandbox |
+| `cbash setup dotfiles` | Copy dotfiles from `$CBASH_DIR/dotfiles` to `$HOME` |
 
----
+## Aliases
 
-## 2. Homebrew
+| Alias | Command |
+|-------|--------|
+| `scheck` | setup check |
+| `sbrew` | setup brew (use: sbrew dev \| cloud \| ide \| apps \| all) |
+| `sws` | setup workspace (optional: sws /path/to/dir) |
+| `sdot` | setup dotfiles |
 
-```bash
-# Install Xcode CLI tools
-xcode-select --install
+## Brew groups
 
-# Install Homebrew
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+- **dev** – zsh, git, tree, curl, jq, nvm, pnpm, python, pyenv, maven, dbeaver, etc.
+- **cloud** – awscli, terraform, docker, completions
+- **ide** – VS Code, IntelliJ, PyCharm, Postman, Mockoon
+- **apps** – Chrome, Slack, Teams, Zoom, Notion, devtoys, mas
+- **all** – dev + cloud + ide + apps
 
-# Add to PATH (Apple Silicon)
-(echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> "$HOME/.zprofile"
-eval "$(/opt/homebrew/bin/brew shellenv)"
+## Prerequisites
 
-# Setup cask
-brew tap homebrew/cask
-brew tap buo/cask-upgrade
-brew doctor
-```
+- macOS (Homebrew for `brew` commands)
+- CBASH installed and `CBASH_DIR` set
 
----
-
-## 3. CBASH CLI
-
-```bash
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/cminhho/cbash/master/tools/install.sh)"
-source ~/.zshrc
-```
-
----
-
-## 4. Development Tools
+## Examples
 
 ```bash
-# Install all dev tools
-cbash setup brew all
-
-# Or install by group:
-cbash setup brew dev    # Shell, Git, Node, Python, Java, DB
-cbash setup brew cloud  # AWS, Terraform, Docker
-cbash setup brew ide    # VS Code, IntelliJ, Postman
-cbash setup brew apps   # Chrome, Slack, Teams, Zoom, Notion
+scheck              # check installed tools and git config
+sbrew dev           # install dev group
+sbrew all           # install all groups
+sws                 # create ~/workspace structure
+sws ~/myworkspace   # create workspace at custom path
+sdot                # import dotfiles
+cbash setup aliases
 ```
 
----
+## See also
 
-## 5. Workspace
-
-```bash
-cbash setup workspace
-```
-
-Creates:
-```
-~/workspace/
-├── projects/
-├── tools/
-├── docs/
-├── scripts/
-└── sandbox/
-```
-
----
-
-## 6. Git Config
-
-```bash
-git config --global user.name "Your Name"
-git config --global user.email "your.email@example.com"
-
-# SSH key
-ssh-keygen -t ed25519 -C "your.email@example.com"
-eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_ed25519
-pbcopy < ~/.ssh/id_ed25519.pub
-# Paste to GitHub > Settings > SSH Keys
-```
-
----
-
-## 7. Dotfiles
-
-```bash
-cbash setup dotfiles
-```
-
----
-
-## 8. Verify
-
-```bash
-cbash setup check
-```
-
----
-
-# Manual Reference
-
-## Development Setup (Manual)
-
-```bash
-brew install tree
-brew install zsh
-brew install zsh-completions
-brew install devtoys
-brew install wget
-brew install git
-brew install curl
-brew install openssl
-
-# DevOps
-brew install bash-completion
-brew install awscli
-
-# Frontend Dev Tools
-brew install nvm
-brew install pnpm
-nvm install stable
-
-# Python Backend Dev Tools
-brew install python
-pip install --user pipenv
-pip install --upgrade setuptools
-pip install --upgrade pip
-brew install pyenv
-brew install --cask pycharm-ce
-
-# Java Backend Dev Tools
-brew install --cask intellij-idea-ce
-brew install --cask google-chrome
-brew install --cask visual-studio-code
-brew install --cask docker
-brew install --cask postman
-brew install --cask mockoon
-brew install --cask dbeaver-community
-brew install --cask notion
-brew install --cask zoom
-brew install --cask slack
-brew install --cask intellij-idea-ce
-brew install --cask nosql-workbench
-brew install --cask --appdir="/Applications" slack
-brew install --cask --appdir="/Applications" zoom
-brew install --cask --appdir="/Applications" microsoft-teams
-
-# Microsoft Outlook
-brew install mas
-mas install 985367838
-```
-
-## Chrome Extensions
-
-- [Bitwarden](https://chrome.google.com/webstore/detail/bitwarden)
-- [Notion Web Clipper](https://chrome.google.com/webstore/detail/notion-web-clipper)
+- [Mac-Setup-Guide.md](Mac-Setup-Guide.md) – full new Mac setup workflow (system preferences, Homebrew, CBASH, git, manual reference).

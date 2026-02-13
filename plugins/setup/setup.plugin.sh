@@ -1,10 +1,19 @@
 #!/usr/bin/env bash
 # Setup plugin for CBASH
-# Development environment setup and configuration
+# Development environment setup and configuration (Mac Setup Guide)
 
-source "$CBASH_DIR/lib/common.sh"
+[[ -n "$CBASH_DIR" ]] && source "$CBASH_DIR/lib/common.sh"
 
 readonly SETUP_DIR="$CBASH_DIR/plugins/setup"
+
+# -----------------------------------------------------------------------------
+# Aliases
+# -----------------------------------------------------------------------------
+
+alias scheck='setup_check'
+alias sbrew='setup_brew'
+alias sws='setup_workspace'
+alias sdot='setup_dotfiles'
 
 # -----------------------------------------------------------------------------
 # Commands
@@ -129,26 +138,41 @@ setup_dotfiles() {
 # Main Router
 # -----------------------------------------------------------------------------
 
+setup_help() {
+    _describe command 'setup' \
+        'check           Check dev environment' \
+        'brew [group]    Install tools (dev|cloud|ide|apps|all)' \
+        'workspace [dir] Create workspace structure' \
+        'dotfiles        Import dotfiles' \
+        'aliases         List setup aliases' \
+        'Mac Setup Guide - development environment'
+}
+
+setup_list_aliases() {
+    echo "Setup aliases: scheck, sbrew, sws, sdot"
+    echo "  scheck  = setup check"
+    echo "  sbrew   = setup brew [group]"
+    echo "  sws     = setup workspace [dir]"
+    echo "  sdot    = setup dotfiles"
+}
+
 _main() {
     local cmd="$1"
 
     if [[ -z "$cmd" ]]; then
-        _describe command 'setup' \
-            'check           Check dev environment' \
-            'brew [group]    Install tools (dev|cloud|ide|apps|all)' \
-            'workspace [dir] Create workspace structure' \
-            'dotfiles        Import dotfiles' \
-            'Development environment setup'
+        setup_help
         return 0
     fi
 
     case "$cmd" in
-        check)     setup_check ;;
-        brew)      shift; setup_brew "$@" ;;
-        workspace) shift; setup_workspace "$@" ;;
-        dotfiles)  setup_dotfiles ;;
-        *)         echo "Unknown command: $cmd"; return 1 ;;
+        help|--help|-h) setup_help ;;
+        aliases)        setup_list_aliases ;;
+        check)          setup_check ;;
+        brew)           shift; setup_brew "$@" ;;
+        workspace)      shift; setup_workspace "$@" ;;
+        dotfiles)       setup_dotfiles ;;
+        *)              echo "Unknown command: $cmd"; return 1 ;;
     esac
 }
 
-_main "$@"
+[[ "${BASH_SOURCE[0]}" == "${0}" ]] && _main "$@"

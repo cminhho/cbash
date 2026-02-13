@@ -2,8 +2,8 @@
 # Git plugin for CBASH
 # Git workflow utilities and repository management
 
-source "$CBASH_DIR/lib/common.sh"
-
+[[ -n "$CBASH_DIR" ]] && source "$CBASH_DIR/lib/common.sh"
+[[ -n "$CBASH_DIR" ]] && [[ -f "$CBASH_DIR/plugins/git/git-aliases.sh" ]] && source "$CBASH_DIR/plugins/git/git-aliases.sh"
 
 # -----------------------------------------------------------------------------
 # Helper Functions
@@ -256,4 +256,4 @@ _main() {
     esac
 }
 
-_main "$@"
+[[ "${BASH_SOURCE[0]}" == "${0}" ]] && _main "$@"

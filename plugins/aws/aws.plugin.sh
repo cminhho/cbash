@@ -2,7 +2,7 @@
 # AWS plugin for CBASH
 # Provides utilities for AWS infrastructure management
 
-source "$CBASH_DIR/lib/common.sh"
+[[ -n "$CBASH_DIR" ]] && source "$CBASH_DIR/lib/common.sh"
 
 # Localstack configuration
 readonly AWS_LOCALSTACK_ENDPOINT="http://localhost:4566"
@@ -11,6 +11,15 @@ readonly AWS_SSM_REGION="ap-southeast-1"
 
 # Valid environments for SSH gateway
 readonly -a VALID_ENVS=("dev" "test" "staging" "production")
+
+# -----------------------------------------------------------------------------
+# Aliases
+# -----------------------------------------------------------------------------
+
+alias awsssh='aws_ssh_gateway'
+alias awssqscreate='aws_sqs_create'
+alias awssqstest='aws_sqs_test'
+alias awsssmget='aws_ssm_get'
 
 # -----------------------------------------------------------------------------
 # Helper Functions
@@ -173,26 +182,40 @@ aws_ssm_get() {
 # Main Router
 # -----------------------------------------------------------------------------
 
+aws_help() {
+    _describe command 'aws' \
+        'ssh <profile> <env>  Connect to SSH gateway (SSM)' \
+        'sqs-create          Create SQS queue (localstack)' \
+        'sqs-test            Test SQS send/receive (localstack)' \
+        'ssm-get             Get SSM parameter value' \
+        'aliases             List AWS aliases' \
+        'AWS infrastructure utilities'
+}
+
+aws_list_aliases() {
+    echo "AWS aliases: awsssh, awssqscreate, awssqstest, awsssmget"
+    echo "  awsssh <profile> <env> = aws ssh"
+    echo "  awssqscreate / awssqstest = SQS (localstack)"
+    echo "  awsssmget = SSM get parameter"
+}
+
 _main() {
     local cmd="$1"
 
     if [[ -z "$cmd" ]]; then
-        _describe command 'aws' \
-            'ssh <profile> <env>    Connect to SSH gateway' \
-            'sqs-create              Create SQS queue (localstack)' \
-            'sqs-test                Test SQS operations (localstack)' \
-            'ssm-get                 Get SSM parameter value' \
-            'AWS utilities for infrastructure management'
+        aws_help
         return 0
     fi
 
     case "$cmd" in
-        ssh)       shift; aws_ssh_gateway "$@" ;;
-        sqs-create) shift; aws_sqs_create "$@" ;;
-        sqs-test)   shift; aws_sqs_test "$@" ;;
-        ssm-get)    shift; aws_ssm_get "$@" ;;
-        *)         abort "Invalid command: $cmd" ;;
+        help|--help|-h) aws_help ;;
+        aliases)        aws_list_aliases ;;
+        ssh)            shift; aws_ssh_gateway "$@" ;;
+        sqs-create)     shift; aws_sqs_create "$@" ;;
+        sqs-test)       shift; aws_sqs_test "$@" ;;
+        ssm-get)        shift; aws_ssm_get "$@" ;;
+        *)              abort "Invalid command: $cmd" ;;
     esac
 }
 
-_main "$@"
+[[ "${BASH_SOURCE[0]}" == "${0}" ]] && _main "$@"

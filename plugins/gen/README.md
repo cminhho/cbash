@@ -1,105 +1,86 @@
-## `cbash gen trouble`
+# gen — Structure and doc generator
+
+Scaffold project layouts, feature folders, workspaces, and troubleshooting dirs; or generate docs from templates (ADR, CAB, meeting, design, etc.) into a dated path. One plugin for structure and doc generation.
+
+Source CBASH to get aliases. Use `cbash gen` for commands.
+
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `cbash gen` / `help` | Show help |
+| `cbash gen aliases` | List aliases |
+| `cbash gen trouble [name]` | Create troubleshooting dir in cwd (default name: date). README + troubleshooting.log |
+| `cbash gen feat [name]` | Create feature dir: docs, src, tests + README |
+| `cbash gen workspace [name]` | Create `~/workspace/<name>` (projects, docs, tools, scripts) |
+| `cbash gen project [name]` | Create project dir: src, tests, docs, scripts + README |
+| `cbash gen doc [type] [name]` | Generate doc from template → `$WORKSPACE_TROUBLESHOOT/<year>/<date>/<name>/`. Prompts for type/name if omitted. |
+
+## Aliases
+
+| Alias | Command |
+|-------|--------|
+| `gtrouble` | gen trouble |
+| `gfeat` | gen feat |
+| `gws` | gen workspace |
+| `gproject` | gen project |
+| `gdoc` | gen doc (gdoc [type] [name]) |
+
+## Doc types (gen doc / gdoc)
+
+`troubleshooting`, `cab`, `note`, `adr`, `meeting`, `design`, `cab-review`, `code-review`. Set `WORKSPACE_TROUBLESHOOT` for output base. Templates in `$CBASH_DIR/plugins/gen/templates/`.
+
+## Output structures
+
+**trouble** (default name: `yyyy-mm-dd`):
 ```
-USAGE
-  $ cbash gen trouble [NAME]
-
-ARGUMENTS
-  NAME  trouble name
-
-DESCRIPTION
-  Generate trouble directory
-
-EXAMPLES
-  $ cbash gen trouble
-
-OUTPUT
-yyyy-mm-dd
-├── README.md
+<name>/
+├── README.md           # Issue, Investigation, Root Cause, Resolution, Prevention
 └── troubleshooting.log
 ```
 
-## `cbash gen feature`
+**feat**:
 ```
-USAGE
-  $ cbash gen feat [NAME]
-
-ARGUMENTS
-  NAME  feature name
-
-DESCRIPTION
-  Generate feature directory
-
-EXAMPLES
-  $ cbash gen feature demo
-
-OUTPUT
-├── 1_Concept
-├── 2_Definition
-│   ├── 1_Architecture
-│   ├── 2_Requirements
-│   └── 3_Design
-├── 3_Development
-│   ├── API-Spects
-│   ├── Database
-│   ├── Kafka
-│   └── S3
-├── 4_Testing
-├── 5_Release
-├── 6_Deployment
-├── 7_Operations
-├── 8_Reporting
-└── 9_Assets
+<name>/
+├── docs/
+├── src/
+├── tests/
+└── README.md           # Overview, Requirements, Implementation
 ```
 
-OUTPUT
-
-## `cbash gen workspace`
+**workspace** (under `~/workspace/<name>`):
 ```
-USAGE
-  $ cbash gen workspace [NAME]
+projects/
+docs/
+tools/
+scripts/
+```
 
-ARGUMENTS
-  NAME  workspace name
+**project**:
+```
+<name>/
+├── src/
+├── tests/
+├── docs/
+├── scripts/
+└── README.md           # Getting Started, Development, Testing
+```
 
-DESCRIPTION
-  Generate workspace directory
+## Configuration
 
-EXAMPLES
-  $ cbash gen workspace worksapce
+```bash
+export WORKSPACE_TROUBLESHOOT="/path/to/docs"   # required for gen doc / gdoc
+```
 
-OUTPUT
-worksapce
-├── archive
-│   └── <year>
-├── artifacts
-│   ├── business
-│   │   ├── logs
-│   │   ├── m2
-│   │   ├── secrets
-│   │   └── volumes
-│   └── personal
-│       ├── logs
-│       ├── m2
-│       ├── secrets
-│       └── volumes
-├── business
-│   ├── playground
-│   ├── sourcecode
-│   └── troubleshoot
-│       └── <year>
-├── devbox
-├── documents
-│   ├── business
-│   │   ├── products
-│   │   └── training
-│   └── personal
-│       ├── finances
-│       └── health
-├── personal
-│   ├── playground
-│   ├── private
-│   └── public
-├── softs
-└── tmp
-    └── <year>
+## Examples
+
+```bash
+gtrouble                    # creates ./yyyy-mm-dd
+gfeat auth-service
+gws myworkspace
+gproject api-gateway
+gdoc design my-feature
+gdoc adr mysql-to-postgres
+cbash gen doc               # interactive: select type, enter name
+cbash gen aliases
 ```
