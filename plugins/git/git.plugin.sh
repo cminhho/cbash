@@ -29,6 +29,35 @@ _git_each_repo() {
     log_success "Done"
 }
 
+# Derive directory name from repo URL (e.g. https://github.com/user/repo.git -> repo).
+_git_basename_from_url() {
+    local url="${1:?}"
+    url="${url%/}"
+    url="${url%.git}"
+    echo "${url##*/}"
+}
+
+# Read repo list file: skip blank and # lines; each line URL [optional_dir].
+# Outputs nothing; call _git_read_repo_list_loop or parse line-by-line.
+# Usage: while read -r url dir; do ... done < <(_git_read_repo_list <file>)
+_git_read_repo_list() {
+    local file="${1:?}"
+    [[ -f "$file" ]] || { log_error "File not found: $file"; return 1; }
+    local line url dir
+    while IFS= read -r line; do
+        line="${line%%#*}"   # strip inline comment
+        line="$(printf '%s' "$line" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+        [[ -z "$line" ]] && continue
+        url="${line%%[[:space:]]*}"
+        dir="${line#*[[:space:]]}"
+        dir="$(printf '%s' "$dir" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+        [[ -z "$url" ]] && continue
+        [[ "$dir" == "$line" ]] && dir=""   # no second field
+        [[ -z "$dir" ]] && dir="$(_git_basename_from_url "$url")"
+        printf '%s\t%s\n' "$url" "$dir"
+    done < "$file"
+}
+
 # -----------------------------------------------------------------------------
 # Commands
 # -----------------------------------------------------------------------------
@@ -189,6 +218,47 @@ git_for() {
     _git_each_repo "$root" "$cmd" "completed"
 }
 
+# Clone multiple repos from a list file.
+# File format: one URL per line; optional second column (space/tab) = target dir name.
+# Blank lines and lines starting with # are skipped.
+# Usage: git clone-all <file> [dest_dir]
+git_clone_all() {
+    local list_file="${1:?Usage: git clone-all <file> [dest_dir]}"
+    local dest_dir="${2:-$(pwd)}"
+    local url dir full_path out ret failed=0 count=0
+
+    [[ -f "$list_file" ]] || { log_error "File not found: $list_file"; return 1; }
+    dest_dir="${dest_dir/#\~/$HOME}"
+    [[ -d "$dest_dir" ]] || mkdir -p "$dest_dir" || { log_error "Cannot create dest dir: $dest_dir"; return 1; }
+    dest_dir="$(cd -P "$dest_dir" && pwd)"
+
+    _gap; _heading_muted "▸ Clone from list" "%s → %s" "$list_file" "$dest_dir"; _br
+
+    while IFS=$'\t' read -r url dir; do
+        full_path="$dest_dir/$dir"
+        if [[ -d "$full_path/.git" ]]; then
+            log_info "$dir: already exists (skip)"
+            ((count++)) || true
+            continue
+        fi
+        _label "▸ $dir"; _muted " ($url)"; _br
+        _muted_nl "  \$ git clone $url $full_path"
+        out=$(git clone --quiet "$url" "$full_path" 2>&1); ret=$?
+        echo "$out" | _indent
+        if [[ $ret -eq 0 ]]; then
+            log_info "$dir: cloned"
+            ((count++)) || true
+        else
+            log_error "$dir: failed (exit $ret)"
+            ((failed++)) || true
+        fi
+        _gap
+    done < <(_git_read_repo_list "$list_file")
+
+    [[ $failed -gt 0 ]] && log_error "Done: $count cloned, $failed failed" && return 1
+    log_success "Done: $count repo(s) cloned"
+}
+
 git_sync() {
     _git_in_repo || return 1
     log_info "Syncing..."
@@ -233,6 +303,7 @@ _main() {
             'squash          Squash commits interactively' \
             'auto-squash     Squash all commits on feature branch' \
             'pull-all [dir]  Pull all repos in directory' \
+            'clone-all <file> [dir] Clone repos from file (one URL per line)' \
             'for "cmd" [dir] Run command in every repo (e.g. for "git pull")' \
             'clean           Clean and optimize repo' \
             'size            Show repo size' \
@@ -254,6 +325,7 @@ _main() {
         squash)         git_squash ;;
         auto-squash)    git_auto_squash ;;
         pull-all)       shift; git_pull_all "$@" ;;
+        clone-all)      shift; git_clone_all "$@" ;;
         for)            shift; git_for "$@" ;;
         clean)          git_clean ;;
         size)           git_size ;;

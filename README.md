@@ -20,13 +20,6 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/cminhho/cbash/master/tools
 sh -c "$(wget -qO- https://raw.githubusercontent.com/cminhho/cbash/master/tools/install.sh)"
 ```
 
-**Manual:**
-```bash
-git clone https://github.com/cminhho/cbash.git ~/.cbash
-echo 'source "$HOME/.cbash/cbash.sh"' >> ~/.zshrc
-source ~/.zshrc
-```
-
 ## Requirements
 
 - Unix-like OS (macOS, Linux, WSL2)
@@ -84,6 +77,7 @@ GIT
   git squash                            Squash commits interactively
   git auto-squash                       Squash feature branch
   git pull-all           [dir]          Pull all repos in directory
+  git clone-all          <file> [dir]   Clone repos from file (one URL per line)
   git for                "<cmd>" [dir]  Run command in every repo (e.g. "git pull")
   git clean                             Clean and optimize repo
   git size                              Show repo size
