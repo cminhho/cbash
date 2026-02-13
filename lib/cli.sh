@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # CLI management for CBASH
 
+[[ -n "$CBASH_DIR" && -d "$CBASH_DIR" ]] || { echo "Error: CBASH_DIR not set or not a directory" >&2; exit 1; }
 source "$CBASH_DIR/lib/common.sh"
 
 # -----------------------------------------------------------------------------
@@ -21,6 +22,7 @@ EOF
 }
 
 cli_version() {
+    [[ -d "$CBASH_DIR/.git" ]] || { echo "CBASH ${CBASH_VERSION:-unknown} (not a git repo)"; return 0; }
     cd "$CBASH_DIR" || return 1
     local version commit
     version=$(git describe --tags HEAD 2>/dev/null) || \
@@ -32,9 +34,9 @@ cli_version() {
 
 cli_plugins() {
     echo "Available plugins:"
-    for plugin in "$CBASH_DIR/plugins"/*/*.plugin.sh 2>/dev/null; do
+    for plugin in "$CBASH_DIR/plugins"/*/*.plugin.sh; do
         [[ -f "$plugin" ]] && echo "  $(basename "$(dirname "$plugin")")"
-    done | sort
+    done | sort -u
 }
 
 cli_update() {
@@ -43,7 +45,7 @@ cli_update() {
 
 cli_reload() {
     echo "Reloading shell..."
-    exec "$SHELL"
+    exec "${SHELL:-/bin/bash}"
 }
 
 # -----------------------------------------------------------------------------
@@ -70,8 +72,8 @@ _main() {
         plugins) cli_plugins ;;
         update)  cli_update ;;
         reload)  cli_reload ;;
-        *)       echo "Unknown command: $cmd"; cli_help; return 1 ;;
+        *)       echo "Unknown command: $cmd" >&2; cli_help; return 1 ;;
     esac
 }
 
-_main "$@"
+[[ "${BASH_SOURCE[0]}" == "${0}" ]] && _main "$@"
