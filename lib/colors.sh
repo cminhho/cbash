@@ -9,6 +9,7 @@
 # =============================================================================
 echo_normal='\033[0m'
 echo_reset='\033[39m'
+echo_reset_color='\033[39m'   # reset foreground only (Bash-it naming)
 
 echo_black='\033[0;30m'
 echo_red='\033[0;31m'
@@ -73,14 +74,43 @@ bakylw="$echo_bg_yellow"
 bakblu="$echo_bg_blue"
 
 # =============================================================================
-# Semantic theme (change here for theming)
+# Semantic theme: set by cbash_theme or CBASH_THEME (dark | light | minimal)
 # =============================================================================
-style_heading="$bldblu"
-style_label="$bldcyn"
-style_ok="$txtgrn"
-style_err="$txtred"
-style_warn="$txtylw"
-style_muted="$dim"
+: "${cbash_theme:=${CBASH_THEME:-dark}}"
+case "$cbash_theme" in
+    dark)
+        style_heading="$bldblu"
+        style_label="$bldcyn"
+        style_ok="$txtgrn"
+        style_err="$txtred"
+        style_warn="$txtylw"
+        style_muted="$dim"
+        ;;
+    light)
+        style_heading="$bldblu"
+        style_label="$bldcyn"
+        style_ok="$txtgrn"
+        style_err="$txtred"
+        style_warn="$txtylw"
+        style_muted="$dim"
+        ;;
+    minimal)
+        style_heading="$dim"
+        style_label="$dim"
+        style_ok="$dim"
+        style_err="$txtred"
+        style_warn="$dim"
+        style_muted="$dim"
+        ;;
+    *)
+        style_heading="$bldblu"
+        style_label="$bldcyn"
+        style_ok="$txtgrn"
+        style_err="$txtred"
+        style_warn="$txtylw"
+        style_muted="$dim"
+        ;;
+esac
 
 # =============================================================================
 # Style helpers (use theme above; loaded via utils.sh so plugins get these)
