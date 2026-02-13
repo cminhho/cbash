@@ -6,7 +6,7 @@
 
 **via Homebrew (macOS):**
 ```bash
-brew tap cminhho/cbash https://github.com/cminhho/cbash
+brew tap cminhho/tap https://github.com/cminhho/homebrew-tap
 brew install cbash-cli
 ```
 
