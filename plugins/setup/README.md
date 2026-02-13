@@ -1,6 +1,6 @@
 # Setup Plugin
 
-CBASH plugin for development environment setup: check tools, install via Homebrew (by group), create workspace, import dotfiles. Used by the [Mac Setup Guide](Mac-Setup-Guide.md).
+CBASH plugin for development environment setup: check tools, install via Homebrew (by group), create workspace. Used by [New Mac Setup](New-Mac-Setup.md).
 
 Loaded at init when you source CBASH (aliases available in shell).
 
@@ -13,7 +13,6 @@ Loaded at init when you source CBASH (aliases available in shell).
 | `cbash setup check` | Check dev environment (Git, Node, Python, Docker, Java, git config) |
 | `cbash setup brew [group]` | Install tools. Groups: `dev`, `cloud`, `ide`, `apps`, `all` |
 | `cbash setup workspace [dir]` | Create workspace (default `~/workspace`) with projects, tools, docs, scripts, sandbox |
-| `cbash setup dotfiles` | Copy dotfiles from `$CBASH_DIR/dotfiles` to `$HOME` |
 
 ## Aliases
 
@@ -22,7 +21,6 @@ Loaded at init when you source CBASH (aliases available in shell).
 | `scheck` | setup check |
 | `sbrew` | setup brew (use: sbrew dev \| cloud \| ide \| apps \| all) |
 | `sws` | setup workspace (optional: sws /path/to/dir) |
-| `sdot` | setup dotfiles |
 
 ## Brew groups
 
@@ -45,10 +43,9 @@ sbrew dev           # install dev group
 sbrew all           # install all groups
 sws                 # create ~/workspace structure
 sws ~/myworkspace   # create workspace at custom path
-sdot                # import dotfiles
 cbash setup aliases
 ```
 
 ## See also
 
-- [Mac-Setup-Guide.md](Mac-Setup-Guide.md) – full new Mac setup workflow (system preferences, Homebrew, CBASH, git, manual reference).
+- [New-Mac-Setup.md](New-Mac-Setup.md) – step-by-step new MacBook setup.

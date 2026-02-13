@@ -12,7 +12,7 @@ Source CBASH to get aliases. Use `cbash gen` for commands.
 | `cbash gen aliases` | List aliases |
 | `cbash gen trouble [name]` | Create troubleshooting dir in cwd (default name: date). README + troubleshooting.log |
 | `cbash gen feat [name]` | Create feature dir: docs, src, tests + README |
-| `cbash gen workspace [name]` | Create `~/workspace/<name>` (projects, docs, tools, scripts) |
+| `cbash gen workspace [name]` | Create `~/<name>` with documents, archive, artifacts, downloads, tmp, repos |
 | `cbash gen project [name]` | Create project dir: src, tests, docs, scripts + README |
 | `cbash gen doc [type] [name]` | Generate doc from template → `$WORKSPACE_TROUBLESHOOT/<year>/<date>/<name>/`. Prompts for type/name if omitted. |
 
@@ -48,12 +48,31 @@ Source CBASH to get aliases. Use `cbash gen` for commands.
 └── README.md           # Overview, Requirements, Implementation
 ```
 
-**workspace** (under `~/workspace/<name>`):
+**workspace** (under `~/<workspace_name>`):
 ```
-projects/
-docs/
-tools/
-scripts/
+<name>/
+├── README.md          # Full folder guide (repos, documents, artifacts, archive, tmp/downloads)
+├── .gitignore
+├── repos/             # Developer heart — by ownership
+│   ├── company/       # Employer projects (optional: client-a, client-b)
+│   ├── personal/      # Personal / startup
+│   ├── open-source/   # Community forks for contributing
+│   └── labs/          # Learning, tutorials, try new frameworks
+├── documents/         # Knowledge & admin
+│   ├── company/       # Contracts, payroll, internal
+│   ├── personal/      # ID, finance, health
+│   ├── learning/      # E-books, cheat-sheets, certificates
+│   └── career/        # CV, portfolio, interview prep
+├── artifacts/         # Storage — point tools here
+│   ├── maven/         # .m2/repository
+│   ├── docker/        # Volumes, container data
+│   ├── node/          # npm cache, shared node_modules
+│   ├── venv/          # Python virtual envs
+│   └── iso-vms/       # OS images, VM disks
+├── archive/
+│   └── <year>/        # 2024, 2025 — zip finished projects here
+├── tmp/               # Quick exports (.json, .sql)
+└── downloads/         # Browser downloads
 ```
 
 **project**:

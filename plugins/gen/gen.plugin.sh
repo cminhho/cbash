@@ -67,8 +67,75 @@ gen_workspace() {
     [[ -z "$name" ]] && { read -rp "Workspace name: " name; }
     [[ -z "$name" ]] && { echo "Name required"; return 1; }
 
-    local base="$HOME/workspace/$name"
-    mkdir -p "$base"/{projects,docs,tools,scripts}
+    local base="$HOME/$name"
+    local year
+    year=$(date +%Y)
+
+    mkdir -p "$base"/{documents/{company,personal,learning,career},archive/"$year",artifacts/{maven,docker,node,venv,iso-vms},downloads,tmp,repos/{personal,company,open-source,labs}}
+    # .gitkeep so empty dirs can be committed if desired
+    for d in documents documents/company documents/personal documents/learning documents/career archive archive/"$year" artifacts artifacts/maven artifacts/docker artifacts/node artifacts/venv artifacts/iso-vms downloads tmp repos repos/personal repos/company repos/open-source repos/labs; do
+        touch "$base/$d/.gitkeep"
+    done
+
+    cat > "$base/README.md" <<'READMEEOF'
+# WORKSPACE_NAME
+
+Developer workspace. Organize by ownership to avoid license and Git account confusion.
+
+## repos/ (Developer heart)
+
+| Folder | Purpose |
+|--------|---------|
+| `company/` | Current employer projects (optionally subdivide by client-a, client-b) |
+| `personal/` | Personal projects, own startup |
+| `open-source/` | Forks from community repos for contributing |
+| `labs/` | Learning code, tutorials, trying new frameworks |
+
+## documents/ (Knowledge & admin)
+
+| Folder | Purpose |
+|--------|---------|
+| `company/` | Contracts, payroll, insurance, internal processes |
+| `personal/` | Personal ID, finance, health docs |
+| `learning/` | E-books, cheat-sheets, certificates |
+| `career/` | CV versions, portfolio, interview prep |
+
+## artifacts/ (Storage — keep disk clean)
+
+Point tools here instead of default system/home paths.
+
+| Folder | Purpose |
+|--------|---------|
+| `maven/` | `.m2/repository` — avoid re-downloading Java deps |
+| `docker/` | Container volumes, DB data |
+| `node/` | npm cache or shared node_modules |
+| `venv/` | Python virtual environments |
+| `iso-vms/` | OS install images, VM disks (VMware/VirtualBox) |
+
+## archive/ (Project archive)
+
+When a project ends, zip it and move here. One folder per year: `2024/`, `2025/`, …
+
+## tmp/ & downloads/
+
+| Folder | Purpose |
+|--------|---------|
+| `tmp/` | Quick export files (.json, .sql) for inspection |
+| `downloads/` | Browser downloads |
+
+---
+
+Add to `.gitignore`: `artifacts/`, `downloads/`, `tmp/` (and `repos/`, `documents/` if private).
+READMEEOF
+    sed -i.bak "s/WORKSPACE_NAME/$name/" "$base/README.md" 2>/dev/null || sed -i '' "s/WORKSPACE_NAME/$name/" "$base/README.md"
+    rm -f "$base/README.md.bak"
+    cat > "$base/.gitignore" <<'EOF'
+# Workspace defaults — uncomment or extend as needed
+# artifacts/
+# downloads/
+# tmp/
+# repos/
+EOF
     success "Created: $base"
     ls -la "$base"
 }
@@ -155,7 +222,7 @@ gen_help() {
     _describe command 'gen' \
         'trouble [name]   Create troubleshooting dir (cwd)' \
         'feat [name]      Create feature dir' \
-        'workspace [name] Create workspace structure' \
+        'workspace [name] Create ~/<name> (documents, archive, artifacts, downloads, tmp, repos)' \
         'project [name]   Create project structure' \
         'doc [type] [name]  Generate doc from template (→ \$WORKSPACE_TROUBLESHOOT/<year>/<date>/<name>)' \
         'aliases          List gen aliases' \

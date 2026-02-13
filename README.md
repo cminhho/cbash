@@ -57,7 +57,6 @@ SETUP
   setup check                           Check dev environment  → scheck
   setup brew             [group]        Install tools (dev|cloud|ide|apps|all)  → sbrew
   setup workspace        [dir]          Create workspace structure  → sws
-  setup dotfiles                        Import dotfiles  → sdot
 
 ALIASES
   aliases                               Show help
@@ -190,7 +189,7 @@ PROXY
   proxy show                            Show proxy settings  → proxshow
 
 QUICK REFERENCE (ALIAS → SECTION)
-  scheck, sbrew, sws, sdot     Setup
+  scheck, sbrew, sws           Setup
   start, stop, devlogs, devkill Dev
   commit, auto_squash          Git
   d, dps, dr, drm, dlo         Docker

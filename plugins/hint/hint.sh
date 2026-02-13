@@ -32,9 +32,7 @@ title "Setup"
 cmd "setup"            ""              "Show help"
 cmd "setup check"      ""              "Check dev environment"                    "scheck"
 cmd "setup brew"       "[group]"       "Install tools (dev|cloud|ide|apps|all)"    "sbrew"
-cmd "setup workspace"  "[dir]"         "Create workspace structure"               "sws"
-cmd "setup dotfiles"   ""              "Import dotfiles"                           "sdot"
-
+cmd "setup workspace"  "[dir]"         "Create workspace (projects, tools, docs)" "sws"
 # -----------------------------------------------------------------------------
 # Aliases
 # -----------------------------------------------------------------------------
@@ -140,7 +138,7 @@ title "Generators (gen)"
 cmd "gen"              ""              "Show help"
 cmd "gen trouble"      "[name]"        "Create troubleshooting dir"               "gtrouble"
 cmd "gen feat"         "[name]"        "Create feature dir"                       "gfeat"
-cmd "gen workspace"    "[name]"        "Create workspace structure"               "gws"
+cmd "gen workspace"    "[name]"        "Create ~/<name> (documents, archive, repos…)" "gws"
 cmd "gen project"      "[name]"        "Create project structure"                 "gproject"
 cmd "gen doc"          "[type] [name]" "Generate doc from template"               "gdoc"
 
@@ -211,7 +209,7 @@ cmd "proxy show"       ""              "Show proxy settings"                    
 # Quick reference
 # -----------------------------------------------------------------------------
 title "Quick reference (alias → section)"
-quick "scheck, sbrew, sws, sdot"                "Setup"
+quick "scheck, sbrew, sws"                      "Setup"
 quick "start, stop, devlogs, devkill"           "Dev"
 quick "commit, auto_squash"                     "Git"
 quick "d, dps, dr, drm, dlo"                   "Docker"

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Setup plugin for CBASH
-# Development environment setup and configuration (Mac Setup Guide)
+# Development environment setup (see New-Mac-Setup.md)
 
 [[ -n "$CBASH_DIR" ]] && source "$CBASH_DIR/lib/common.sh"
 
@@ -13,7 +13,6 @@ readonly SETUP_DIR="$CBASH_DIR/plugins/setup"
 alias scheck='setup_check'
 alias sbrew='setup_brew'
 alias sws='setup_workspace'
-alias sdot='setup_dotfiles'
 
 # -----------------------------------------------------------------------------
 # Commands
@@ -119,21 +118,6 @@ setup_workspace() {
     success "Workspace ready"
 }
 
-setup_dotfiles() {
-    local dotfiles_dir="$CBASH_DIR/dotfiles"
-    [[ ! -d "$dotfiles_dir" ]] && { echo "No dotfiles directory"; return 1; }
-
-    echo "Importing dotfiles from $dotfiles_dir..."
-    for file in "$dotfiles_dir"/.*; do
-        [[ -f "$file" ]] || continue
-        local name=$(basename "$file")
-        [[ "$name" == "." || "$name" == ".." ]] && continue
-        cp "$file" "$HOME/$name"
-        echo "  Copied: $name"
-    done
-    success "Dotfiles imported"
-}
-
 # -----------------------------------------------------------------------------
 # Main Router
 # -----------------------------------------------------------------------------
@@ -143,17 +127,15 @@ setup_help() {
         'check           Check dev environment' \
         'brew [group]    Install tools (dev|cloud|ide|apps|all)' \
         'workspace [dir] Create workspace structure' \
-        'dotfiles        Import dotfiles' \
         'aliases         List setup aliases' \
-        'Mac Setup Guide - development environment'
+        'New Mac Setup - development environment'
 }
 
 setup_list_aliases() {
-    echo "Setup aliases: scheck, sbrew, sws, sdot"
+    echo "Setup aliases: scheck, sbrew, sws"
     echo "  scheck  = setup check"
     echo "  sbrew   = setup brew [group]"
     echo "  sws     = setup workspace [dir]"
-    echo "  sdot    = setup dotfiles"
 }
 
 _main() {
@@ -170,7 +152,6 @@ _main() {
         check)          setup_check ;;
         brew)           shift; setup_brew "$@" ;;
         workspace)      shift; setup_workspace "$@" ;;
-        dotfiles)       setup_dotfiles ;;
         *)              echo "Unknown command: $cmd"; return 1 ;;
     esac
 }
