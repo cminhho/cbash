@@ -2,7 +2,7 @@
 # Generate: vhs assets/demo.tape
 
 Output assets/demo.gif
-Set FontSize 14
+Set FontSize 18
 Set Width 1280
 Set Height 720
 Set Theme "Dracula"
@@ -18,7 +18,6 @@ Enter
 Show
 
 Sleep 1s
-Set FontSize 12
 
 # Show minimal help
 Type "cbash"
@@ -28,8 +27,6 @@ Sleep 4s
 Type "clear"
 Enter
 Sleep 1s
-
-Set FontSize 18
 
 # Clone all repos from file
 Type "clone_all test/repos-example.txt /tmp/demo"
