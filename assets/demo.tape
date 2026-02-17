@@ -13,11 +13,11 @@ Set Shell "zsh"
 Hide
 Type "source ~/.cbash/cbash.sh 2>/dev/null"
 Enter
-Sleep 1s
 Type "clear"
 Enter
-Sleep 0.5s
 Show
+
+Sleep 2s
 
 # Show minimal help
 Type "cbash"
