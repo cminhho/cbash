@@ -1,7 +1,0 @@
-# {{NAME}}
-
-## Overview
-
-## Requirements
-
-## Implementation
