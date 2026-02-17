@@ -1,8 +1,8 @@
 # CBASH CLI
 
-[![GitHub release](https://img.shields.io/github/v/release/cminhho/cbash?style=flat-square)](https://github.com/cminhho/cbash/releases) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/cminhho/cbash/pulls) [![Shell](https://img.shields.io/badge/Shell-Bash%20%7C%20Zsh-blue?style=flat-square)](https://github.com/cminhho/cbash)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE) [![Shell](https://img.shields.io/badge/Shell-Bash%20%7C%20Zsh-blue?style=flat-square)](https://github.com/cminhho/cbash) [![macOS](https://img.shields.io/badge/macOS-Linux-lightgrey?style=flat-square)](https://github.com/cminhho/cbash)
 
-> 🚀 **Developer productivity toolkit** — Git workflows, Docker/K8s helpers, AWS tools, and 200+ aliases in one CLI.
+> 🚀 **Shell productivity toolkit for developers** — Automate Git workflows, manage Docker/K8s, connect to AWS, and save hours with 200+ ready-to-use aliases. Works with Bash & Zsh on macOS, Linux, and WSL.
 
 ![CBASH CLI Demo](assets/demo.gif)
 
@@ -74,6 +74,11 @@ cbash <plugin> help     # Plugin help
 cbash cli update        # Upgrade
 brew upgrade cbash-cli  # Homebrew upgrade
 ```
+
+## Documentation
+
+- [Architecture](docs/ARCHITECTURE.md) — System design, plugin structure
+- [Commands Reference](docs/COMMANDS.md) — Full command list
 
 ## Contributing
 

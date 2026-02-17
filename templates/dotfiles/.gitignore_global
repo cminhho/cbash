@@ -4,16 +4,21 @@
 ._*
 .Spotlight-V100
 .Trashes
+Thumbs.db
+Desktop.ini
 
 # IDE files
 .idea/
 .vscode/
 *.swp
 *.swo
+*.sublime-*
+*.code-workspace
 
 # Environment files
 .env
 .env.local
+.env.*.local
 *.log
 
 # Dependencies
@@ -21,3 +26,24 @@ node_modules/
 venv/
 .pytest_cache/
 __pycache__/
+
+# Build outputs
+dist/
+build/
+coverage/
+.nyc_output/
+*.min.js
+*.min.css
+
+# Temporary files
+*.bak
+*.tmp
+*.temp
+*~
+
+# Terraform
+.terraform/
+*.tfstate*
+
+# Docker
+.docker/
