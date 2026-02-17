@@ -209,7 +209,7 @@ gdv() {
     alias pull_all="cbash git pull-all"
     alias repos_pull="cbash git pull-all \$WORKSPACE_ROOT"
     alias clone_all="cbash git clone-all"
-    alias git_for="cbash git for"
-    alias git_sync="cbash git sync"
-    alias git_clean="cbash git clean"
+    alias gitfor="cbash git for"
+    alias gitsync="cbash git sync"
+    alias gitclean="cbash git clean"
 }

@@ -2,37 +2,40 @@
 # Generate with: vhs demo.tape
 
 Output demo.gif
-Set FontSize 16
-Set Width 1000
-Set Height 600
+Set FontSize 14
+Set Width 1200
+Set Height 800
 Set Theme "Dracula"
 Set Padding 20
 Set Shell "bash"
 
-# Source cbash first
 Type "source ~/.cbash/cbash.sh"
 Enter
 Sleep 1s
 Hide
 
-# Show help
 Show
 Type "cbash"
 Enter
 Sleep 4s
 
-# Auto-commit example
-Type "cbash git auto-commit"
+# Show clone-all example file
+Type "cat test/repos-example.txt"
 Enter
 Sleep 2s
 
-# Pull all repos
-Type "cbash git pull-all ~/repos"
+# Clone all repos from file (alias)
+Type "clone_all test/repos-example.txt /tmp/demo"
+Enter
+Sleep 3s
+
+# Pull all repos (alias)
+Type "pull_all /tmp/demo"
 Enter
 Sleep 2s
 
-# Git for command
-Type 'cbash git for "git status"'
+# Auto-commit (alias)
+Type "commit"
 Enter
 Sleep 2s
 

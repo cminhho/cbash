@@ -3,7 +3,7 @@
 
 [[ -n "$BASH_VERSION" || -n "$ZSH_VERSION" ]] || { echo "Error: requires bash or zsh" >&2; return 1 2>/dev/null || exit 1; }
 
-readonly CBASH_VERSION="${CBASH_VERSION:-1.0.0}"
+[[ -z "$CBASH_VERSION" ]] && readonly CBASH_VERSION="1.0.0"
 : "${CBASH_DIR:=$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)}"
 [[ -d "$CBASH_DIR/lib" ]] || CBASH_DIR="$HOME/.cbash"
 export CBASH_DIR
