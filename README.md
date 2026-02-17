@@ -4,45 +4,46 @@
 
 > 🚀 **Developer productivity toolkit** — Git workflows, Docker/K8s helpers, AWS tools, and 200+ aliases in one CLI.
 
-![CBASH CLI Demo](demo.gif)
+![CBASH CLI Demo](assets/demo.gif)
 
 ## Why CBASH?
 
 **Stop typing long commands. Start shipping faster.**
 
 ```bash
-commit              # Auto-commit all changes with timestamp
-auto_squash         # Squash all commits on feature branch
-squash              # Interactive squash
-pull_all ~/repos    # Pull all repos in a directory
-clone_all repos.txt # Clone repos from a list file
-git_for "git status"  # Run command in all repos
-git_sync            # Fetch and pull current repo
-git_clean           # Clean and optimize repo
+clone_all repos.txt     # Clone repos from a list file
+pull_all ~/repos        # Pull all repos in a directory
+gitfor "git status"     # Run command in all repos
+gitsync                 # Fetch and pull current repo
+commit                  # Auto-commit all changes with timestamp
+auto_squash             # Squash all commits on feature branch
 ```
 
 | Task | Without CBASH | With CBASH |
 |------|---------------|------------|
-| Auto-commit & push | `git add . && git commit -m "..." && git push` | `commit` |
-| Pull all repos | `for d in */; do cd "$d" && git pull && cd ..; done` | `pull_all` |
-| Run cmd in all repos | Loop + cd + eval | `git_for "cmd"` |
-| Squash feature branch | Interactive rebase, force push | `auto_squash` |
 | Clone from list | Manual clone each | `clone_all repos.txt` |
+| Pull all repos | `for d in */; do cd "$d" && git pull && cd ..; done` | `pull_all` |
+| Run cmd in all repos | Loop + cd + eval | `gitfor "cmd"` |
+| Sync repo | `git fetch && git pull` | `gitsync` |
+| Auto-commit & push | `git add . && git commit -m "..." && git push` | `commit` |
+| Squash feature branch | Interactive rebase, force push | `auto_squash` |
 
 **200+ aliases** included — type less, do more.
 
 ## Features
 
-- **Git workflows** — branch, squash, auto-commit, pull-all, clone-all
-- **Dev services** — Docker Compose start/stop/logs/exec
-- **Docker/K8s** — container management, kubectl shortcuts
-- **Build tools** — Maven wrapper, npm/npx aliases
-- **AWS** — SSM connect, SQS testing, parameter store
-- **Generators** — scaffold projects, features, docs
-- **Docs & Cheat** — personal docs, community cheatsheets
-- **AI** — Ollama chat integration
-- **macOS** — system info, ports, updates, passwords
-- **Proxy** — manage proxy for shell, npm, git
+| Feature | Description | Commands |
+|---------|-------------|----------|
+| 🔀 **Git Automation** | Batch operations across repos, auto-commit with timestamps, squash before PR | `commit`, `auto_squash`, `pull_all`, `clone_all`, `gitfor`, `gitsync` |
+| 🐳 **Docker & Dev** | Start/stop Docker Compose, follow logs, shell into containers | `start`, `stop`, `devlogs`, `devexec`, `devkill` |
+| ☸️ **Kubernetes** | Quick access to pods, logs, exec, rollout restarts | `k8pods`, `k8logs`, `k8exec`, `k8restart` |
+| ☁️ **AWS & Cloud** | SSM session manager, parameter store access | `awsssh`, `awsssmget` |
+| 🛠️ **Generators** | Scaffold projects, features, generate docs from templates | `gfeat`, `gproject`, `gdoc` |
+| 📚 **Docs & Cheat** | Personal docs, community cheatsheets (tldr, cheat.sh) | `doc`, `ch`, `chsetup` |
+| 🤖 **AI Chat** | Chat with local LLMs via Ollama | `chat`, `aipull` |
+| 🍎 **macOS Utils** | Ports, updates, lock screen, IP info | `mports`, `mupdate`, `mlock` |
+| 🌐 **Proxy** | Toggle proxy for shell, npm, git | `proxon`, `proxoff` |
+| 🔨 **Build Tools** | Maven and npm/npx shortcuts | `mci`, `ni`, `nr`, `nx` |
 
 ## Installation
 
@@ -61,15 +62,11 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/cminhho/cbash/master/tools
 ## Usage
 
 ```bash
-cbash                   # Show all commands
+cbash                   # Show help (minimal)
+cbash --full            # Show all commands
 cbash <plugin>          # Run plugin
 cbash <plugin> help     # Plugin help
-cbash list-plugins      # List plugins
 ```
-
-**Available plugins:** `git`, `dev`, `docker`, `k8s`, `aws`, `gen`, `docs`, `ai`, `macos`, `proxy`, `mvn`, `npm`, `setup`, `aliases`
-
-Run `cbash` for full command reference.
 
 ## Upgrade & Uninstall
 

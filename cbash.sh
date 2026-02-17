@@ -42,6 +42,7 @@ _run() {
     local cmd="${1:-help}"; shift 2>/dev/null || true
     case "$cmd" in
         help|--help|-h)  _help ;;
+        help-full|--full) source "$CBASH_DIR/lib/help.sh"; help_show_full ;;
         -v|--version)    echo "cbash v$CBASH_VERSION" ;;
         config)          _config ;;
         cli)             bash "$CBASH_DIR/lib/cli.sh" "$@" ;;

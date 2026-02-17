@@ -2,4 +2,3 @@
 # One URL per line; optional second column = directory name
 
 https://github.com/cminhho/cbash.git
-https://github.com/tiimgreen/github-cheat-sheet.git sheet
