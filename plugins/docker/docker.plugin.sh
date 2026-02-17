@@ -1,66 +1,39 @@
 #!/usr/bin/env bash
 # Docker plugin for CBASH - Docker CLI helpers
 
-# -----------------------------------------------------------------------------
-# Helper functions (from aliases/docker.sh)
-# -----------------------------------------------------------------------------
-
-docker_running() {
-    docker ps --format "table {{.Names}}\t{{.ID}}\t{{.Image}}"
-}
-
-docker_stop_all() {
-    docker stop $(docker ps -q) 2>/dev/null || true
-    log_success "All running containers stopped."
-}
-
-docker_remove_stopped() {
-    docker rm $(docker ps -a -q) 2>/dev/null || true
-    log_success "All stopped containers removed."
-}
-
-docker_remove_unused_images() {
-    docker image prune -a -f
-    log_success "All unused images removed."
-}
+# Commands
+docker_running()       { docker ps --format "table {{.Names}}\t{{.ID}}\t{{.Image}}"; }
+docker_stop_all()      { docker stop $(docker ps -q) 2>/dev/null; log_success "Stopped all"; }
+docker_remove_stopped(){ docker rm $(docker ps -a -q) 2>/dev/null; log_success "Removed stopped"; }
+docker_prune_images()  { docker image prune -a -f && log_success "Pruned images"; }
 
 docker_kill_all() {
-    log_info "Performing action 'kill all services'"
+    log_info "Killing all..."
     docker ps -a -q | xargs -n 1 -P 8 -I {} docker stop {} 2>/dev/null || true
     docker kill $(docker ps -q) 2>/dev/null || true
     docker rm $(docker ps -a -q) 2>/dev/null || true
     docker volume rm $(docker volume ls -q) 2>/dev/null || true
-    log_success "Successfully killed all services"
+    log_success "Done"
 }
 
-# -----------------------------------------------------------------------------
-# Plugin commands (cbash docker ...)
-# -----------------------------------------------------------------------------
-
+# Help and router
 docker_help() {
     _describe command 'docker' \
-        'help            Show this help' \
-        'list            List Docker aliases' \
-        'running         List running containers (table)' \
-        'stop-all        Stop all running containers' \
-        'remove-stopped  Remove all stopped containers' \
+        'running         List running containers' \
+        'stop-all        Stop all containers' \
+        'remove-stopped  Remove stopped containers' \
         'prune-images    Remove unused images' \
-        'kill-all        Stop, remove containers and volumes' \
-        'Docker helpers and short aliases (dps, dr, drm, ...)'
-}
-
-docker_list_aliases() {
-    echo "Docker aliases: dbl, dcin, dcls, dclsa, dib, dii, dils, dlo, dps, dpsa, dpu, dr, drit, drm, dst, drs, dstp, dsts, dtop, dvls, dxc, dxcit, ..."
+        'kill-all        Stop, remove all and volumes' \
+        'Docker helpers'
 }
 
 _main() {
     case "${1:-}" in
         help|--help|-h|"") docker_help ;;
-        list)              docker_list_aliases ;;
         running)           docker_running ;;
         stop-all)          docker_stop_all ;;
         remove-stopped)    docker_remove_stopped ;;
-        prune-images)      docker_remove_unused_images ;;
+        prune-images)      docker_prune_images ;;
         kill-all)          docker_kill_all ;;
         *)                 docker_help ;;
     esac

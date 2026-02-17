@@ -1,4 +1,4 @@
-# gen — Structure and doc generator
+# Gen plugin for CBASH - Structure generator
 
 Scaffold project layouts, feature folders, workspaces, and troubleshooting dirs; or generate docs from templates (ADR, CAB, meeting, design, etc.) into a dated path. One plugin for structure and doc generation.
 

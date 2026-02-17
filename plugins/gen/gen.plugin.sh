@@ -4,9 +4,7 @@
 readonly GEN_TEMPLATE_DIR="$CBASH_DIR/plugins/gen/templates"
 readonly -a GEN_DOC_TYPES=("troubleshooting" "cab" "note" "adr" "meeting" "design" "cab-review" "code-review")
 
-# -----------------------------------------------------------------------------
 # Commands (scaffold)
-# -----------------------------------------------------------------------------
 
 gen_trouble() {
     local name="${1:-$(date '+%Y-%m-%d')}"
@@ -83,9 +81,7 @@ gen_project() {
     ls -la "$name" | while read -r line; do _muted "$line"; _br; done
 }
 
-# -----------------------------------------------------------------------------
 # Doc from template (output: $WORKSPACE_TROUBLESHOOT/<year>/<date>/<name>/)
-# -----------------------------------------------------------------------------
 
 _gen_check_template() {
     [[ -f "$1" ]] || { _gap; log_error "Template not found: $1"; return 1; }
@@ -143,9 +139,7 @@ gen_doc() {
     log_debug "Output file: $output_file"
 }
 
-# -----------------------------------------------------------------------------
 # Main Router
-# -----------------------------------------------------------------------------
 
 gen_help() {
     _describe command 'gen' \

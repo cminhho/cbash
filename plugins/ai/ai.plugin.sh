@@ -3,62 +3,25 @@
 
 readonly DEFAULT_MODEL="deepseek-r1:14b"
 
-# -----------------------------------------------------------------------------
 # Commands
-# -----------------------------------------------------------------------------
+_ai_check() { command -v ollama &>/dev/null || { log_error "Ollama not found. Install from https://ollama.ai"; return 1; }; }
 
-ai_check() {
-    command -v ollama &>/dev/null || {
-        log_error "Ollama not found. Install from https://ollama.ai"
-        return 1
-    }
-}
+ai_chat() { _ai_check && ollama run "${1:-$DEFAULT_MODEL}"; }
+ai_list() { _ai_check && ollama list; }
+ai_pull() { _ai_check || return 1; [[ -n "$1" ]] || { log_error "Usage: ai pull <model>"; return 1; }; ollama pull "$1"; }
 
-ai_chat() {
-    ai_check || return 1
-    local model="${1:-$DEFAULT_MODEL}"
-    log_info "Starting chat with $model..."
-    ollama run "$model"
-}
-
-ai_list() {
-    ai_check || return 1
-    echo "Available models:"
-    ollama list
-}
-
-ai_pull() {
-    ai_check || return 1
-    local model="$1"
-    [[ -z "$model" ]] && { log_error "Usage: ai pull <model>"; return 1; }
-    ollama pull "$model"
-}
-
-# -----------------------------------------------------------------------------
-# Main Router
-# -----------------------------------------------------------------------------
-
+# Help and router
 ai_help() {
     _describe command 'ai' \
         'chat [model]    Chat with AI (default: deepseek-r1:14b)' \
         'list            List available models' \
         'pull <model>    Pull a model' \
-        'aliases         List AI aliases' \
         'AI chat via Ollama'
-}
-
-ai_list_aliases() {
-    echo "AI aliases: aichat, ailist, aipull, chat"
-    echo "  aichat [model] = ai chat"
-    echo "  ailist        = ai list"
-    echo "  aipull <model>= ai pull"
-    echo "  chat [model]  = ai chat"
 }
 
 _main() {
     case "${1:-}" in
         help|--help|-h|"") ai_help ;;
-        aliases)           ai_list_aliases ;;
         chat|deepseek)     shift; ai_chat "$@" ;;
         list)              ai_list ;;
         pull)              shift; ai_pull "$@" ;;

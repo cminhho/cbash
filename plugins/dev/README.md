@@ -1,4 +1,4 @@
-# Dev plugin
+# Dev plugin for CBASH - Docker Compose development environment
 
 Docker Compose development environment. Uses `plugins/dev/development.yml` to start, stop, and manage local services (e.g. Localstack).
 

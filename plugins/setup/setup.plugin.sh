@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 # Setup plugin for CBASH - Development environment setup
 
-# -----------------------------------------------------------------------------
 # Commands
-# -----------------------------------------------------------------------------
 
 _show_line() {
     local label="$1" value="$2" missing="${3:-Not installed}" use_err="${4:-}"
@@ -83,35 +81,22 @@ setup_workspace() {
     "$CBASH_DIR/plugins/gen/gen.plugin.sh" workspace "$name"
 }
 
-# -----------------------------------------------------------------------------
-# Main Router
-# -----------------------------------------------------------------------------
-
+# Help and router
 setup_help() {
     _describe command 'setup' \
         'check           Check dev environment' \
         'brew [group]    Install tools (dev|cloud|ide|apps|all)' \
-        'workspace [name] Create ~/<name> via gen (default: workspace)' \
-        'aliases         List setup aliases' \
-        'New Mac Setup - development environment'
-}
-
-setup_list_aliases() {
-    _gap; _box "Setup aliases"; _br
-    _label "  scheck";  _muted_nl " = setup check"
-    _label "  sbrew";   _muted_nl " = setup brew [group]"
-    _label "  sws";     _muted_nl " = setup workspace [name]"
-    _br
+        'workspace [name] Create workspace via gen' \
+        'New Mac Setup'
 }
 
 _main() {
     case "${1:-}" in
         help|--help|-h|"") setup_help ;;
-        aliases)           setup_list_aliases ;;
-        check)             setup_check ;;
-        brew)              shift; setup_brew "$@" ;;
-        workspace)         shift; setup_workspace "$@" ;;
-        *)                 log_error "Unknown: $1"; return 1 ;;
+        check)     setup_check ;;
+        brew)      shift; setup_brew "$@" ;;
+        workspace) shift; setup_workspace "$@" ;;
+        *)         log_error "Unknown: $1"; return 1 ;;
     esac
 }
 

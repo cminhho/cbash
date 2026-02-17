@@ -1,4 +1,4 @@
-# npm
+# NPM plugin for CBASH - Node.js / npm / npx aliases
 
 Node.js / npm / npx aliases. Inspired by [ohmyzsh npm plugin](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/npm).
 

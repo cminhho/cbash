@@ -1,4 +1,4 @@
-# Setup Plugin
+# Setup plugin for CBASH - Development environment setup
 
 CBASH plugin for development environment setup: check tools, install via Homebrew (by group), create workspace. Used by [New Mac Setup](New-Mac-Setup.md).
 

@@ -1,4 +1,4 @@
-# MacOS plugin
+# MacOS plugin for CBASH - macOS system utilities
 
 This plugin provides macOS system utilities including system info, network tools,
 file operations, and software updates.

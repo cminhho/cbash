@@ -7,9 +7,7 @@ readonly CHEAT_COMMUNITY_DIR="${CHEAT_COMMUNITY_DIR:-$HOME/.config/cbash/cheatsh
 readonly CHEAT_PERSONAL_DIR="${CHEAT_PERSONAL_DIR:-$HOME/.config/cbash/cheatsheets/personal}"
 readonly CHEAT_REPO="https://github.com/cheat/cheatsheets"
 
-# -----------------------------------------------------------------------------
 # Helper Functions
-# -----------------------------------------------------------------------------
 
 _docs_ensure_dir() {
     [[ -d "$DOCS_DIR" ]] || mkdir -p "$DOCS_DIR"
@@ -38,9 +36,7 @@ _cheat_find() {
     echo "$file"
 }
 
-# -----------------------------------------------------------------------------
 # Docs Commands
-# -----------------------------------------------------------------------------
 
 docs_list() {
     _docs_ensure_dir
@@ -73,9 +69,7 @@ docs_view() {
     fi
 }
 
-# -----------------------------------------------------------------------------
 # Cheat Commands
-# -----------------------------------------------------------------------------
 
 docs_cheat() {
     local name="$1"
@@ -120,9 +114,7 @@ docs_cheat_edit() {
     ${EDITOR:-vim} "$CHEAT_PERSONAL_DIR/$name"
 }
 
-# -----------------------------------------------------------------------------
 # Config
-# -----------------------------------------------------------------------------
 
 docs_conf() {
     cat <<EOF
@@ -132,9 +124,7 @@ cheat_personal: $CHEAT_PERSONAL_DIR
 EOF
 }
 
-# -----------------------------------------------------------------------------
 # Main Router
-# -----------------------------------------------------------------------------
 
 docs_help() {
     _describe command 'docs' \

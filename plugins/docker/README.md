@@ -1,4 +1,4 @@
-# Docker plugin
+# Docker plugin for CBASH - Docker CLI helpers and short aliases
 
 Docker CLI helpers and short aliases. Inspired by [ohmyzsh docker plugin](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/docker).
 

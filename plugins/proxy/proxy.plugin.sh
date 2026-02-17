@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 # Proxy plugin for CBASH - Proxy settings management
 
-# -----------------------------------------------------------------------------
 # Commands
-# -----------------------------------------------------------------------------
 
 proxy_enable() {
     local proxy="${1:-${HTTP_PROXY_URL:-}}"
@@ -76,34 +74,22 @@ proxy_show() {
     fi
 }
 
-# -----------------------------------------------------------------------------
-# Main Router
-# -----------------------------------------------------------------------------
-
+# Help and router
 proxy_help() {
     _describe command 'proxy' \
         'enable [url]   Enable proxy (env, npm, git)' \
         'disable        Disable proxy' \
         'show           Show proxy settings' \
-        'aliases        List proxy aliases' \
         'Proxy settings manager'
-}
-
-proxy_list_aliases() {
-    echo "Proxy aliases: proxon, proxoff, proxshow"
-    echo "  proxon [url]  = proxy enable"
-    echo "  proxoff       = proxy disable"
-    echo "  proxshow      = proxy show"
 }
 
 _main() {
     case "${1:-}" in
         help|--help|-h|"") proxy_help ;;
-        aliases)           proxy_list_aliases ;;
-        enable)            shift; proxy_enable "$@" ;;
-        disable)           proxy_disable ;;
-        show)              proxy_show ;;
-        *)                 log_error "Unknown: $1"; return 1 ;;
+        enable)  shift; proxy_enable "$@" ;;
+        disable) proxy_disable ;;
+        show)    proxy_show ;;
+        *)       log_error "Unknown: $1"; return 1 ;;
     esac
 }
 
