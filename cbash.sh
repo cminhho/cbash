@@ -24,8 +24,36 @@ _init() {
 }
 
 _help() {
-    [[ -f "$CBASH_DIR/plugins/hint/hint.plugin.sh" ]] && bash "$CBASH_DIR/plugins/hint/hint.plugin.sh" && return
-    echo "cbash v$CBASH_VERSION - Run 'cbash help' for commands"
+    cat <<'EOF'
+CBASH CLI - macOS command line tools for developers
+
+USAGE
+  cbash [COMMAND] [SUBCOMMAND] [OPTIONS]
+
+COMMANDS
+  setup       Development environment setup (check, brew, workspace)
+  aliases     Shell aliases management (list, show, edit, load)
+  git         Git workflow utilities (config, log, branches, pull-all, ...)
+  dev         Docker Compose dev environment (start, stop, logs, exec, ...)
+  docker      Docker helpers (running, stop-all, prune-images, kill-all)
+  mvn         Maven wrapper and aliases
+  npm         npm/npx aliases
+  aws         AWS utilities (ssh, sqs-create, ssm-get)
+  k8s         Kubernetes helpers (pods, logs, desc, exec, restart)
+  gen         Generators (trouble, feat, workspace, project, doc)
+  docs        Documentation and cheatsheets (list, edit, cheat, cheat-setup)
+  ai          AI chat via Ollama (chat, list, pull)
+  macos       macOS system utilities (info, lock, ports, memory, ...)
+  proxy       Proxy settings (enable, disable, show)
+
+QUICK ALIASES
+  start, stop, devlogs    Dev environment
+  commit, auto_squash     Git shortcuts
+  ch, chlist, chsetup     Cheatsheets
+  mlock, mip, mports      macOS utilities
+
+Run 'cbash <plugin> help' for detailed help on each plugin.
+EOF
 }
 
 _config() {
@@ -51,6 +79,7 @@ _run() {
             case "$cmd" in
                 mac|misc)     _run_plugin macos "$@" ;;
                 doc|docs)     _run_plugin docs "$@" ;;
+                cheat)        _run_plugin docs cheat "$@" ;;
                 alias|aliases) _run_plugin aliases "$@" ;;
                 clone|pull|open) _run_plugin git "$cmd" "$@" ;;
                 log|logs|stop|exec|status|kill|kill-all) _run_plugin dev "$cmd" "$@" ;;
