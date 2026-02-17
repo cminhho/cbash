@@ -5,17 +5,29 @@
 source "$CBASH_DIR/lib/colors.sh"
 [[ -f "$CBASH_DIR/lib/log.sh" ]] && source "$CBASH_DIR/lib/log.sh"
 
-# =============================================================================
 # Format helpers
-# =============================================================================
 _br()      { printf "\n"; }
 _gap()     { printf "\n"; }
 _indent()  { if [[ $# -gt 0 ]]; then printf '%s\n' "$@" | sed 's/^/  /'; else sed 's/^/  /'; fi; }
 
-# =============================================================================
 # Utility functions
-# =============================================================================
 _command_exists() { command -v "$1" &>/dev/null; }
+
+# Plugin discovery
+cbash_list_plugins() {
+    echo "Core Plugins:"
+    find "$CBASH_DIR/plugins" -name "*.plugin.sh" 2>/dev/null | sort | while IFS= read -r f; do
+        [[ -f "$f" ]] && basename "$(dirname "$f")"
+    done
+    echo ""
+    echo "Custom Plugins:"
+    if [[ -d "$CBASH_DIR/custom/plugins" ]]; then
+        find "$CBASH_DIR/custom/plugins" -name "*.plugin.sh" 2>/dev/null | sort | while IFS= read -r f; do
+            [[ -f "$f" ]] && basename "$(dirname "$f")"
+        done
+    fi
+    return 0
+}
 
 # Describe command help (used by all plugins)
 _describe() {

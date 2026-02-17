@@ -53,30 +53,30 @@ _log_message() {
 # Level styles: label background (bak*) + message color (style_*), from colors.sh
 log_fatal() {
     [[ "${CBASH_LOG_LEVEL:-6}" -ge "${CBASH_LOG_LEVEL_FATAL:-1}" ]] || return 0
-    _log_message "FATAL" "${echo_bg_red:-$bakred}" "${style_err:-$txtred}" "$*" 2
+    _log_message "FATAL" "$bakred" "${style_err:-$txtred}" "$*" 2
 }
 
 log_error() {
     [[ "${CBASH_LOG_LEVEL:-6}" -ge "${CBASH_LOG_LEVEL_ERROR:-3}" ]] || return 0
-    _log_message "ERROR" "${echo_bg_red:-$bakred}" "${style_err:-$txtred}" "$*" 2
+    _log_message "ERROR" "$bakred" "${style_err:-$txtred}" "$*" 2
 }
 
 log_warning() {
     [[ "${CBASH_LOG_LEVEL:-6}" -ge "${CBASH_LOG_LEVEL_WARNING:-4}" ]] || return 0
-    _log_message "WARN" "${echo_bg_yellow:-$bakylw}" "${style_warn:-$txtylw}" "$*" 2
+    _log_message "WARN" "$bakylw" "${style_warn:-$txtylw}" "$*" 2
 }
 
 log_info() {
     [[ "${CBASH_LOG_LEVEL:-6}" -ge "${CBASH_LOG_LEVEL_INFO:-6}" ]] || return 0
-    _log_message "INFO" "${echo_bg_blue:-$bakblu}" "${style_ok:-$txtgrn}" "$*" 1
+    _log_message "INFO" "$bakblu" "${style_ok:-$txtgrn}" "$*" 1
 }
 
 log_success() {
     [[ "${CBASH_LOG_LEVEL:-6}" -ge "${CBASH_LOG_LEVEL_INFO:-6}" ]] || return 0
-    _log_message "SUCCESS" "${echo_bg_green:-$bakgrn}" "${style_ok:-$txtgrn}" "$*" 1
+    _log_message "SUCCESS" "$bakgrn" "${style_ok:-$txtgrn}" "$*" 1
 }
 
 log_debug() {
     [[ "${CBASH_LOG_LEVEL:-6}" -ge "${CBASH_LOG_LEVEL_DEBUG:-7}" ]] || return 0
-    _log_message "DEBUG" "${echo_bg_black:-}" "${style_muted:-$dim}" "$*" 1
+    _log_message "DEBUG" "" "${style_muted:-$dim}" "$*" 1
 }

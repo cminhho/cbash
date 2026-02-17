@@ -5,55 +5,31 @@
 [[ -z "${CBASH_VERSION:-}" ]] && readonly CBASH_VERSION="1.0.0"
 if [[ -z "$CBASH_DIR" ]]; then
   _d="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
-  CBASH_DIR="$([[ -f "$_d/lib/plugin.sh" ]] && echo "$_d" || echo "${HOME}/.cbash")"
+  CBASH_DIR="$([[ -f "$_d/lib/common.sh" ]] && echo "$_d" || echo "${HOME}/.cbash")"
   unset _d
 fi
 export CBASH_DIR
 
 _init() {
     [[ -d "$CBASH_DIR" ]] || { echo "Error: CBASH_DIR not found" >&2; exit 1; }
-    [[ -f "$CBASH_DIR/lib/plugin.sh" ]] && source "$CBASH_DIR/lib/plugin.sh"
-    local dir name
+    [[ -f "$CBASH_DIR/lib/common.sh" ]] && source "$CBASH_DIR/lib/common.sh"
+    local dir name f
     for dir in "$CBASH_DIR/plugins/"*/; do
         name=$(basename "$dir")
-        if [[ "$name" == "aliases" ]]; then
-            for f in "$dir"*.sh; do [[ -f "$f" && "${f##*/}" != "aliases.plugin.sh" ]] && source "$f"; done
-        fi
+        # Source aliases files (<name>.aliases.sh)
+        [[ -f "$dir/$name.aliases.sh" ]] && source "$dir/$name.aliases.sh"
+        # Source plugin files (<name>.plugin.sh)
         [[ -f "$dir/$name.plugin.sh" ]] && source "$dir/$name.plugin.sh"
+    done
+    # Source common aliases (plugins/aliases/*.sh except aliases.plugin.sh)
+    for f in "$CBASH_DIR/plugins/aliases/"*.sh; do
+        [[ -f "$f" && "${f##*/}" != "aliases.plugin.sh" ]] && source "$f"
     done
 }
 
 _help() {
-    cat <<'EOF'
-CBASH CLI - macOS command line tools for developers
-
-USAGE
-  cbash [COMMAND] [SUBCOMMAND] [OPTIONS]
-
-COMMANDS
-  setup       Development environment setup (check, brew, workspace)
-  aliases     Shell aliases management (list, show, edit, load)
-  git         Git workflow utilities (config, log, branches, pull-all, ...)
-  dev         Docker Compose dev environment (start, stop, logs, exec, ...)
-  docker      Docker helpers (running, stop-all, prune-images, kill-all)
-  mvn         Maven wrapper and aliases
-  npm         npm/npx aliases
-  aws         AWS utilities (ssh, sqs-create, ssm-get)
-  k8s         Kubernetes helpers (pods, logs, desc, exec, restart)
-  gen         Generators (trouble, feat, workspace, project, doc)
-  docs        Documentation and cheatsheets (list, edit, cheat, cheat-setup)
-  ai          AI chat via Ollama (chat, list, pull)
-  macos       macOS system utilities (info, lock, ports, memory, ...)
-  proxy       Proxy settings (enable, disable, show)
-
-QUICK ALIASES
-  start, stop, devlogs    Dev environment
-  commit, auto_squash     Git shortcuts
-  ch, chlist, chsetup     Cheatsheets
-  mlock, mip, mports      macOS utilities
-
-Run 'cbash <plugin> help' for detailed help on each plugin.
-EOF
+    [[ -f "$CBASH_DIR/lib/help.sh" ]] && bash "$CBASH_DIR/lib/help.sh" && return
+    echo "cbash v$CBASH_VERSION - Run 'cbash help' for commands"
 }
 
 _config() {

@@ -3,7 +3,6 @@
 
 [[ -n "$CBASH_DIR" && -d "$CBASH_DIR" ]] || { echo "Error: CBASH_DIR not set or not a directory" >&2; exit 1; }
 source "$CBASH_DIR/lib/common.sh"
-[[ -f "$CBASH_DIR/lib/plugin.sh" ]] && source "$CBASH_DIR/lib/plugin.sh"
 
 cli_help() {
     cat <<EOF

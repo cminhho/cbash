@@ -8,16 +8,6 @@ readonly GEN_TEMPLATE_DIR="$CBASH_DIR/plugins/gen/templates"
 readonly -a GEN_DOC_TYPES=("troubleshooting" "cab" "note" "adr" "meeting" "design" "cab-review" "code-review")
 
 # -----------------------------------------------------------------------------
-# Aliases
-# -----------------------------------------------------------------------------
-
-alias gtrouble='gen_trouble'
-alias gfeat='gen_feat'
-alias gws='gen_workspace'
-alias gproject='gen_project'
-alias gdoc='gen_doc'
-
-# -----------------------------------------------------------------------------
 # Commands (scaffold)
 # -----------------------------------------------------------------------------
 

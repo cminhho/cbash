@@ -12,15 +12,6 @@ readonly AWS_SSM_REGION="ap-southeast-1"
 readonly -a VALID_ENVS=("dev" "test" "staging" "production")
 
 # -----------------------------------------------------------------------------
-# Aliases
-# -----------------------------------------------------------------------------
-
-alias awsssh='aws_ssh_gateway'
-alias awssqscreate='aws_sqs_create'
-alias awssqstest='aws_sqs_test'
-alias awsssmget='aws_ssm_get'
-
-# -----------------------------------------------------------------------------
 # Helper Functions
 # -----------------------------------------------------------------------------
 

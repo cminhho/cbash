@@ -30,12 +30,6 @@ bakgrn='\033[42m'
 bakylw='\033[43m'
 bakblu='\033[44m'
 
-# Legacy echo_bg_* names (for log.sh fallbacks)
-echo_bg_black='\033[40m'
-echo_bg_red='\033[41m'
-echo_bg_green='\033[42m'
-echo_bg_yellow='\033[43m'
-echo_bg_blue='\033[44m'
 
 # =============================================================================
 # Semantic theme: set by cbash_theme or CBASH_THEME (dark | light | minimal)
