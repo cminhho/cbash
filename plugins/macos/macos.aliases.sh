@@ -1,5 +1,6 @@
 # MacOS aliases for CBASH
 
+alias mac='cbash macos'
 alias mlock='macos_lock'
 alias minfo='macos_info'
 alias mports='macos_ports'

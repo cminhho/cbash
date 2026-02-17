@@ -1,7 +1,16 @@
 # Dev aliases for CBASH
 
+# Subcommand shortcuts
+alias log='cbash dev log'
+alias logs='cbash dev logs'
+alias stop='cbash dev stop'
+alias exec='cbash dev exec'
+alias status='cbash dev status'
+alias kill='cbash dev kill'
+alias kill-all='cbash dev kill-all'
+
+# Function aliases
 alias start='dev_start'
-alias stop='dev_stop'
 alias restart='dev_restart'
 alias devreload='dev_reload'
 alias devstatus='dev_status'

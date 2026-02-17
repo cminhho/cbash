@@ -87,15 +87,13 @@ run_ok "git" git
 run_ok "docs" docs
 run_ok "aliases" aliases
 run_contains "git shows USAGE" "USAGE" git
-run_contains "docs shows USAGE" "USAGE" doc
+run_contains "docs shows USAGE" "USAGE" docs
 
 echo ""
 echo "Aliases -> plugin:"
-run_ok "mac -> macos" mac
-run_ok "doc -> docs" doc
 # clone with no args: git plugin may exit 1 (needs repo); just check it reached git
 run_contains "clone -> git (pass_cmd)" "clone" clone
-run_contains "mac shows macos" "macos" mac
+run_contains "macos shows macos" "macos" macos
 run_contains "aliases list" "alias" aliases list
 
 echo ""
