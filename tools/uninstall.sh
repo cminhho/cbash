@@ -1,28 +1,21 @@
 #!/bin/sh
-# Uninstall cbash-cli
+# Uninstall cbash-cli. Run from repo or set CBASH_DIR.
 
 set -e
-
-RED='\033[31m'
-GREEN='\033[32m'
-YELLOW='\033[33m'
-RESET='\033[0m'
-
+TOOLS_DIR="$(cd "$(dirname "$0")" && pwd)"
 CBASH_DIR="${CBASH_DIR:-$HOME/.cbash}"
-
-info()  { printf "${YELLOW}%s${RESET}\n" "$*"; }
-success() { printf "${GREEN}✓ %s${RESET}\n" "$*"; }
+. "$TOOLS_DIR/common.sh"
 
 # Confirm
 printf "Uninstall cbash-cli from $CBASH_DIR? [y/N] "
 read -r answer
 case "$answer" in
     [Yy]*) ;;
-    *) info "Cancelled"; exit 0 ;;
+    *) warn "Cancelled"; exit 0 ;;
 esac
 
 # Remove directory
-[ -d "$CBASH_DIR" ] && rm -rf "$CBASH_DIR" && info "Removed $CBASH_DIR"
+[ -d "$CBASH_DIR" ] && rm -rf "$CBASH_DIR" && warn "Removed $CBASH_DIR"
 
 # Remove from shell configs
 remove_from_shell() {
@@ -32,7 +25,7 @@ remove_from_shell() {
         sed -i.bak '/CBASH_DIR/d' "$file" 2>/dev/null || sed -i '' '/CBASH_DIR/d' "$file"
         sed -i.bak '/# CBASH CLI/d' "$file" 2>/dev/null || sed -i '' '/# CBASH CLI/d' "$file"
         rm -f "${file}.bak"
-        info "Cleaned $file"
+        warn "Cleaned $file"
     fi
 }
 
@@ -40,4 +33,4 @@ remove_from_shell "$HOME/.bashrc"
 remove_from_shell "$HOME/.zshrc"
 remove_from_shell "$HOME/.bash_profile"
 
-success "cbash-cli uninstalled"
+success "✓ cbash-cli uninstalled"

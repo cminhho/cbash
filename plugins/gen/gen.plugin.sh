@@ -162,6 +162,7 @@ gen_doc() {
 
 gen_help() {
     _describe command 'gen' \
+        'uuid                  Generate UUID' \
         'trouble [name]         Create troubleshooting dir (cwd)' \
         'feat [name]            Create feature dir' \
         'workspace [name]       Create ~/<name> (documents, archive, artifacts, downloads, tmp, repos)' \
@@ -193,6 +194,7 @@ _main() {
 
     case "$cmd" in
         help|--help|-h) gen_help ;;
+        uuid)           uuidgen ;;
         aliases)        gen_list_aliases ;;
         trouble)        shift; gen_trouble "$@" ;;
         feat)           shift; gen_feat "$@" ;;

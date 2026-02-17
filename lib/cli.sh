@@ -1,12 +1,9 @@
 #!/usr/bin/env bash
-# CLI management for CBASH
+# CLI management (cbash cli <cmd>)
 
 [[ -n "$CBASH_DIR" && -d "$CBASH_DIR" ]] || { echo "Error: CBASH_DIR not set or not a directory" >&2; exit 1; }
 source "$CBASH_DIR/lib/common.sh"
-
-# -----------------------------------------------------------------------------
-# Commands
-# -----------------------------------------------------------------------------
+[[ -f "$CBASH_DIR/lib/plugin.sh" ]] && source "$CBASH_DIR/lib/plugin.sh"
 
 cli_help() {
     cat <<EOF
@@ -34,10 +31,7 @@ cli_version() {
 }
 
 cli_plugins() {
-    echo "Available plugins:"
-    for plugin in "$CBASH_DIR/plugins"/*/*.plugin.sh; do
-        [[ -f "$plugin" ]] && echo "  $(basename "$(dirname "$plugin")")"
-    done | sort -u
+    cbash_list_plugins
 }
 
 # Copy local folder into CBASH_DIR (for testing without commit/push).
@@ -66,25 +60,13 @@ cli_reload() {
     exec "${SHELL:-/bin/bash}"
 }
 
-# -----------------------------------------------------------------------------
-# Main Router
-# -----------------------------------------------------------------------------
+cli_update() {
+    [[ -x "$CBASH_DIR/tools/upgrade.sh" ]] && "$CBASH_DIR/tools/upgrade.sh" || bash "$CBASH_DIR/tools/upgrade.sh"
+}
 
 _main() {
-    local cmd="$1"
-
-    if [[ -z "$cmd" ]]; then
-        _describe command 'cli' \
-            'help          Show help' \
-            'version       Show version' \
-            'plugins       List plugins' \
-            'install-local [dir] Copy local dev to install (testing)' \
-            'update        Update CBASH' \
-            'reload        Reload shell' \
-            'CLI management'
-        return 0
-    fi
-
+    local cmd="${1:-}"
+    [[ -z "$cmd" ]] && { cli_help; return 0; }
     case "$cmd" in
         help)           cli_help ;;
         version)        cli_version ;;

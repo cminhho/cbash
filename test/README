@@ -1,11 +1,14 @@
 Verify cbash-cli components. Tests live under test/<folder> matching the area.
 
+  test/verify_commands.sh  — main cbash commands, aliases, cli subcommands
+
   test/lib/     — lib
     verify_lib.sh   — colors, box, group, table, theme (visual)
     colors_test.sh  — lib/colors.sh assertions (raw codes, short names, theme, helpers)
     log_test.sh     — lib/log.sh assertions (levels, _log_has_colors, level filtering)
 
 Run from repo root:
+  ./test/verify_commands.sh
   ./test/lib/verify_lib.sh
   ./test/lib/colors_test.sh
   ./test/lib/log_test.sh
