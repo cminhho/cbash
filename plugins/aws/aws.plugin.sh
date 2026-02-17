@@ -197,4 +197,3 @@ _main() {
     esac
 }
 
-[[ "${BASH_SOURCE[0]}" == "${0}" ]] && _main "$@"
