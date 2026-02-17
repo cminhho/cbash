@@ -37,27 +37,37 @@ Type "clear"
 Enter
 Sleep 0.5s
 
-# Clone all repos from file
+# Clone all repos from file (zoom in)
+Set FontSize 18
 Type "clone_all test/repos-example.txt /tmp/demo"
 Enter
 Sleep 2s
+Set FontSize 12
 
-# Pull all repos
+# Pull all repos (zoom in)
+Set FontSize 18
 Type "pull_all /tmp/demo"
 Enter
 Sleep 2s
+Set FontSize 12
 
-# Run command in all repos
+# Run command in all repos (zoom in)
+Set FontSize 18
 Type 'gitfor "git status" /tmp/demo'
 Enter
 Sleep 2s
+Set FontSize 12
 
-# Sync repo
+# Sync repo (zoom in)
+Set FontSize 18
 Type "gitsync"
 Enter
 Sleep 2s
+Set FontSize 12
 
-# Auto-commit
+# Auto-commit (zoom in)
+Set FontSize 18
 Type "commit"
 Enter
 Sleep 2s
+Set FontSize 12
