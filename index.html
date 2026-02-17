@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="CBASH CLI – Command-line toolkit for developers. Git, Docker, AWS, Kubernetes, generators, and more. macOS and Linux.">
+  <meta name="description" content="CBASH CLI – Shell productivity toolkit for developers. Automate Git workflows, manage Docker/K8s, connect to AWS, 200+ aliases. Shell automation for Bash, Zsh on macOS, Linux, WSL.">
   <title>CBASH CLI – Command-line toolkit for developers</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -84,6 +84,10 @@
       margin-left: 1.5rem;
     }
     .nav a:hover { color: var(--accent); }
+    .nav img {
+      vertical-align: middle;
+      height: 20px;
+    }
 
     .hero {
       padding: 4rem 0 3.5rem;
@@ -315,6 +319,78 @@
       vertical-align: middle;
     }
 
+    /* Comparison table */
+    .comparison-table {
+      overflow-x: auto;
+    }
+    .comparison-table table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--text-sm);
+    }
+    .comparison-table th,
+    .comparison-table td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .comparison-table th {
+      color: var(--text-muted);
+      font-weight: 500;
+      background: var(--bg-elevated);
+    }
+    .comparison-table td code {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--text-muted);
+    }
+    .comparison-table td code.highlight {
+      color: var(--success);
+      font-weight: 500;
+    }
+
+    /* Aliases table */
+    .aliases-table {
+      overflow-x: auto;
+    }
+    .aliases-table table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--text-sm);
+    }
+    .aliases-table th,
+    .aliases-table td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .aliases-table th {
+      color: var(--text-muted);
+      font-weight: 500;
+      background: var(--bg-elevated);
+    }
+    .aliases-table td code {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--success);
+      font-weight: 500;
+    }
+    .aliases-table td:last-child {
+      color: var(--text-muted);
+    }
+
+    /* Demo GIF */
+    .demo-container {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+    .demo-container img {
+      max-width: 100%;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 32px rgba(0,0,0,.4);
+    }
+
     .site-footer {
       border-top: 1px solid var(--border);
       padding: 1.5rem 0;
@@ -331,8 +407,15 @@
     <div class="wrap">
       <a class="logo" href="#">CBASH CLI</a>
       <nav class="nav">
+        <a href="#install-options">Install</a>
+        <a href="#features">Features</a>
+        <a href="#usage">Usage</a>
+        <a href="#why">Why</a>
+        <a href="#aliases">Aliases</a>
         <a href="https://github.com/cminhho/cbash">GitHub</a>
-        <a href="https://github.com/cminhho/cbash/blob/master/README.md">Docs</a>
+        <a href="https://buymeacoffee.com/chungho" title="Buy Me A Coffee">
+          <img src="https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=flat-square&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee">
+        </a>
       </nav>
     </div>
   </header>
@@ -340,11 +423,12 @@
   <main>
     <section class="hero">
       <div class="wrap">
-        <h1>Command-line toolkit for developers</h1>
-        <p class="tagline">A single CLI to automate daily tasks, manage Git and Docker, run dev services, and work with AWS and Kubernetes. Built for macOS and Linux. Install once, use from any terminal.</p>
+        <h1>Shell productivity toolkit for developers</h1>
+        <p class="tagline">Stop typing long commands. Automate Git workflows, manage Docker/K8s, connect to AWS with 200+ aliases. Shell automation for Bash & Zsh on macOS, Linux, WSL.</p>
       </div>
     </section>
 
+    <!-- Install (industry: get-started first) -->
     <section class="section" id="install-options">
       <div class="wrap">
         <h2 class="section-title">Install</h2>
@@ -373,52 +457,52 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="features">
       <div class="wrap">
         <h2 class="section-title">Features</h2>
-        <p class="section-desc">Plugins and aliases for setup, Git, Docker, cloud, and local workflows. Run <code>cbash list-plugins</code> to see everything available.</p>
+        <p class="section-desc">Complete shell automation suite. Git workflow automation, Docker management, Kubernetes tools, AWS integration, and 200+ productivity aliases.</p>
         <div class="features">
           <div class="feature-card">
-            <div class="name">Setup</div>
-            <p class="desc">Check your dev environment, install tools via Homebrew (dev, cloud, IDE, apps), and scaffold a standard workspace layout.</p>
+            <div class="name">🚀 Setup</div>
+            <p class="desc">Dev environment checker, Homebrew tool installer (dev/cloud/IDE/apps), workspace scaffolding. One-command setup for new machines.</p>
           </div>
           <div class="feature-card">
-            <div class="name">Git</div>
-            <p class="desc">Manage branches, squash commits, pull across multiple repos, quick backup and push, open repo in browser. Includes short aliases (g, gst, gco, commit, etc.).</p>
+            <div class="name">🔀 Git Automation</div>
+            <p class="desc">Multi-repo operations, auto-commit/push, branch management, interactive squash, batch operations. Git workflow automation with 50+ aliases.</p>
           </div>
           <div class="feature-card">
-            <div class="name">Dev & Docker</div>
-            <p class="desc">Start, stop, and inspect Docker-based dev services. Follow logs, exec into containers, view stats. Shortcuts for common tasks (dps, drm, prune, kill-all).</p>
+            <div class="name">🐳 Docker Tools</div>
+            <p class="desc">Docker Compose management, container operations, log following, resource monitoring. 30+ Docker aliases for dev workflow automation.</p>
           </div>
           <div class="feature-card">
-            <div class="name">AWS</div>
-            <p class="desc">SSH into instances via SSM Session Manager, work with SQS (including LocalStack), and read SSM parameters from the CLI.</p>
+            <div class="name">☁️ AWS Integration</div>
+            <p class="desc">SSM Session Manager SSH, SQS operations, parameter store access. AWS CLI productivity tools for cloud developers.</p>
           </div>
           <div class="feature-card">
-            <div class="name">Kubernetes</div>
-            <p class="desc">List pods, follow logs, exec into pods, rollout restart deployments. Includes a quick kubectl cheat sheet for common commands.</p>
+            <div class="name">☸️ Kubernetes</div>
+            <p class="desc">Pod management, log streaming, shell access, deployment rollouts. Kubectl productivity tools with built-in cheat sheet.</p>
           </div>
           <div class="feature-card">
-            <div class="name">Generators</div>
-            <p class="desc">Scaffold directories for troubleshooting or features, workspace layout, project structure, and doc templates from the CLI.</p>
+            <div class="name">📝 Generators</div>
+            <p class="desc">Project scaffolding, workspace templates, document generators, troubleshooting helpers. CLI templates for rapid development.</p>
           </div>
           <div class="feature-card">
-            <div class="name">Docs & Cheatsheets</div>
-            <p class="desc">View and edit project docs and cheatsheets from the terminal. Optional community cheatsheets via <code>cheat setup</code>.</p>
+            <div class="name">📚 Knowledge Base</div>
+            <p class="desc">Terminal-accessible docs, cheatsheets, quick references. Community-driven knowledge sharing with <code>cheat</code> integration.</p>
           </div>
           <div class="feature-card">
-            <div class="name">AI (Ollama)</div>
-            <p class="desc">Chat with local models via Ollama, list and pull models from the CLI. Handy for quick prompts without leaving the terminal.</p>
+            <div class="name">🤖 AI Assistant</div>
+            <p class="desc">Local AI chat via Ollama, model management, terminal-based AI assistance. Quick AI help without leaving your workflow.</p>
           </div>
           <div class="feature-card">
-            <div class="name">macOS & Proxy</div>
-            <p class="desc">Lock screen, run speedtest, list listening ports and IPs, generate passwords, directory tree. Toggle proxy for env, npm, and git.</p>
+            <div class="name">⚙️ System Tools</div>
+            <p class="desc">macOS utilities, network tools, proxy management, password generation, file operations. System administration productivity tools.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="usage">
       <div class="wrap">
         <h2 class="section-title">Usage</h2>
         <p class="section-desc">Commands are plugin-based. Run <code>cbash</code> or <code>cbash help</code> for the full reference; <code>cbash &lt;plugin&gt; help</code> for plugin-specific help.</p>
@@ -427,13 +511,13 @@
 <span class="cmd">cbash &lt;plugin&gt;</span>         <span class="comment"># Run a plugin (e.g. git, dev, aws, k8s)</span>
 <span class="cmd">cbash list-plugins</span>     <span class="comment"># List all available plugins</span></code></pre>
         </div>
-        <p class="terminal-intro">Running <code>cbash</code> or <code>cbash help</code> prints the full command reference below:</p>
+        <p class="terminal-intro">Running <code>cbash</code> prints the minimal help. Use <code>cbash --full</code> for all commands:</p>
         <div class="terminal">
           <div class="terminal-header">
             <div class="terminal-dots">
               <span></span><span></span><span></span>
             </div>
-            <span class="terminal-title">cbash help</span>
+            <span class="terminal-title">cbash</span>
           </div>
           <div class="terminal-body">
             <pre><code><span class="t-title">CBASH CLI (1.0) – macOS command line tools for developers</span>
@@ -441,161 +525,120 @@
 <span class="t-hdr">USAGE</span>
   <span class="t-cmd">cbash [COMMAND] [SUBCOMMAND] [OPTIONS]</span>
 
-<span class="t-hdr">SETUP</span>
-  <span class="t-cmd">setup</span>                                 <span class="t-desc">Show help</span>
-  <span class="t-cmd">setup check</span>                           <span class="t-desc">Check dev environment</span> <span class="t-alias">→ scheck</span>
-  <span class="t-cmd">setup brew             [group]</span>        <span class="t-desc">Install tools (dev|cloud|ide|apps|all)</span> <span class="t-alias">→ sbrew</span>
-  <span class="t-cmd">setup workspace        [dir]</span>          <span class="t-desc">Create workspace structure</span> <span class="t-alias">→ sws</span>
-
-<span class="t-hdr">ALIASES</span>
-  <span class="t-cmd">aliases</span>                               <span class="t-desc">Show help</span>
-  <span class="t-cmd">aliases list</span>                          <span class="t-desc">List alias files</span>
-  <span class="t-cmd">aliases show           &lt;name&gt;</span>         <span class="t-desc">Show aliases in file</span>
-  <span class="t-cmd">aliases edit           &lt;name&gt;</span>         <span class="t-desc">Edit alias file</span>
-  <span class="t-cmd">aliases load</span>                          <span class="t-desc">Load all aliases</span>
-
 <span class="t-hdr">GIT</span>
-  <span class="t-cmd">git</span>                                   <span class="t-desc">Show help (aliases: g, gst, gco, commit, …)</span>
-  <span class="t-cmd">git config</span>                            <span class="t-desc">Show git config</span>
-  <span class="t-cmd">git log</span>                               <span class="t-desc">Recent commits</span>
-  <span class="t-cmd">git branches</span>                          <span class="t-desc">List branches with dates</span>
-  <span class="t-cmd">git branch             &lt;name&gt;</span>         <span class="t-desc">Create branch from master</span>
-  <span class="t-cmd">git rename             &lt;name&gt;</span>         <span class="t-desc">Rename current branch</span>
-  <span class="t-cmd">git undo</span>                              <span class="t-desc">Undo last commit (soft)</span>
-  <span class="t-cmd">git backup</span>                            <span class="t-desc">Quick commit and push</span>
-  <span class="t-cmd">git auto-commit</span>                       <span class="t-desc">Auto commit and push</span>
-  <span class="t-cmd">git squash</span>                            <span class="t-desc">Squash commits interactively</span>
-  <span class="t-cmd">git auto-squash</span>                       <span class="t-desc">Squash feature branch</span>
-  <span class="t-cmd">git pull-all           [dir]</span>          <span class="t-desc">Pull all repos in directory</span>
-  <span class="t-cmd">git for                "&lt;cmd&gt;" [dir]</span>  <span class="t-desc">Run command in every repo (e.g. "git pull")</span>
-  <span class="t-cmd">git clean</span>                             <span class="t-desc">Clean and optimize repo</span>
-  <span class="t-cmd">git size</span>                              <span class="t-desc">Show repo size</span>
-  <span class="t-cmd">git sync</span>                              <span class="t-desc">Fetch and pull</span>
-  <span class="t-cmd">git open</span>                              <span class="t-desc">Open repo in browser</span>
-  <span class="t-cmd">clone                  &lt;url&gt;</span>          <span class="t-desc">Git clone (cbash clone)</span>
-  <span class="t-cmd">pull</span>                                  <span class="t-desc">Git pull (cbash pull)</span>
+  <span class="t-cmd">git auto-commit</span>                       <span class="t-desc">Auto commit and push</span> <span class="t-alias">→ commit</span>
+  <span class="t-cmd">git auto-squash</span>                       <span class="t-desc">Squash feature branch</span> <span class="t-alias">→ auto_squash</span>
+  <span class="t-cmd">git pull-all           [dir]</span>          <span class="t-desc">Pull all repos</span> <span class="t-alias">→ pull_all</span>
+  <span class="t-cmd">git clone-all          &lt;file&gt;</span>         <span class="t-desc">Clone repos from file</span> <span class="t-alias">→ clone_all</span>
+  <span class="t-cmd">git for                "&lt;cmd&gt;"</span>        <span class="t-desc">Run command in all repos</span> <span class="t-alias">→ gitfor</span>
 
 <span class="t-hdr">DEVELOPMENT</span>
-  <span class="t-cmd">dev</span>                                   <span class="t-desc">Show help</span>
   <span class="t-cmd">dev start              [svc]</span>          <span class="t-desc">Start Docker services</span> <span class="t-alias">→ start</span>
   <span class="t-cmd">dev stop               [svc]</span>          <span class="t-desc">Stop services</span> <span class="t-alias">→ stop</span>
-  <span class="t-cmd">dev restart            [svc]</span>          <span class="t-desc">Restart services</span> <span class="t-alias">→ restart</span>
-  <span class="t-cmd">dev reload             [svc]</span>          <span class="t-desc">Recreate and start</span> <span class="t-alias">→ devreload</span>
-  <span class="t-cmd">dev status</span>                            <span class="t-desc">Service status</span> <span class="t-alias">→ devstatus</span>
-  <span class="t-cmd">dev list</span>                              <span class="t-desc">List services</span> <span class="t-alias">→ devlist</span>
   <span class="t-cmd">dev logs               [svc]</span>          <span class="t-desc">Follow logs</span> <span class="t-alias">→ devlogs</span>
   <span class="t-cmd">dev exec               &lt;svc&gt;</span>          <span class="t-desc">Shell into service</span> <span class="t-alias">→ devexec</span>
-  <span class="t-cmd">dev stats</span>                             <span class="t-desc">Container stats</span> <span class="t-alias">→ devstats</span>
-  <span class="t-cmd">dev ip</span>                                <span class="t-desc">Container IPs</span> <span class="t-alias">→ devip</span>
   <span class="t-cmd">dev kill-all</span>                          <span class="t-desc">Stop and remove all</span> <span class="t-alias">→ devkill</span>
 
-<span class="t-hdr">DOCKER</span>
-  <span class="t-cmd">docker</span>                                <span class="t-desc">Show help (aliases: d, dps, dr, drm, dlo, …)</span>
-  <span class="t-cmd">docker list</span>                           <span class="t-desc">List Docker aliases</span>
-  <span class="t-cmd">docker running</span>                        <span class="t-desc">List running containers</span>
-  <span class="t-cmd">docker stop-all</span>                       <span class="t-desc">Stop all containers</span>
-  <span class="t-cmd">docker remove-stopped</span>                 <span class="t-desc">Remove stopped containers</span>
-  <span class="t-cmd">docker prune-images</span>                   <span class="t-desc">Remove unused images</span>
-  <span class="t-cmd">docker kill-all</span>                       <span class="t-desc">Stop, remove all and volumes</span>
-
-<span class="t-hdr">MAVEN</span>
-  <span class="t-cmd">mvn</span>                                   <span class="t-desc">Maven wrapper + aliases (mci, build, run, …)</span>
-  <span class="t-cmd">mvn list</span>                              <span class="t-desc">List Maven aliases</span>
-
-<span class="t-hdr">NPM</span>
-  <span class="t-cmd">npm</span>                                   <span class="t-desc">npm/npx aliases (ni, nr, nx, nls, nt, …)</span>
-  <span class="t-cmd">npm list</span>                              <span class="t-desc">List npm/npx aliases</span>
-
-<span class="t-hdr">AWS</span>
-  <span class="t-cmd">aws</span>                                   <span class="t-desc">Show help</span>
-  <span class="t-cmd">aws ssh                &lt;profile&gt; &lt;env&gt;</span> <span class="t-desc">Connect to SSH gateway (SSM)</span> <span class="t-alias">→ awsssh</span>
-  <span class="t-cmd">aws sqs-create</span>                        <span class="t-desc">Create SQS queue (localstack)</span> <span class="t-alias">→ awssqscreate</span>
-  <span class="t-cmd">aws sqs-test</span>                          <span class="t-desc">Test SQS (localstack)</span> <span class="t-alias">→ awssqstest</span>
-  <span class="t-cmd">aws ssm-get</span>                           <span class="t-desc">Get SSM parameter</span> <span class="t-alias">→ awsssmget</span>
-
-<span class="t-hdr">KUBERNETES (K8S)</span>
-  <span class="t-cmd">k8s</span>                                   <span class="t-desc">Show help</span>
+<span class="t-hdr">K8S</span>
   <span class="t-cmd">k8s pods               [opts]</span>         <span class="t-desc">List pods</span> <span class="t-alias">→ k8pods</span>
   <span class="t-cmd">k8s logs               &lt;pod&gt;</span>          <span class="t-desc">Follow pod logs</span> <span class="t-alias">→ k8logs</span>
-  <span class="t-cmd">k8s desc               &lt;pod&gt;</span>          <span class="t-desc">Describe pod</span> <span class="t-alias">→ k8desc</span>
   <span class="t-cmd">k8s exec               &lt;pod&gt;</span>          <span class="t-desc">Shell into pod</span> <span class="t-alias">→ k8exec</span>
-  <span class="t-cmd">k8s restart            &lt;deploy&gt;</span>       <span class="t-desc">Rollout restart deployment</span> <span class="t-alias">→ k8restart</span>
-  <span class="t-cmd">k8s cheat              [pod]</span>          <span class="t-desc">Show kubectl commands</span> <span class="t-alias">→ k8cheat</span>
+  <span class="t-cmd">k8s restart            &lt;deploy&gt;</span>       <span class="t-desc">Rollout restart</span> <span class="t-alias">→ k8restart</span>
 
-<span class="t-hdr">GENERATORS (GEN)</span>
-  <span class="t-cmd">gen</span>                                   <span class="t-desc">Show help</span>
-  <span class="t-cmd">gen trouble            [name]</span>         <span class="t-desc">Create troubleshooting dir</span> <span class="t-alias">→ gtrouble</span>
-  <span class="t-cmd">gen feat               [name]</span>         <span class="t-desc">Create feature dir</span> <span class="t-alias">→ gfeat</span>
-  <span class="t-cmd">gen workspace          [name]</span>         <span class="t-desc">Create workspace structure</span> <span class="t-alias">→ gws</span>
-  <span class="t-cmd">gen project            [name]</span>         <span class="t-desc">Create project structure</span> <span class="t-alias">→ gproject</span>
-  <span class="t-cmd">gen doc                [type] [name]</span>  <span class="t-desc">Generate doc from template</span> <span class="t-alias">→ gdoc</span>
+<span class="t-hdr">AWS</span>
+  <span class="t-cmd">aws ssh                &lt;profile&gt;</span>      <span class="t-desc">Connect via SSM</span> <span class="t-alias">→ awsssh</span>
+  <span class="t-cmd">aws ssm-get</span>                           <span class="t-desc">Get SSM parameter</span> <span class="t-alias">→ awsssmget</span>
 
-<span class="t-hdr">DOCS</span>
-  <span class="t-cmd">doc                    &lt;name&gt;</span>         <span class="t-desc">View doc (cbash doc|docs &lt;name&gt;)</span>
-  <span class="t-cmd">docs</span>                                  <span class="t-desc">Show help</span>
-  <span class="t-cmd">docs list</span>                             <span class="t-desc">List documents</span>
-  <span class="t-cmd">docs edit              &lt;name&gt;</span>         <span class="t-desc">Edit document</span>
-  <span class="t-cmd">docs conf</span>                             <span class="t-desc">Show docs config</span>
-
-<span class="t-hdr">CHEAT</span>
-  <span class="t-cmd">cheat                  &lt;name&gt;</span>         <span class="t-desc">View cheatsheet</span> <span class="t-alias">→ ch</span>
-  <span class="t-cmd">cheat list</span>                            <span class="t-desc">List cheatsheets</span> <span class="t-alias">→ chlist</span>
-  <span class="t-cmd">cheat setup</span>                           <span class="t-desc">Download community cheatsheets</span> <span class="t-alias">→ chsetup</span>
-  <span class="t-cmd">cheat edit             &lt;name&gt;</span>         <span class="t-desc">Edit personal cheatsheet</span> <span class="t-alias">→ chedit</span>
-  <span class="t-cmd">cheat conf</span>                            <span class="t-desc">Show cheat config</span> <span class="t-alias">→ chconf</span>
-
-<span class="t-hdr">AI</span>
-  <span class="t-cmd">ai</span>                                    <span class="t-desc">Show help</span>
-  <span class="t-cmd">ai chat                [model]</span>        <span class="t-desc">Chat with AI (Ollama)</span> <span class="t-alias">→ chat, aichat</span>
-  <span class="t-cmd">ai list</span>                               <span class="t-desc">List Ollama models</span> <span class="t-alias">→ ailist</span>
-  <span class="t-cmd">ai pull                &lt;model&gt;</span>        <span class="t-desc">Pull model</span> <span class="t-alias">→ aipull</span>
-
-<span class="t-hdr">MACOS / MISC</span>
-  <span class="t-cmd">macos</span>                                 <span class="t-desc">Show help</span>
-  <span class="t-cmd">misc</span>                                  <span class="t-desc">Same as macos</span>
-  <span class="t-cmd">macos info</span>                            <span class="t-desc">macOS version</span> <span class="t-alias">→ minfo</span>
-  <span class="t-cmd">macos lock</span>                            <span class="t-desc">Lock screen</span> <span class="t-alias">→ mlock</span>
-  <span class="t-cmd">macos speedtest</span>                       <span class="t-desc">Internet speed</span> <span class="t-alias">→ mspeedtest</span>
-  <span class="t-cmd">macos memory</span>                          <span class="t-desc">Processes by memory</span> <span class="t-alias">→ mmemory</span>
+<span class="t-hdr">MORE</span>
+  <span class="t-cmd">ai chat                [model]</span>        <span class="t-desc">Chat with AI (Ollama)</span> <span class="t-alias">→ chat</span>
+  <span class="t-cmd">docs cheat             &lt;name&gt;</span>         <span class="t-desc">View cheatsheet</span> <span class="t-alias">→ ch</span>
   <span class="t-cmd">macos ports</span>                           <span class="t-desc">List listening ports</span> <span class="t-alias">→ mports</span>
-  <span class="t-cmd">macos ip-local</span>                        <span class="t-desc">Local IP</span> <span class="t-alias">→ mip</span>
-  <span class="t-cmd">macos ip-public</span>                       <span class="t-desc">Public IP</span> <span class="t-alias">→ mipublic</span>
-  <span class="t-cmd">macos update</span>                           <span class="t-desc">Update Homebrew, npm, pip</span> <span class="t-alias">→ mupdate</span>
-  <span class="t-cmd">macos ips</span>                             <span class="t-desc">All local IPs</span>
-  <span class="t-cmd">macos myip</span>                            <span class="t-desc">Public IP (fallbacks)</span>
-  <span class="t-cmd">macos passgen          [n]</span>            <span class="t-desc">Random password (n words)</span>
-  <span class="t-cmd">macos list</span>                            <span class="t-desc">List macos aliases</span>
-  <span class="t-cmd">macos users</span>                           <span class="t-desc">Logged-in users</span> <span class="t-alias">→ musers</span>
-  <span class="t-cmd">macos size             [path]</span>         <span class="t-desc">Directory size</span> <span class="t-alias">→ msize</span>
-  <span class="t-cmd">macos tree             [path]</span>         <span class="t-desc">Tree view</span> <span class="t-alias">→ mtree</span>
-  <span class="t-cmd">macos clean-empty</span>                     <span class="t-desc">Remove empty dirs</span> <span class="t-alias">→ mcleanempty</span>
-  <span class="t-cmd">macos find             &lt;path&gt; &lt;name&gt;</span>  <span class="t-desc">Find files</span>
-  <span class="t-cmd">macos replace</span>                         <span class="t-desc">Find and replace in files</span>
+  <span class="t-cmd">proxy enable           [url]</span>          <span class="t-desc">Enable proxy</span> <span class="t-alias">→ proxon</span>
 
-<span class="t-hdr">PROXY</span>
-  <span class="t-cmd">proxy</span>                                 <span class="t-desc">Show help</span>
-  <span class="t-cmd">proxy enable           [url]</span>          <span class="t-desc">Enable proxy (env, npm, git)</span> <span class="t-alias">→ proxon</span>
-  <span class="t-cmd">proxy disable</span>                         <span class="t-desc">Disable proxy</span> <span class="t-alias">→ proxoff</span>
-  <span class="t-cmd">proxy show</span>                            <span class="t-desc">Show proxy settings</span> <span class="t-alias">→ proxshow</span>
-
-<span class="t-hdr">QUICK REFERENCE (ALIAS → SECTION)</span>
-  <span class="t-cmd">scheck, sbrew, sws</span>           <span class="t-desc">Setup</span>
-  <span class="t-cmd">start, stop, devlogs, devkill</span> <span class="t-desc">Dev</span>
-  <span class="t-cmd">commit, auto_squash</span>          <span class="t-desc">Git</span>
-  <span class="t-cmd">d, dps, dr, drm, dlo</span>         <span class="t-desc">Docker</span>
-  <span class="t-cmd">gfeat, gtrouble, gws, gproject, gdoc</span> <span class="t-desc">Gen</span>
-  <span class="t-cmd">awsssh, awssqscreate, awsssmget</span> <span class="t-desc">AWS</span>
-  <span class="t-cmd">k8pods, k8logs, k8exec, k8cheat</span> <span class="t-desc">K8s</span>
-  <span class="t-cmd">ch, chlist, chsetup</span>          <span class="t-desc">Cheat</span>
-  <span class="t-cmd">chat, aichat, ailist</span>         <span class="t-desc">AI</span>
-  <span class="t-cmd">mlock, mip, mports, mupdate, minfo</span> <span class="t-desc">MacOS</span>
-  <span class="t-cmd">proxon, proxoff, proxshow</span>    <span class="t-desc">Proxy</span>
-
-<span class="t-desc">Run cbash &lt;plugin&gt; or cbash &lt;plugin&gt; help for detailed help.</span></code></pre>
+<span class="t-desc">Run cbash --full for all commands, or cbash &lt;plugin&gt; help for plugin help.</span></code></pre>
           </div>
         </div>
       </div>
     </section>
+
+    <!-- Why CBASH -->
+    <section class="section" id="why">
+      <div class="wrap">
+        <h2 class="section-title">Why CBASH?</h2>
+        <p class="section-desc">Save hours daily. Stop typing repetitive commands. Focus on code, not shell.</p>
+        <div class="comparison-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Task</th>
+                <th>Without CBASH</th>
+                <th>With CBASH</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Clone repos from list</td>
+                <td><code>Manual clone each</code></td>
+                <td><code class="highlight">clone_all repos.txt</code></td>
+              </tr>
+              <tr>
+                <td>Pull all repos</td>
+                <td><code>for d in */; do cd "$d" && git pull && cd ..; done</code></td>
+                <td><code class="highlight">pull_all</code></td>
+              </tr>
+              <tr>
+                <td>Run cmd in all repos</td>
+                <td><code>Loop + cd + eval</code></td>
+                <td><code class="highlight">gitfor "git status"</code></td>
+              </tr>
+              <tr>
+                <td>Auto-commit & push</td>
+                <td><code>git add . && git commit -m "..." && git push</code></td>
+                <td><code class="highlight">commit</code></td>
+              </tr>
+              <tr>
+                <td>Squash feature branch</td>
+                <td><code>Interactive rebase, force push</code></td>
+                <td><code class="highlight">auto_squash</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Aliases -->
+    <section class="section" id="aliases">
+      <div class="wrap">
+        <h2 class="section-title">Popular Aliases</h2>
+        <p class="section-desc">200+ aliases included. Here are the most used ones:</p>
+        <div class="aliases-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Alias</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>commit</code></td><td>Auto-commit with timestamp</td></tr>
+              <tr><td><code>pull_all</code></td><td>Pull all repos in directory</td></tr>
+              <tr><td><code>clone_all</code></td><td>Clone repos from file</td></tr>
+              <tr><td><code>gitfor</code></td><td>Run cmd in all repos</td></tr>
+              <tr><td><code>start</code> / <code>stop</code></td><td>Docker Compose services</td></tr>
+              <tr><td><code>devlogs</code></td><td>Follow container logs</td></tr>
+              <tr><td><code>k8pods</code></td><td>List Kubernetes pods</td></tr>
+              <tr><td><code>k8logs</code></td><td>Follow pod logs</td></tr>
+              <tr><td><code>awsssh</code></td><td>SSM Session Manager</td></tr>
+              <tr><td><code>chat</code></td><td>Chat with Ollama AI</td></tr>
+              <tr><td><code>ch</code></td><td>View cheatsheet</td></tr>
+              <tr><td><code>mports</code></td><td>List listening ports</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
 
     <div class="cta-bar">
       <div class="wrap">
@@ -610,7 +653,7 @@
       <div class="wrap">
         <p>Support the project</p>
         <a href="https://github.com/sponsors/cminhho" title="GitHub Sponsors"><img src="https://img.shields.io/github/sponsors/cminhho?logo=githubsponsors&style=flat-square" alt="GitHub Sponsors"></a>
-        <a href="https://buymeacoffee.com/hmchung926" title="Buy Me A Coffee"><img src="https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=flat-square&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee"></a>
+        <a href="https://buymeacoffee.com/chungho" title="Buy Me A Coffee"><img src="https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=flat-square&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee"></a>
       </div>
     </div>
   </main>
