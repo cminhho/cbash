@@ -13,12 +13,12 @@ Set Shell "zsh"
 Hide
 Type "source ~/.cbash/cbash.sh 2>/dev/null"
 Enter
-Sleep 1s
 Type "clear"
 Enter
 Show
 
-Sleep 2s
+Sleep 1s
+Set FontSize 12
 
 # Show minimal help
 Type "cbash"
@@ -28,6 +28,8 @@ Sleep 4s
 Type "clear"
 Enter
 Sleep 1s
+
+Set FontSize 18
 
 # Clone all repos from file
 Type "clone_all test/repos-example.txt /tmp/demo"
