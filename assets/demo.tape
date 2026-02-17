@@ -2,7 +2,7 @@
 # Generate: vhs assets/demo.tape
 
 Output assets/demo.gif
-Set FontSize 18
+Set FontSize 22
 Set Width 1280
 Set Height 720
 Set Theme "Dracula"
