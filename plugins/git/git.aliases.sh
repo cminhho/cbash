@@ -202,9 +202,14 @@ gdv() {
 
 # CBASH shortcuts (call git plugin)
 [[ -n "$CBASH_DIR" ]] && [[ -f "$CBASH_DIR/plugins/git/git.plugin.sh" ]] && {
-    alias auto_squash="$CBASH_DIR/plugins/git/git.plugin.sh auto-squash"
-    alias auto_commit="$CBASH_DIR/plugins/git/git.plugin.sh auto-commit"
-    alias commit="$CBASH_DIR/plugins/git/git.plugin.sh auto-commit"
-    alias for_git_pull="$CBASH_DIR/plugins/git/git.plugin.sh pull-all"
-    alias repos_pull="$CBASH_DIR/plugins/git/git.plugin.sh pull-all \$WORKSPACE_ROOT"
+    alias auto_squash="cbash git auto-squash"
+    alias squash="cbash git squash"
+    alias auto_commit="cbash git auto-commit"
+    alias commit="cbash git auto-commit"
+    alias pull_all="cbash git pull-all"
+    alias repos_pull="cbash git pull-all \$WORKSPACE_ROOT"
+    alias clone_all="cbash git clone-all"
+    alias git_for="cbash git for"
+    alias git_sync="cbash git sync"
+    alias git_clean="cbash git clean"
 }
