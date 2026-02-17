@@ -1,25 +1,10 @@
 #!/usr/bin/env bash
-# Gen plugin for CBASH
-# Structure generator (scaffold + doc from templates)
-
-[[ -n "$CBASH_DIR" ]] && source "$CBASH_DIR/lib/common.sh"
+# Gen plugin for CBASH - Structure generator
 
 readonly GEN_TEMPLATE_DIR="$CBASH_DIR/plugins/gen/templates"
 readonly -a GEN_DOC_TYPES=("troubleshooting" "cab" "note" "adr" "meeting" "design" "cab-review" "code-review")
 
-# -----------------------------------------------------------------------------
-# Aliases
-# -----------------------------------------------------------------------------
-
-alias gtrouble='gen_trouble'
-alias gfeat='gen_feat'
-alias gws='gen_workspace'
-alias gproject='gen_project'
-alias gdoc='gen_doc'
-
-# -----------------------------------------------------------------------------
 # Commands (scaffold)
-# -----------------------------------------------------------------------------
 
 gen_trouble() {
     local name="${1:-$(date '+%Y-%m-%d')}"
@@ -96,9 +81,7 @@ gen_project() {
     ls -la "$name" | while read -r line; do _muted "$line"; _br; done
 }
 
-# -----------------------------------------------------------------------------
 # Doc from template (output: $WORKSPACE_TROUBLESHOOT/<year>/<date>/<name>/)
-# -----------------------------------------------------------------------------
 
 _gen_check_template() {
     [[ -f "$1" ]] || { _gap; log_error "Template not found: $1"; return 1; }
@@ -156,9 +139,7 @@ gen_doc() {
     log_debug "Output file: $output_file"
 }
 
-# -----------------------------------------------------------------------------
 # Main Router
-# -----------------------------------------------------------------------------
 
 gen_help() {
     _describe command 'gen' \
@@ -185,24 +166,16 @@ gen_list_aliases() {
 }
 
 _main() {
-    local cmd="$1"
-
-    if [[ -z "$cmd" ]]; then
-        gen_help
-        return 0
-    fi
-
-    case "$cmd" in
-        help|--help|-h) gen_help ;;
-        uuid)           uuidgen ;;
-        aliases)        gen_list_aliases ;;
-        trouble)        shift; gen_trouble "$@" ;;
-        feat)           shift; gen_feat "$@" ;;
-        workspace)      shift; gen_workspace "$@" ;;
-        project)        shift; gen_project "$@" ;;
-        doc)            shift; gen_doc "$@" ;;
-        *)              _gap; log_error "Unknown gen command: $cmd"; return 1 ;;
+    case "${1:-}" in
+        help|--help|-h|"") gen_help ;;
+        uuid)              uuidgen ;;
+        aliases)           gen_list_aliases ;;
+        trouble)           shift; gen_trouble "$@" ;;
+        feat)              shift; gen_feat "$@" ;;
+        workspace)         shift; gen_workspace "$@" ;;
+        project)           shift; gen_project "$@" ;;
+        doc)               shift; gen_doc "$@" ;;
+        *)                 log_error "Unknown: $1"; return 1 ;;
     esac
 }
 
-[[ "${BASH_SOURCE[0]}" == "${0}" ]] && _main "$@"

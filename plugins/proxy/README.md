@@ -1,4 +1,4 @@
-# proxy — Proxy settings manager
+# Proxy plugin for CBASH - Proxy settings manager
 
 Enable or disable HTTP/HTTPS proxy for current shell, npm, and git. Source CBASH to get aliases.
 

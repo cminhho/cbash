@@ -1,73 +1,17 @@
 #!/usr/bin/env bash
-# MacOS plugin for CBASH
-# macOS system utilities and maintenance commands
+# MacOS plugin for CBASH - macOS system utilities
 
-[[ -n "$CBASH_DIR" ]] && source "$CBASH_DIR/lib/common.sh"
-
-# -----------------------------------------------------------------------------
-# Aliases (shortcuts for common commands)
-# -----------------------------------------------------------------------------
-
-alias mlock='macos_lock'
-alias minfo='macos_info'
-alias mports='macos_ports'
-alias mip='macos_ip_local'
-alias mipublic='macos_ip_public'
-alias mupdate='macos_update'
-alias mspeedtest='macos_speedtest'
-alias mmemory='macos_memory'
-alias msize='macos_size'
-alias mtree='macos_tree'
-alias musers='macos_users'
-alias mcleanempty='macos_clean_empty'
-
-# -----------------------------------------------------------------------------
-# Commands
-# -----------------------------------------------------------------------------
-
-macos_info() {
-    sw_vers
-}
-
-macos_lock() {
-    /System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend
-}
-
-macos_speedtest() {
-    log_info "Testing internet speed..."
-    networkQuality -v
-}
-
-macos_memory() {
-    top -o MEM
-}
-
-macos_ports() {
-    echo "Listening ports:"
-    sudo lsof -iTCP -sTCP:LISTEN -P
-}
-
-macos_ip_local() {
-    local ip
-    ip=$(ipconfig getifaddr en0 2>/dev/null || ipconfig getifaddr en1 2>/dev/null)
-    echo "${ip:-Not connected}"
-}
-
-macos_ip_public() {
-    curl -s https://ipinfo.io/ip
-}
-
-macos_users() {
-    dscl . -list /Users uid
-}
-
-macos_size() {
-    du -sh .
-}
-
-macos_tree() {
-    du -sh */ 2>/dev/null | sort -hr
-}
+# Commands 
+macos_info()      { sw_vers; }
+macos_lock()      { /System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend; }
+macos_speedtest() { log_info "Testing speed..."; networkQuality -v; }
+macos_memory()    { top -o MEM; }
+macos_ports()     { echo "Listening ports:"; sudo lsof -iTCP -sTCP:LISTEN -P; }
+macos_ip_local()  { ipconfig getifaddr en0 2>/dev/null || ipconfig getifaddr en1 2>/dev/null || echo "Not connected"; }
+macos_ip_public() { curl -s https://ipinfo.io/ip; }
+macos_users()     { dscl . -list /Users uid; }
+macos_size()      { du -sh .; }
+macos_tree()      { du -sh */ 2>/dev/null | sort -hr; }
 
 macos_clean_empty() {
     local empty_dirs
@@ -128,108 +72,64 @@ macos_update() {
     log_success "Update complete"
 }
 
-# -----------------------------------------------------------------------------
-# Misc (merged from base plugin: cross-platform ips/myip/passgen)
-# -----------------------------------------------------------------------------
-
-macos_ips() {
-    if command -v ifconfig &>/dev/null; then
-        ifconfig | awk '/inet /{ gsub(/addr:/, ""); print $2 }'
-    elif command -v ip &>/dev/null; then
-        ip addr | grep -oP 'inet \K[\d.]+'
-    else
-        log_error "ifconfig or ip command not found"
-    fi
-}
+# Commands (misc)
+macos_ips() { ifconfig 2>/dev/null | awk '/inet /{ print $2 }' || ip addr | grep -oP 'inet \K[\d.]+'; }
 
 macos_myip() {
-    local urls=("http://myip.dnsomatic.com/" "http://checkip.dyndns.com/" "https://ipinfo.io/ip")
-    for url in "${urls[@]}"; do
-        local res
-        if res="$(curl -fs "$url" 2>/dev/null)"; then
-            echo "$res" | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | head -1
-            return 0
-        fi
+    for url in "https://ipinfo.io/ip" "http://myip.dnsomatic.com/"; do
+        curl -fs "$url" 2>/dev/null && return 0
     done
     log_error "Could not determine public IP"
 }
 
 macos_passgen() {
-    local length="${1:-4}"
-    local words=()
-
-    if [[ -f /usr/share/dict/words ]]; then
-        for ((i=0; i<length; i++)); do
-            words+=("$(shuf -n1 /usr/share/dict/words 2>/dev/null)")
-        done
-        echo "Password: ${words[*]}"
-    else
-        openssl rand -base64 32 | head -c 24
-        echo
-    fi
+    local n="${1:-4}"
+    [[ -f /usr/share/dict/words ]] && { shuf -n "$n" /usr/share/dict/words | tr '\n' ' '; echo; return; }
+    openssl rand -base64 32 | head -c 24; echo
 }
 
-# -----------------------------------------------------------------------------
-# Main Router
-# -----------------------------------------------------------------------------
-
+# Help and router
 macos_help() {
     _describe command 'macos' \
-        'info            Show macOS version' \
+        'info            macOS version' \
         'lock            Lock screen' \
-        'speedtest       Test internet speed' \
-        'memory          Show memory usage' \
-        'ports           List listening ports' \
-        'ip-local        Show local IP' \
-        'ip-public       Show public IP' \
-        'users           List system users' \
-        'size            Show current folder size' \
-        'tree            List folders by size' \
-        'clean-empty     Remove empty directories' \
-        'find <text> <ext>  Find text in files' \
-        'replace <file> <s> <r>  Replace in file' \
+        'speedtest       Internet speed' \
+        'memory          Memory usage' \
+        'ports           Listening ports' \
+        'ip-local        Local IP' \
+        'ip-public       Public IP' \
+        'users           System users' \
+        'size            Folder size' \
+        'tree            Folders by size' \
+        'clean-empty     Remove empty dirs' \
+        'find <t> <ext>  Find text in files' \
+        'replace <f> <s> <r>  Replace in file' \
         'update          Update brew/npm/pip' \
-        'ips             Show all local IPs (ifconfig/ip)' \
-        'myip            Show public IP (fallback sources)' \
-        'passgen [n]     Generate random password (n words)' \
-        'list            List aliases' \
-        'macOS system utilities'
-}
-
-macos_list_aliases() {
-    echo "MacOS aliases: mlock, minfo, mports, mip, mipublic, mupdate, mspeedtest, mmemory, msize, mtree, musers, mcleanempty"
+        'passgen [n]     Random password' \
+        'macOS utilities'
 }
 
 _main() {
-    local cmd="$1"
-
-    if [[ -z "$cmd" ]]; then
-        macos_help
-        return 0
-    fi
-
-    case "$cmd" in
-        help|--help|-h) macos_help ;;
-        list)          macos_list_aliases ;;
-        info)          macos_info ;;
-        lock)           macos_lock ;;
-        speedtest)      macos_speedtest ;;
-        memory)         macos_memory ;;
-        ports)          macos_ports ;;
-        ip-local)       macos_ip_local ;;
-        ip-public)      macos_ip_public ;;
-        users)          macos_users ;;
-        size)           macos_size ;;
-        tree)           macos_tree ;;
-        clean-empty)    macos_clean_empty ;;
-        find)           shift; macos_find "$@" ;;
-        replace)        shift; macos_replace "$@" ;;
-        update)         macos_update ;;
-        ips)            macos_ips ;;
-        myip)           macos_myip ;;
-        passgen)        shift; macos_passgen "$@" ;;
-        *)              log_error "Unknown command: $cmd"; return 1 ;;
+    case "${1:-}" in
+        help|--help|-h|"") macos_help ;;
+        info)        macos_info ;;
+        lock)        macos_lock ;;
+        speedtest)   macos_speedtest ;;
+        memory)      macos_memory ;;
+        ports)       macos_ports ;;
+        ip-local)    macos_ip_local ;;
+        ip-public)   macos_ip_public ;;
+        users)       macos_users ;;
+        size)        macos_size ;;
+        tree)        macos_tree ;;
+        clean-empty) macos_clean_empty ;;
+        find)        shift; macos_find "$@" ;;
+        replace)     shift; macos_replace "$@" ;;
+        update)      macos_update ;;
+        ips)         macos_ips ;;
+        myip)        macos_myip ;;
+        passgen)     shift; macos_passgen "$@" ;;
+        *)           log_error "Unknown: $1"; return 1 ;;
     esac
 }
 
-[[ "${BASH_SOURCE[0]}" == "${0}" ]] && _main "$@"

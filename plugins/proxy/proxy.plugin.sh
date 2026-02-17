@@ -1,20 +1,7 @@
 #!/usr/bin/env bash
-# Proxy plugin for CBASH
-# Manage proxy settings for shell, npm, and git
+# Proxy plugin for CBASH - Proxy settings management
 
-[[ -n "$CBASH_DIR" ]] && source "$CBASH_DIR/lib/common.sh"
-
-# -----------------------------------------------------------------------------
-# Aliases
-# -----------------------------------------------------------------------------
-
-alias proxon='proxy_enable'
-alias proxoff='proxy_disable'
-alias proxshow='proxy_show'
-
-# -----------------------------------------------------------------------------
 # Commands
-# -----------------------------------------------------------------------------
 
 proxy_enable() {
     local proxy="${1:-${HTTP_PROXY_URL:-}}"
@@ -87,42 +74,22 @@ proxy_show() {
     fi
 }
 
-# -----------------------------------------------------------------------------
-# Main Router
-# -----------------------------------------------------------------------------
-
+# Help and router
 proxy_help() {
     _describe command 'proxy' \
         'enable [url]   Enable proxy (env, npm, git)' \
         'disable        Disable proxy' \
         'show           Show proxy settings' \
-        'aliases        List proxy aliases' \
         'Proxy settings manager'
 }
 
-proxy_list_aliases() {
-    echo "Proxy aliases: proxon, proxoff, proxshow"
-    echo "  proxon [url]  = proxy enable"
-    echo "  proxoff       = proxy disable"
-    echo "  proxshow      = proxy show"
-}
-
 _main() {
-    local cmd="$1"
-
-    if [[ -z "$cmd" ]]; then
-        proxy_help
-        return 0
-    fi
-
-    case "$cmd" in
-        help|--help|-h) proxy_help ;;
-        aliases)        proxy_list_aliases ;;
-        enable)         shift; proxy_enable "$@" ;;
-        disable)        proxy_disable ;;
-        show)           proxy_show ;;
-        *)              log_error "Unknown command: $cmd"; return 1 ;;
+    case "${1:-}" in
+        help|--help|-h|"") proxy_help ;;
+        enable)  shift; proxy_enable "$@" ;;
+        disable) proxy_disable ;;
+        show)    proxy_show ;;
+        *)       log_error "Unknown: $1"; return 1 ;;
     esac
 }
 
-[[ "${BASH_SOURCE[0]}" == "${0}" ]] && _main "$@"

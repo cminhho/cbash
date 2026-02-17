@@ -1,22 +1,7 @@
 #!/usr/bin/env bash
-# Setup plugin for CBASH
-# Development environment setup (see New-Mac-Setup.md)
+# Setup plugin for CBASH - Development environment setup
 
-[[ -n "$CBASH_DIR" ]] && source "$CBASH_DIR/lib/common.sh"
-
-readonly SETUP_DIR="$CBASH_DIR/plugins/setup"
-
-# -----------------------------------------------------------------------------
-# Aliases
-# -----------------------------------------------------------------------------
-
-alias scheck='setup_check'
-alias sbrew='setup_brew'
-alias sws='setup_workspace'
-
-# -----------------------------------------------------------------------------
 # Commands
-# -----------------------------------------------------------------------------
 
 _show_line() {
     local label="$1" value="$2" missing="${3:-Not installed}" use_err="${4:-}"
@@ -96,43 +81,22 @@ setup_workspace() {
     "$CBASH_DIR/plugins/gen/gen.plugin.sh" workspace "$name"
 }
 
-# -----------------------------------------------------------------------------
-# Main Router
-# -----------------------------------------------------------------------------
-
+# Help and router
 setup_help() {
     _describe command 'setup' \
         'check           Check dev environment' \
         'brew [group]    Install tools (dev|cloud|ide|apps|all)' \
-        'workspace [name] Create ~/<name> via gen (default: workspace)' \
-        'aliases         List setup aliases' \
-        'New Mac Setup - development environment'
-}
-
-setup_list_aliases() {
-    _gap; _box "Setup aliases"; _br
-    _label "  scheck";  _muted_nl " = setup check"
-    _label "  sbrew";   _muted_nl " = setup brew [group]"
-    _label "  sws";     _muted_nl " = setup workspace [name]"
-    _br
+        'workspace [name] Create workspace via gen' \
+        'New Mac Setup'
 }
 
 _main() {
-    local cmd="$1"
-
-    if [[ -z "$cmd" ]]; then
-        setup_help
-        return 0
-    fi
-
-    case "$cmd" in
-        help|--help|-h) setup_help ;;
-        aliases)        setup_list_aliases ;;
-        check)          setup_check ;;
-        brew)           shift; setup_brew "$@" ;;
-        workspace)      shift; setup_workspace "$@" ;;
-        *)              log_error "Unknown command: $cmd"; return 1 ;;
+    case "${1:-}" in
+        help|--help|-h|"") setup_help ;;
+        check)     setup_check ;;
+        brew)      shift; setup_brew "$@" ;;
+        workspace) shift; setup_workspace "$@" ;;
+        *)         log_error "Unknown: $1"; return 1 ;;
     esac
 }
 
-[[ "${BASH_SOURCE[0]}" == "${0}" ]] && _main "$@"

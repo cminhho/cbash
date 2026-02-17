@@ -1,4 +1,4 @@
-# ai — AI chat via Ollama
+# AI plugin for CBASH - Chat with AI models via Ollama
 
 Chat with AI models (default: deepseek-r1:14b), list models, and pull new models. Uses [Ollama](https://ollama.ai). Source CBASH to get aliases.
 

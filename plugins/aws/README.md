@@ -1,4 +1,4 @@
-# AWS Plugin — AWS infrastructure utilities
+# AWS plugin for CBASH - AWS infrastructure utilities
 
 SSH gateway (SSM), SQS (localstack), and SSM Parameter Store. Source CBASH to get aliases.
 

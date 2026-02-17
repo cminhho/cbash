@@ -1,4 +1,4 @@
-# k8s — Kubernetes helper
+# K8s plugin for CBASH - Kubernetes helpers
 
 List pods, follow logs, describe, exec into pods, restart deployments, and print kubectl command cheats. Uses `K8S_NAMESPACE` (default: `default`). Source CBASH to get aliases.
 

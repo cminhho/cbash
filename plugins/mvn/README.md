@@ -1,4 +1,4 @@
-# mvn
+# Maven plugin for CBASH - Maven helpers
 
 Maven plugin: uses `mvnw` when present in the project (current or parent directory), otherwise runs system `mvn`. Defines common Maven aliases. Behaviour is inspired by [ohmyzsh mvn plugin](https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/mvn).
 

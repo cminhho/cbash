@@ -1,5 +1,9 @@
 # Git aliases for CBASH (sourced by git plugin)
-# Keep in sync with plugin: get_default_branch used by aliases
+
+# Subcommand shortcuts
+alias clone='cbash git clone'
+alias pull='cbash git pull'
+alias open='cbash git open'
 
 get_default_branch() {
     if git branch 2>/dev/null | grep -q '^. main\s*$'; then

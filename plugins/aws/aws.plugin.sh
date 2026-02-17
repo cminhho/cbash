@@ -1,29 +1,13 @@
 #!/usr/bin/env bash
-# AWS plugin for CBASH
-# Provides utilities for AWS infrastructure management
+# AWS plugin for CBASH - AWS infrastructure utilities
 
-[[ -n "$CBASH_DIR" ]] && source "$CBASH_DIR/lib/common.sh"
-
-# Localstack configuration
 readonly AWS_LOCALSTACK_ENDPOINT="http://localhost:4566"
-readonly AWS_LOCALSTACK_REGION="us-west-2"
 readonly AWS_SSM_REGION="ap-southeast-1"
 
 # Valid environments for SSH gateway
 readonly -a VALID_ENVS=("dev" "test" "staging" "production")
 
-# -----------------------------------------------------------------------------
-# Aliases
-# -----------------------------------------------------------------------------
-
-alias awsssh='aws_ssh_gateway'
-alias awssqscreate='aws_sqs_create'
-alias awssqstest='aws_sqs_test'
-alias awsssmget='aws_ssm_get'
-
-# -----------------------------------------------------------------------------
 # Helper Functions
-# -----------------------------------------------------------------------------
 
 _aws_validate_env() {
     local env="$1"
@@ -45,9 +29,7 @@ _aws_check_profile() {
     }
 }
 
-# -----------------------------------------------------------------------------
 # Commands
-# -----------------------------------------------------------------------------
 
 aws_ssh_gateway() {
     [[ $# -eq 2 ]] || {
@@ -178,9 +160,7 @@ aws_ssm_get() {
     fi
 }
 
-# -----------------------------------------------------------------------------
 # Main Router
-# -----------------------------------------------------------------------------
 
 aws_help() {
     _describe command 'aws' \
@@ -200,22 +180,14 @@ aws_list_aliases() {
 }
 
 _main() {
-    local cmd="$1"
-
-    if [[ -z "$cmd" ]]; then
-        aws_help
-        return 0
-    fi
-
-    case "$cmd" in
-        help|--help|-h) aws_help ;;
-        aliases)        aws_list_aliases ;;
-        ssh)            shift; aws_ssh_gateway "$@" ;;
-        sqs-create)     shift; aws_sqs_create "$@" ;;
-        sqs-test)       shift; aws_sqs_test "$@" ;;
-        ssm-get)        shift; aws_ssm_get "$@" ;;
-        *)              log_error "Invalid command: $cmd"; return 1 ;;
+    case "${1:-}" in
+        help|--help|-h|"") aws_help ;;
+        aliases)           aws_list_aliases ;;
+        ssh)               shift; aws_ssh_gateway "$@" ;;
+        sqs-create)        shift; aws_sqs_create "$@" ;;
+        sqs-test)          shift; aws_sqs_test "$@" ;;
+        ssm-get)           shift; aws_ssm_get "$@" ;;
+        *)                 log_error "Unknown: $1"; return 1 ;;
     esac
 }
 
-[[ "${BASH_SOURCE[0]}" == "${0}" ]] && _main "$@"
