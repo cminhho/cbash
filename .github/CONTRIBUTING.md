@@ -22,24 +22,31 @@ Thank you for your interest in contributing!
 
 ### Plugin Structure
 
-Plugins are convention-based: one directory per plugin, one entry script per plugin. No `commands/` subfolder.
+Plugins are convention-based: one directory per plugin.
 
 ```
-plugins/your-plugin/
-├── README.md
-└── your-plugin.plugin.sh
+plugins/<name>/
+├── <name>.plugin.sh   # Commands and router (required)
+├── <name>.aliases.sh  # Shell aliases (optional, sourced into shell)
+└── README.md          # Documentation (optional)
 ```
 
-- Entry point: `plugins/<name>/<name>.plugin.sh` (required). It receives subcommand as first arg and rest as `"$@"`.
-- Optional: extra scripts or assets in the same directory (e.g. `plugins/aliases/*.sh`, `plugins/dev/development.yml`).
-- Custom plugins: same layout under `custom/plugins/<name>/`.
+**Key points:**
+- Entry point: `<name>.plugin.sh` with `_main()` function
+- No need to source `lib/common.sh` - cbash.sh handles it
+- Aliases go in separate `.aliases.sh` file
+- Use `templates/plugin.template.sh` as starting point
 
 ## Testing
 
 Test your changes before submitting:
+```bash
+./test/verify_commands.sh  # Run all tests (26 tests)
+shellcheck plugins/*/*.plugin.sh  # Lint scripts
+```
+
 - Test on clean environment
 - Test with bash and zsh
-- Run `shellcheck` on modified scripts
 - Verify no hardcoded credentials
 
 ## Pull Requests
