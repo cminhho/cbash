@@ -13,6 +13,7 @@ Set Shell "zsh"
 Hide
 Type "source ~/.cbash/cbash.sh 2>/dev/null"
 Enter
+Sleep 1s
 Type "clear"
 Enter
 Show
@@ -26,29 +27,29 @@ Sleep 4s
 
 Type "clear"
 Enter
-Sleep 0.5s
+Sleep 1s
 
 # Clone all repos from file
 Type "clone_all test/repos-example.txt /tmp/demo"
 Enter
-Sleep 2s
+Sleep 3s
 
 # Pull all repos
 Type "pull_all /tmp/demo"
 Enter
-Sleep 2s
+Sleep 3s
 
 # Run command in all repos
 Type 'gitfor "git status" /tmp/demo'
 Enter
-Sleep 2s
+Sleep 3s
 
 # Sync repo
 Type "gitsync"
 Enter
-Sleep 2s
+Sleep 3s
 
 # Auto-commit
 Type "commit"
 Enter
-Sleep 2s
+Sleep 3s
