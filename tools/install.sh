@@ -1,73 +1,46 @@
 #!/bin/sh
-# Install cbash-cli (oh-my-zsh style)
-#
-# Usage:
-#   sh -c "$(curl -fsSL https://raw.githubusercontent.com/cminhho/cbash/master/tools/install.sh)"
-#
-# Environment variables:
-#   CBASH_DIR - install path (default: ~/.cbash)
-#   REPO      - repo (default: cminhho/cbash)
-#   BRANCH    - branch (default: master)
+# Install cbash-cli
+# Usage: sh -c "$(curl -fsSL https://raw.githubusercontent.com/cminhho/cbash/master/tools/install.sh)"
+# Env: CBASH_DIR (default: ~/.cbash), REPO (default: cminhho/cbash), BRANCH (default: master)
 
 set -e
 
-# Colors
-RED='\033[31m'
-GREEN='\033[32m'
-YELLOW='\033[33m'
-BLUE='\033[34m'
-RESET='\033[0m'
-
-# Defaults
+# Config
 CBASH_DIR="${CBASH_DIR:-$HOME/.cbash}"
 REPO="${REPO:-cminhho/cbash}"
-REMOTE="${REMOTE:-https://github.com/${REPO}.git}"
+REMOTE="https://github.com/${REPO}.git"
 BRANCH="${BRANCH:-master}"
 
-error() { printf "${RED}Error: %s${RESET}\n" "$*" >&2; exit 1; }
-info()  { printf "${BLUE}%s${RESET}\n" "$*"; }
-success() { printf "${GREEN}%s${RESET}\n" "$*"; }
+# Colors (inline - can't source common.sh before clone)
+RED='\033[31m'; GREEN='\033[32m'; YELLOW='\033[33m'; BLUE='\033[34m'; RST='\033[0m'
+error()   { printf "${RED}Error: %s${RST}\n" "$*" >&2; exit 1; }
+info()    { printf "${BLUE}%s${RST}\n" "$*"; }
+success() { printf "${GREEN}%s${RST}\n" "$*"; }
 
 # Check git
 command -v git >/dev/null 2>&1 || error "git is not installed"
 
-# Clone repo
+# Install/update
 info "Installing cbash-cli to $CBASH_DIR..."
-
-if [ -d "$CBASH_DIR" ]; then
-    info "Updating existing installation..."
-    cd "$CBASH_DIR"
-    git pull --rebase origin "$BRANCH" 2>/dev/null || true
+if [ -d "$CBASH_DIR/.git" ]; then
+    git -C "$CBASH_DIR" pull --rebase origin "$BRANCH" 2>/dev/null || true
 else
+    rm -rf "$CBASH_DIR" 2>/dev/null || true
     git clone --depth=1 -b "$BRANCH" "$REMOTE" "$CBASH_DIR"
 fi
-
-# Make executable
 chmod +x "$CBASH_DIR/cbash.sh"
 
-# Add to shell config (CBASH_DIR is set automatically by cbash.sh)
+# Add to shell config
 add_to_shell() {
-    local config="$1"
-    local line="source \"$CBASH_DIR/cbash.sh\""
-    
-    if [ -f "$config" ]; then
-        if ! grep -q "cbash.sh" "$config" 2>/dev/null; then
-            echo "" >> "$config"
-            echo "# CBASH CLI" >> "$config"
-            echo "$line" >> "$config"
-            info "Added to $config"
-        fi
-    fi
+    [ -f "$1" ] || return 0
+    grep -q "cbash.sh" "$1" 2>/dev/null && return 0
+    printf '\n# CBASH CLI\nsource "%s/cbash.sh"\n' "$CBASH_DIR" >> "$1"
+    info "Added to $1"
 }
-
-add_to_shell "$HOME/.bashrc"
 add_to_shell "$HOME/.zshrc"
+add_to_shell "$HOME/.bashrc"
 add_to_shell "$HOME/.bash_profile"
 
-success "cbash-cli installed successfully!"
-echo ""
-printf "${YELLOW}Restart your terminal or run:${RESET}\n"
-echo "  source ~/.zshrc  # or ~/.bashrc"
-echo ""
-printf "${YELLOW}Then try:${RESET}\n"
-echo "  cbash help"
+success "cbash-cli installed!"
+printf "${YELLOW}Restart terminal or: source ~/.zshrc${RST}\n"
+printf "${YELLOW}Then try: cbash help${RST}\n"

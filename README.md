@@ -2,6 +2,19 @@
 
 🚀 Command-line tools for developers (macOS/Linux). Automate tasks, manage git repos, run dev services, and use helpers for AWS, K8s, and docs.
 
+## Features
+
+- **Git workflows** — branch, squash, auto-commit, pull-all, clone-all
+- **Dev services** — Docker Compose start/stop/logs/exec
+- **Docker/K8s** — container management, kubectl shortcuts
+- **Build tools** — Maven wrapper, npm/npx aliases
+- **AWS** — SSM connect, SQS testing, parameter store
+- **Generators** — scaffold projects, features, docs
+- **Docs & Cheat** — personal docs, community cheatsheets
+- **AI** — Ollama chat integration
+- **macOS** — system info, ports, updates, passwords
+- **Proxy** — manage proxy for shell, npm, git
+
 ## Quick Install
 
 **via Homebrew (macOS):**
@@ -27,10 +40,10 @@ sh -c "$(wget -qO- https://raw.githubusercontent.com/cminhho/cbash/master/tools/
 
 ## What Gets Installed
 
-- **Homebrew:** installs to Cellar, `cbash` on PATH. Optional: add `source "$(brew --prefix cbash-cli)/libexec/cbash.sh"` to `~/.zshrc` for aliases.
-- **curl/wget:** installs to `~/.cbash/`, updates `.zshrc`/`.bashrc`/`.bash_profile`.
+- **Homebrew:** `cbash` on PATH, aliases optional via `source "$(brew --prefix cbash-cli)/libexec/cbash.sh"`
+- **curl/wget:** `~/.cbash/`, auto-updates shell config
 
-After install, restart terminal and run `cbash` for help.
+Restart terminal and run `cbash` for help.
 
 ## Usage
 
@@ -54,7 +67,7 @@ SETUP
   setup                                 Show help
   setup check                           Check dev environment  → scheck
   setup brew             [group]        Install tools (dev|cloud|ide|apps|all)  → sbrew
-  setup workspace        [dir]          Create workspace structure  → sws
+  setup workspace        [name]         Create workspace structure  → sws
 
 ALIASES
   aliases                               Show help
@@ -64,7 +77,7 @@ ALIASES
   aliases load                          Load all aliases
 
 GIT
-  git                                   Show help (aliases: g, gst, gco, commit, …)
+  git                                   Show help (aliases: g, gst, gco, ...)
   git config                            Show git config
   git log                               Recent commits
   git branches                          List branches with dates
@@ -76,14 +89,12 @@ GIT
   git squash                            Squash commits interactively
   git auto-squash                       Squash feature branch
   git pull-all           [dir]          Pull all repos in directory
-  git clone-all          <file> [dir]   Clone repos from file (one URL per line)
-  git for                "<cmd>" [dir]  Run command in every repo (e.g. "git pull")
+  git clone-all          <file> [dir]   Clone repos from file
+  git for                "<cmd>"        Run command in every repo
   git clean                             Clean and optimize repo
   git size                              Show repo size
   git sync                              Fetch and pull
   git open                              Open repo in browser
-  clone                  <url>          Git clone (cbash clone)
-  pull                                  Git pull (cbash pull)
 
 DEVELOPMENT
   dev                                   Show help
@@ -100,7 +111,7 @@ DEVELOPMENT
   dev kill-all                          Stop and remove all  → devkill
 
 DOCKER
-  docker                                Show help (aliases: d, dps, dr, drm, dlo, …)
+  docker                                Show help (aliases: d, dps, dr, ...)
   docker list                           List Docker aliases
   docker running                        List running containers
   docker stop-all                       Stop all containers
@@ -109,11 +120,11 @@ DOCKER
   docker kill-all                       Stop, remove all and volumes
 
 MAVEN
-  mvn                                   Maven wrapper + aliases (mci, build, run, …)
+  mvn                                   Maven wrapper + aliases (mci, build, ...)
   mvn list                              List Maven aliases
 
 NPM
-  npm                                   npm/npx aliases (ni, nr, nx, nls, nt, …)
+  npm                                   npm/npx aliases (ni, nr, nx, ...)
   npm list                              List npm/npx aliases
 
 AWS
@@ -140,19 +151,16 @@ GENERATORS (GEN)
   gen project            [name]         Create project structure  → gproject
   gen doc                [type] [name]  Generate doc from template  → gdoc
 
-DOCS
-  doc                    <name>         View doc (cbash doc|docs <name>)
-  docs                                  Show help
+DOCS & CHEAT
+  docs                                  Show help  → doc
+  docs <name>                           View document
   docs list                             List documents
   docs edit              <name>         Edit document
-  docs conf                             Show docs config
-
-CHEAT
-  cheat                  <name>         View cheatsheet  → ch
-  cheat list                            List cheatsheets  → chlist
-  cheat setup                           Download community cheatsheets  → chsetup
-  cheat edit             <name>         Edit personal cheatsheet  → chedit
-  cheat conf                            Show cheat config  → chconf
+  docs cheat             <name>         View cheatsheet  → ch
+  docs cheat-list                       List cheatsheets  → chlist
+  docs cheat-setup                      Download community cheatsheets  → chsetup
+  docs cheat-edit        <name>         Edit personal cheatsheet  → chedit
+  docs conf                             Show configuration
 
 AI
   ai                                    Show help
@@ -160,9 +168,8 @@ AI
   ai list                               List Ollama models  → ailist
   ai pull                <model>        Pull model  → aipull
 
-MACOS / MISC
+MACOS
   macos                                 Show help
-  misc                                  Same as macos
   macos info                            macOS version  → minfo
   macos lock                            Lock screen  → mlock
   macos speedtest                       Internet speed  → mspeedtest
@@ -171,16 +178,8 @@ MACOS / MISC
   macos ip-local                        Local IP  → mip
   macos ip-public                       Public IP  → mipublic
   macos update                          Update Homebrew, npm, pip  → mupdate
-  macos ips                             All local IPs
-  macos myip                            Public IP (fallbacks)
   macos passgen          [n]            Random password (n words)
   macos list                            List macos aliases
-  macos users                           Logged-in users  → musers
-  macos size             [path]         Directory size  → msize
-  macos tree             [path]         Tree view  → mtree
-  macos clean-empty                     Remove empty dirs  → mcleanempty
-  macos find             <path> <name>  Find files
-  macos replace                         Find and replace in files
 
 PROXY
   proxy                                 Show help
@@ -189,17 +188,17 @@ PROXY
   proxy show                            Show proxy settings  → proxshow
 
 QUICK REFERENCE (ALIAS → SECTION)
-  scheck, sbrew, sws           Setup
-  start, stop, devlogs, devkill Dev
-  commit, auto_squash          Git
-  d, dps, dr, drm, dlo         Docker
-  gfeat, gtrouble, gws, gproject, gdoc Gen
-  awsssh, awssqscreate, awsssmget AWS
-  k8pods, k8logs, k8exec, k8cheat K8s
-  ch, chlist, chsetup          Cheat
-  chat, aichat, ailist         AI
-  mlock, mip, mports, mupdate, minfo MacOS
-  proxon, proxoff, proxshow    Proxy
+  scheck, sbrew, sws                    Setup
+  start, stop, devlogs, devkill         Dev
+  g, gst, gco, gp, gpush                Git
+  d, dps, dr, drm, dlo                  Docker
+  gfeat, gtrouble, gws, gproject, gdoc  Gen
+  awsssh, awssqscreate, awsssmget       AWS
+  k8pods, k8logs, k8exec, k8cheat       K8s
+  doc, ch, chlist, chsetup, chedit      Docs
+  chat, aichat, ailist                  AI
+  mlock, mip, mports, mupdate, minfo    MacOS
+  proxon, proxoff, proxshow             Proxy
 
 Run cbash <plugin> or cbash <plugin> help for detailed help.
 ```

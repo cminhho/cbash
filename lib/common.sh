@@ -3,39 +3,33 @@
 # shellcheck disable=SC2034
 
 source "$CBASH_DIR/lib/colors.sh"
-[[ -f "$CBASH_DIR/lib/log.sh" ]] && source "$CBASH_DIR/lib/log.sh"
+source "$CBASH_DIR/lib/log.sh"
 
 # Format helpers
-_br()      { printf "\n"; }
-_gap()     { printf "\n"; }
-_indent()  { if [[ $# -gt 0 ]]; then printf '%s\n' "$@" | sed 's/^/  /'; else sed 's/^/  /'; fi; }
-
-# Utility functions
+_br()     { printf "\n"; }
+_gap()    { printf "\n"; }
+_indent() { sed 's/^/  /'; }
 _command_exists() { command -v "$1" &>/dev/null; }
 
 # Plugin discovery
 cbash_list_plugins() {
     echo "Core Plugins:"
-    find "$CBASH_DIR/plugins" -name "*.plugin.sh" 2>/dev/null | sort | while IFS= read -r f; do
-        [[ -f "$f" ]] && basename "$(dirname "$f")"
+    find "$CBASH_DIR/plugins" -name "*.plugin.sh" 2>/dev/null | sort | while read -r f; do
+        basename "$(dirname "$f")"
     done
     echo ""
     echo "Custom Plugins:"
-    if [[ -d "$CBASH_DIR/custom/plugins" ]]; then
-        find "$CBASH_DIR/custom/plugins" -name "*.plugin.sh" 2>/dev/null | sort | while IFS= read -r f; do
-            [[ -f "$f" ]] && basename "$(dirname "$f")"
-        done
-    fi
+    [[ -d "$CBASH_DIR/custom/plugins" ]] && find "$CBASH_DIR/custom/plugins" -name "*.plugin.sh" 2>/dev/null | sort | while read -r f; do
+        basename "$(dirname "$f")"
+    done
     return 0
 }
 
-# Describe command help (used by all plugins)
+# Plugin help formatter
 _describe() {
-    local name="$2"
-    shift 2
+    local name="$2"; shift 2
     printf "${bldylw}%s${clr} - %s\n\n" "$name" "${@: -1}"
-    printf "${bldylw}USAGE${clr}\n  cbash %s <command> [options]\n\n" "$name"
-    printf "${bldylw}COMMANDS${clr}\n"
+    printf "${bldylw}USAGE${clr}\n  cbash %s <command> [options]\n\n${bldylw}COMMANDS${clr}\n" "$name"
     for cmd in "${@:1:$#-1}"; do printf "  %s\n" "$cmd"; done
     echo
 }

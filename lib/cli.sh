@@ -1,79 +1,48 @@
 #!/usr/bin/env bash
 # CLI management (cbash cli <cmd>)
 
-[[ -n "$CBASH_DIR" && -d "$CBASH_DIR" ]] || { echo "Error: CBASH_DIR not set or not a directory" >&2; exit 1; }
+[[ -d "$CBASH_DIR" ]] || { echo "Error: CBASH_DIR not set" >&2; exit 1; }
 source "$CBASH_DIR/lib/common.sh"
 
 cli_help() {
-    cat <<EOF
+    cat <<'EOF'
 Usage: cbash cli <command>
 
 Commands:
-  help          Show this help
-  version       Show version
-  plugins       List available plugins
-  install-local [dir]  Copy local dev copy to install dir (for testing)
-  update        Update CBASH
-  reload        Reload shell
+  help            Show this help
+  version         Show version
+  plugins         List plugins
+  install-local   Copy local dev to install dir
+  update          Update CBASH
+  reload          Reload shell
 EOF
 }
 
 cli_version() {
-    [[ -d "$CBASH_DIR/.git" ]] || { echo "CBASH ${CBASH_VERSION:-unknown} (not a git repo)"; return 0; }
-    cd "$CBASH_DIR" || return 1
-    local version commit
-    version=$(git describe --tags HEAD 2>/dev/null) || \
-    version=$(git symbolic-ref --quiet --short HEAD 2>/dev/null) || \
-    version="unknown"
-    commit=$(git rev-parse --short HEAD 2>/dev/null || echo "unknown")
-    echo "CBASH $version ($commit)"
+    [[ -d "$CBASH_DIR/.git" ]] || { echo "CBASH ${CBASH_VERSION:-unknown}"; return; }
+    local ver=$(git -C "$CBASH_DIR" describe --tags HEAD 2>/dev/null || git -C "$CBASH_DIR" rev-parse --short HEAD)
+    echo "CBASH ${ver:-unknown}"
 }
 
-cli_plugins() {
-    cbash_list_plugins
-}
-
-# Copy local folder into CBASH_DIR (for testing without commit/push).
-# Usage: cbash cli install-local [source_dir]
-#   If source_dir omitted, uses current directory (pwd).
 cli_install_local() {
-    local src="${1:-$(pwd)}"
-    local src_abs dest_abs
-    src_abs=$(cd "$src" 2>/dev/null && pwd) || { echo "Error: Invalid source dir: $src" >&2; return 1; }
-    dest_abs=$(cd "$CBASH_DIR" 2>/dev/null && pwd) || { echo "Error: CBASH_DIR not valid" >&2; return 1; }
-
-    if [[ "$src_abs" == "$dest_abs" ]]; then
-        echo "Source and install dir are the same. Nothing to do."
-        return 0
-    fi
-    [[ -f "$src_abs/cbash.sh" ]] || { echo "Error: Not a cbash tree (no cbash.sh in $src_abs)" >&2; return 1; }
-
-    echo "Copying: $src_abs -> $dest_abs"
-    rsync -a --delete --exclude='.git' "$src_abs/" "$dest_abs/" || { echo "Error: rsync failed" >&2; return 1; }
-    echo "Done."
-    cli_reload
+    local src="${1:-$(pwd)}" dest="$CBASH_DIR"
+    [[ -f "$src/cbash.sh" ]] || { echo "Error: Not a cbash tree" >&2; return 1; }
+    [[ "$(cd "$src" && pwd)" == "$(cd "$dest" && pwd)" ]] && { echo "Same directory"; return 0; }
+    rsync -a --delete --exclude='.git' "$src/" "$dest/" && cli_reload
 }
 
-cli_reload() {
-    echo "Reloading shell..."
-    exec "${SHELL:-/bin/bash}"
-}
-
-cli_update() {
-    [[ -x "$CBASH_DIR/tools/upgrade.sh" ]] && "$CBASH_DIR/tools/upgrade.sh" || bash "$CBASH_DIR/tools/upgrade.sh"
-}
+cli_reload() { echo "Reloading..."; exec "${SHELL:-/bin/bash}"; }
+cli_update() { bash "$CBASH_DIR/tools/upgrade.sh"; }
 
 _main() {
-    local cmd="${1:-}"
-    [[ -z "$cmd" ]] && { cli_help; return 0; }
-    case "$cmd" in
-        help)           cli_help ;;
-        version)        cli_version ;;
-        plugins)        cli_plugins ;;
-        install-local)  shift; cli_install_local "$@" ;;
-        update)         cli_update ;;
-        reload)         cli_reload ;;
-        *)              echo "Unknown command: $cmd" >&2; cli_help; return 1 ;;
+    case "${1:-help}" in
+        help)          cli_help ;;
+        version)       cli_version ;;
+        plugins)       cbash_list_plugins ;;
+        install-local) shift; cli_install_local "$@" ;;
+        update)        cli_update ;;
+        reload)        cli_reload ;;
+        *)             echo "Unknown: $1" >&2; return 1 ;;
     esac
 }
 

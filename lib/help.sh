@@ -107,19 +107,16 @@ help_show() {
     _h_cmd "gen project"      "[name]"        "Create project structure"                 "gproject"
     _h_cmd "gen doc"          "[type] [name]" "Generate doc from template"               "gdoc"
 
-    _h_title "Docs"
-    _h_cmd "doc"              "<name>"        "View doc (cbash doc|docs <name>)"
-    _h_cmd "docs"             ""              "Show help"
+    _h_title "Docs & Cheat"
+    _h_cmd "docs"             ""              "Show help"                                "doc"
+    _h_cmd "docs <name>"      ""              "View document"
     _h_cmd "docs list"        ""              "List documents"
     _h_cmd "docs edit"        "<name>"        "Edit document"
-    _h_cmd "docs conf"        ""              "Show docs config"
-
-    _h_title "Cheat"
-    _h_cmd "cheat"            "<name>"        "View cheatsheet"                          "ch"
-    _h_cmd "cheat list"       ""              "List cheatsheets"                         "chlist"
-    _h_cmd "cheat setup"      ""              "Download community cheatsheets"           "chsetup"
-    _h_cmd "cheat edit"       "<name>"        "Edit personal cheatsheet"                 "chedit"
-    _h_cmd "cheat conf"       ""              "Show cheat config"                        "chconf"
+    _h_cmd "docs cheat"       "<name>"        "View cheatsheet"                          "ch"
+    _h_cmd "docs cheat-list"  ""              "List cheatsheets"                         "chlist"
+    _h_cmd "docs cheat-setup" ""              "Download community cheatsheets"           "chsetup"
+    _h_cmd "docs cheat-edit"  "<name>"        "Edit personal cheatsheet"                 "chedit"
+    _h_cmd "docs conf"        ""              "Show configuration"
 
     _h_title "AI"
     _h_cmd "ai"               ""              "Show help"
@@ -149,12 +146,12 @@ help_show() {
     _h_title "Quick reference (alias → section)"
     _h_quick "scheck, sbrew, sws"                      "Setup"
     _h_quick "start, stop, devlogs, devkill"           "Dev"
-    _h_quick "commit, auto_squash"                     "Git"
+    _h_quick "g, gst, gco, gp, gpush"                  "Git"
     _h_quick "d, dps, dr, drm, dlo"                    "Docker"
     _h_quick "gfeat, gtrouble, gws, gproject, gdoc"    "Gen"
     _h_quick "awsssh, awssqscreate, awsssmget"         "AWS"
     _h_quick "k8pods, k8logs, k8exec, k8cheat"         "K8s"
-    _h_quick "ch, chlist, chsetup"                     "Cheat"
+    _h_quick "doc, ch, chlist, chsetup, chedit"        "Docs"
     _h_quick "chat, aichat, ailist"                    "AI"
     _h_quick "mlock, mip, mports, mupdate, minfo"      "MacOS"
     _h_quick "proxon, proxoff, proxshow"               "Proxy"
@@ -163,11 +160,4 @@ help_show() {
     echo -e "Run ${bldblu}cbash <plugin>${clr} or ${bldblu}cbash <plugin> help${clr} for detailed help."
 }
 
-_main() {
-    case "${1:-}" in
-        help|--help|-h|"") help_show ;;
-        *)                 help_show ;;
-    esac
-}
-
-[[ "${BASH_SOURCE[0]}" == "${0}" ]] && _main "$@"
+[[ "${BASH_SOURCE[0]}" == "${0}" ]] && help_show
