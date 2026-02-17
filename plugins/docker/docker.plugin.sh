@@ -98,17 +98,15 @@ docker_list_aliases() {
 }
 
 _main() {
-    local cmd="${1:-help}"
-
-    case "$cmd" in
-        help|--help|-h)   docker_help ;;
-        list)             docker_list_aliases ;;
-        running)          docker_running ;;
-        stop-all)         docker_stop_all ;;
-        remove-stopped)   docker_remove_stopped ;;
-        prune-images)     docker_remove_unused_images ;;
-        kill-all)         docker_kill_all ;;
-        *)                docker_help ;;
+    case "${1:-}" in
+        help|--help|-h|"") docker_help ;;
+        list)              docker_list_aliases ;;
+        running)           docker_running ;;
+        stop-all)          docker_stop_all ;;
+        remove-stopped)    docker_remove_stopped ;;
+        prune-images)      docker_remove_unused_images ;;
+        kill-all)          docker_kill_all ;;
+        *)                 docker_help ;;
     esac
 }
 

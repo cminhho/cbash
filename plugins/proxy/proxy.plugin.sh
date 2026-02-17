@@ -108,20 +108,13 @@ proxy_list_aliases() {
 }
 
 _main() {
-    local cmd="$1"
-
-    if [[ -z "$cmd" ]]; then
-        proxy_help
-        return 0
-    fi
-
-    case "$cmd" in
-        help|--help|-h) proxy_help ;;
-        aliases)        proxy_list_aliases ;;
-        enable)         shift; proxy_enable "$@" ;;
-        disable)        proxy_disable ;;
-        show)           proxy_show ;;
-        *)              log_error "Unknown command: $cmd"; return 1 ;;
+    case "${1:-}" in
+        help|--help|-h|"") proxy_help ;;
+        aliases)           proxy_list_aliases ;;
+        enable)            shift; proxy_enable "$@" ;;
+        disable)           proxy_disable ;;
+        show)              proxy_show ;;
+        *)                 log_error "Unknown: $1"; return 1 ;;
     esac
 }
 

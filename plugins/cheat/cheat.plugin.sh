@@ -131,21 +131,14 @@ cheat_list_aliases() {
 }
 
 _main() {
-    local cmd="$1"
-
-    if [[ -z "$cmd" ]]; then
-        cheat_help
-        return 0
-    fi
-
-    case "$cmd" in
-        help|--help|-h) cheat_help ;;
-        aliases)        cheat_list_aliases ;;
-        list)           cheat_list ;;
-        setup)          cheat_setup ;;
-        edit)           shift; cheat_edit "$@" ;;
-        conf)           cheat_conf ;;
-        *)              cheat_view "$cmd" ;;
+    case "${1:-}" in
+        help|--help|-h|"") cheat_help ;;
+        aliases)           cheat_list_aliases ;;
+        list)              cheat_list ;;
+        setup)             cheat_setup ;;
+        edit)              shift; cheat_edit "$@" ;;
+        conf)              cheat_conf ;;
+        *)                 cheat_view "$1" ;;
     esac
 }
 

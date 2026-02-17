@@ -4,9 +4,8 @@
 
 [[ -n "$CBASH_DIR" ]] && source "$CBASH_DIR/lib/common.sh"
 
-# Localstack configuration
+# Configuration
 readonly AWS_LOCALSTACK_ENDPOINT="http://localhost:4566"
-readonly AWS_LOCALSTACK_REGION="us-west-2"
 readonly AWS_SSM_REGION="ap-southeast-1"
 
 # Valid environments for SSH gateway
@@ -200,21 +199,14 @@ aws_list_aliases() {
 }
 
 _main() {
-    local cmd="$1"
-
-    if [[ -z "$cmd" ]]; then
-        aws_help
-        return 0
-    fi
-
-    case "$cmd" in
-        help|--help|-h) aws_help ;;
-        aliases)        aws_list_aliases ;;
-        ssh)            shift; aws_ssh_gateway "$@" ;;
-        sqs-create)     shift; aws_sqs_create "$@" ;;
-        sqs-test)       shift; aws_sqs_test "$@" ;;
-        ssm-get)        shift; aws_ssm_get "$@" ;;
-        *)              log_error "Invalid command: $cmd"; return 1 ;;
+    case "${1:-}" in
+        help|--help|-h|"") aws_help ;;
+        aliases)           aws_list_aliases ;;
+        ssh)               shift; aws_ssh_gateway "$@" ;;
+        sqs-create)        shift; aws_sqs_create "$@" ;;
+        sqs-test)          shift; aws_sqs_test "$@" ;;
+        ssm-get)           shift; aws_ssm_get "$@" ;;
+        *)                 log_error "Unknown: $1"; return 1 ;;
     esac
 }
 

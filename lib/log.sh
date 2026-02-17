@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # CBASH logging — level-based log with optional color.
 #
-# Load: via common.sh (utils.sh + log.sh). Plugins use source "$CBASH_DIR/lib/common.sh".
+# Load: via common.sh. Plugins use source "$CBASH_DIR/lib/common.sh".
 # Set CBASH_LOG_LEVEL to filter: 0=off, 1=fatal, 3=error, 4=warn, 6=info, 7=debug (default 6).
 # shellcheck disable=SC2034
 

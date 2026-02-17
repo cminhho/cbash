@@ -287,51 +287,49 @@ git_open() {
 # Main Router
 # -----------------------------------------------------------------------------
 
+git_help() {
+    _describe command 'git' \
+        'config          Show git config' \
+        'log             Show recent commits' \
+        'branches        List branches with dates' \
+        'branch <name>   Create branch from master' \
+        'rename <name>   Rename current branch' \
+        'undo            Undo last commit (soft)' \
+        'backup          Quick commit and push' \
+        'auto-commit     Auto commit all changes' \
+        'squash          Squash commits interactively' \
+        'auto-squash     Squash all commits on feature branch' \
+        'pull-all [dir]  Pull all repos in directory' \
+        'clone-all <file> [dir] Clone repos from file' \
+        'for "cmd" [dir] Run command in every repo' \
+        'clean           Clean and optimize repo' \
+        'size            Show repo size' \
+        'sync            Sync current repo' \
+        'open            Open repo in browser' \
+        'Git workflow utilities'
+}
+
 _main() {
-    local cmd="$1"
-
-    if [[ -z "$cmd" ]]; then
-        _describe command 'git' \
-            'config          Show git config' \
-            'log             Show recent commits' \
-            'branches        List branches with dates' \
-            'branch <name>   Create branch from master' \
-            'rename <name>   Rename current branch' \
-            'undo            Undo last commit (soft)' \
-            'backup          Quick commit and push' \
-            'auto-commit     Auto commit all changes' \
-            'squash          Squash commits interactively' \
-            'auto-squash     Squash all commits on feature branch' \
-            'pull-all [dir]  Pull all repos in directory' \
-            'clone-all <file> [dir] Clone repos from file (one URL per line)' \
-            'for "cmd" [dir] Run command in every repo (e.g. for "git pull")' \
-            'clean           Clean and optimize repo' \
-            'size            Show repo size' \
-            'sync            Sync current repo' \
-            'open            Open repo in browser' \
-            'Git workflow utilities'
-        return 0
-    fi
-
-    case "$cmd" in
-        config)         git_config ;;
-        log)            git_log ;;
-        branches)       git_branches ;;
-        branch)         shift; git_branch "$@" ;;
-        rename)         shift; git_rename "$@" ;;
-        undo|undo-commit) git_undo ;;
-        backup)         git_backup ;;
-        auto-commit)    git_auto_commit ;;
-        squash)         git_squash ;;
-        auto-squash)    git_auto_squash ;;
-        pull-all)       shift; git_pull_all "$@" ;;
-        clone-all)      shift; git_clone_all "$@" ;;
-        for)            shift; git_for "$@" ;;
-        clean)          git_clean ;;
-        size)           git_size ;;
-        sync)           git_sync ;;
-        open)           git_open ;;
-        *)              log_error "Unknown command: $cmd"; return 1 ;;
+    case "${1:-}" in
+        help|--help|-h|"") git_help ;;
+        config)            git_config ;;
+        log)               git_log ;;
+        branches)          git_branches ;;
+        branch)            shift; git_branch "$@" ;;
+        rename)            shift; git_rename "$@" ;;
+        undo|undo-commit)  git_undo ;;
+        backup)            git_backup ;;
+        auto-commit)       git_auto_commit ;;
+        squash)            git_squash ;;
+        auto-squash)       git_auto_squash ;;
+        pull-all)          shift; git_pull_all "$@" ;;
+        clone-all)         shift; git_clone_all "$@" ;;
+        for)               shift; git_for "$@" ;;
+        clean)             git_clean ;;
+        size)              git_size ;;
+        sync)              git_sync ;;
+        open)              git_open ;;
+        *)                 log_error "Unknown: $1"; return 1 ;;
     esac
 }
 

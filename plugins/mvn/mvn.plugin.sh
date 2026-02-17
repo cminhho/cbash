@@ -89,14 +89,10 @@ mvn_list() {
 }
 
 _main() {
-    local cmd="${1:-help}"
-
-    case "$cmd" in
-        help|--help|-h) mvn_help ;;
-        list)           mvn_list ;;
-        *)              mvn_help ;;
+    case "${1:-}" in
+        help|--help|-h|"") mvn_help ;;
+        list)              mvn_list ;;
+        *)                 mvn_help ;;
     esac
 }
-
-# Run _main only when script is executed (cbash mvn), not when sourced
 [[ "${BASH_SOURCE[0]}" == "${0}" ]] && _main "$@"

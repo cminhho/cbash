@@ -143,28 +143,21 @@ dev_list_aliases() {
 }
 
 _main() {
-    local cmd="$1"
-
-    if [[ -z "$cmd" ]]; then
-        dev_help
-        return 0
-    fi
-
-    case "$cmd" in
-        help|--help|-h) dev_help ;;
-        list)           dev_list ;;
-        aliases)        dev_list_aliases ;;
-        start)          shift; dev_start "$@" ;;
-        stop)           shift; dev_stop "$@" ;;
-        restart)        shift; dev_restart "$@" ;;
-        reload)         shift; dev_reload "$@" ;;
-        status)         dev_status ;;
-        logs)           shift; dev_logs "$@" ;;
-        exec)           shift; dev_exec "$@" ;;
-        stats)          dev_stats ;;
-        ip)             dev_ip ;;
-        kill-all)       dev_kill_all ;;
-        *)              log_error "Unknown command: $cmd"; return 1 ;;
+    case "${1:-}" in
+        help|--help|-h|"") dev_help ;;
+        list)              dev_list ;;
+        aliases)           dev_list_aliases ;;
+        start)             shift; dev_start "$@" ;;
+        stop)              shift; dev_stop "$@" ;;
+        restart)           shift; dev_restart "$@" ;;
+        reload)            shift; dev_reload "$@" ;;
+        status)            dev_status ;;
+        logs)              shift; dev_logs "$@" ;;
+        exec)              shift; dev_exec "$@" ;;
+        stats)             dev_stats ;;
+        ip)                dev_ip ;;
+        kill-all)          dev_kill_all ;;
+        *)                 log_error "Unknown: $1"; return 1 ;;
     esac
 }
 

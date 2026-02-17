@@ -21,7 +21,7 @@ alias chat='ai_chat'
 
 ai_check() {
     command -v ollama &>/dev/null || {
-        err "Ollama not found. Install from https://ollama.ai"
+        log_error "Ollama not found. Install from https://ollama.ai"
         return 1
     }
 }
@@ -29,7 +29,7 @@ ai_check() {
 ai_chat() {
     ai_check || return 1
     local model="${1:-$DEFAULT_MODEL}"
-    info "Starting chat with $model..."
+    log_info "Starting chat with $model..."
     ollama run "$model"
 }
 
@@ -68,20 +68,13 @@ ai_list_aliases() {
 }
 
 _main() {
-    local cmd="$1"
-
-    if [[ -z "$cmd" ]]; then
-        ai_help
-        return 0
-    fi
-
-    case "$cmd" in
-        help|--help|-h) ai_help ;;
-        aliases)        ai_list_aliases ;;
-        chat|deepseek)  shift; ai_chat "$@" ;;
-        list)            ai_list ;;
-        pull)            shift; ai_pull "$@" ;;
-        *)              log_error "Unknown command: $cmd"; return 1 ;;
+    case "${1:-}" in
+        help|--help|-h|"") ai_help ;;
+        aliases)           ai_list_aliases ;;
+        chat|deepseek)     shift; ai_chat "$@" ;;
+        list)              ai_list ;;
+        pull)              shift; ai_pull "$@" ;;
+        *)                 log_error "Unknown: $1"; return 1 ;;
     esac
 }
 

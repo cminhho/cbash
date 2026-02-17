@@ -92,12 +92,10 @@ npm_list() {
 }
 
 _main() {
-    local cmd="${1:-help}"
-
-    case "$cmd" in
-        help|--help|-h) npm_help ;;
-        list)           npm_list ;;
-        *)              npm_help ;;
+    case "${1:-}" in
+        help|--help|-h|"") npm_help ;;
+        list)              npm_list ;;
+        *)                 npm_help ;;
     esac
 }
 

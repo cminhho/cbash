@@ -1,77 +1,41 @@
 #!/usr/bin/env bash
-# CBASH colors — Bash-it style (echo_*) + short names (txt*, bld*) + semantic (style_*).
-# Reference: https://github.com/Bash-it/bash-it/blob/master/lib/colors.bash
-# Load: via common.sh (utils.sh sources this). Use: printf "${echo_red}text${echo_normal}\n"
+# CBASH colors — short names + semantic styles for terminal output.
 # shellcheck disable=SC2034
 
 # =============================================================================
-# Raw codes (single source)
+# Core colors (used by plugins and log.sh)
 # =============================================================================
-echo_normal='\033[0m'
-echo_reset='\033[39m'
-echo_reset_color='\033[39m'   # reset foreground only (Bash-it naming)
+clr='\033[0m'           # reset
+rst='\033[0m'
+dim='\033[2;37m'
 
-echo_black='\033[0;30m'
-echo_red='\033[0;31m'
-echo_green='\033[0;32m'
-echo_yellow='\033[0;33m'
-echo_blue='\033[0;34m'
-echo_purple='\033[0;35m'
-echo_cyan='\033[0;36m'
-echo_white='\033[0;37m'
-echo_orange='\033[0;91m'
+# Text colors
+txtred='\033[0;31m'
+txtgrn='\033[0;32m'
+txtylw='\033[0;33m'
+txtblu='\033[0;34m'
+txtcyn='\033[0;36m'
 
-echo_bold_black='\033[1;30m'
-echo_bold_red='\033[1;31m'
-echo_bold_green='\033[1;32m'
-echo_bold_yellow='\033[1;33m'
-echo_bold_blue='\033[1;34m'
-echo_bold_purple='\033[1;35m'
-echo_bold_cyan='\033[1;36m'
-echo_bold_white='\033[1;37m'
-echo_bold_orange='\033[1;91m'
+# Bold colors
+bldred='\033[1;31m'
+bldgrn='\033[1;32m'
+bldylw='\033[1;33m'
+bldblu='\033[1;34m'
+bldcyn='\033[1;36m'
+bldwht='\033[1;37m'
 
-echo_underline_black='\033[4;30m'
-echo_underline_red='\033[4;31m'
-echo_underline_green='\033[4;32m'
-echo_underline_yellow='\033[4;33m'
-echo_underline_blue='\033[4;34m'
-echo_underline_purple='\033[4;35m'
-echo_underline_cyan='\033[4;36m'
-echo_underline_white='\033[4;37m'
+# Background colors (used by log.sh)
+bakred='\033[41m'
+bakgrn='\033[42m'
+bakylw='\033[43m'
+bakblu='\033[44m'
 
+# Legacy echo_bg_* names (for log.sh fallbacks)
 echo_bg_black='\033[40m'
 echo_bg_red='\033[41m'
 echo_bg_green='\033[42m'
 echo_bg_yellow='\033[43m'
 echo_bg_blue='\033[44m'
-echo_bg_purple='\033[45m'
-echo_bg_cyan='\033[46m'
-echo_bg_white='\033[47m'
-
-echo_dim='\033[2;37m'
-
-# =============================================================================
-# Short names (for plugins)
-# =============================================================================
-clr="$echo_normal"
-rst="$echo_normal"
-txtred="$echo_red"
-txtgrn="$echo_green"
-txtylw="$echo_yellow"
-txtblu="$echo_blue"
-txtcyn="$echo_cyan"
-bldred="$echo_bold_red"
-bldgrn="$echo_bold_green"
-bldylw="$echo_bold_yellow"
-bldblu="$echo_bold_blue"
-bldcyn="$echo_bold_cyan"
-bldwht="$echo_bold_white"
-dim="$echo_dim"
-bakred="$echo_bg_red"
-bakgrn="$echo_bg_green"
-bakylw="$echo_bg_yellow"
-bakblu="$echo_bg_blue"
 
 # =============================================================================
 # Semantic theme: set by cbash_theme or CBASH_THEME (dark | light | minimal)
@@ -87,6 +51,7 @@ case "$cbash_theme" in
         style_muted="$dim"
         ;;
     light)
+        # Light theme - same as dark for now (terminal handles contrast)
         style_heading="$bldblu"
         style_label="$bldcyn"
         style_ok="$txtgrn"
@@ -113,7 +78,7 @@ case "$cbash_theme" in
 esac
 
 # =============================================================================
-# Style helpers (use theme above; loaded via utils.sh so plugins get these)
+# Style helpers (loaded via common.sh)
 # =============================================================================
 _heading()        { printf "${style_heading}%s${clr}\n" "$*"; }
 _heading_muted() { local h="$1" m="$2"; shift 2; printf "${style_heading}%s${clr} ${style_muted}%s${clr}\n" "$h" "$(printf "$m" "$@")"; }

@@ -4,8 +4,6 @@
 
 [[ -n "$CBASH_DIR" ]] && source "$CBASH_DIR/lib/common.sh"
 
-readonly SETUP_DIR="$CBASH_DIR/plugins/setup"
-
 # -----------------------------------------------------------------------------
 # Aliases
 # -----------------------------------------------------------------------------
@@ -118,20 +116,13 @@ setup_list_aliases() {
 }
 
 _main() {
-    local cmd="$1"
-
-    if [[ -z "$cmd" ]]; then
-        setup_help
-        return 0
-    fi
-
-    case "$cmd" in
-        help|--help|-h) setup_help ;;
-        aliases)        setup_list_aliases ;;
-        check)          setup_check ;;
-        brew)           shift; setup_brew "$@" ;;
-        workspace)      shift; setup_workspace "$@" ;;
-        *)              log_error "Unknown command: $cmd"; return 1 ;;
+    case "${1:-}" in
+        help|--help|-h|"") setup_help ;;
+        aliases)           setup_list_aliases ;;
+        check)             setup_check ;;
+        brew)              shift; setup_brew "$@" ;;
+        workspace)         shift; setup_workspace "$@" ;;
+        *)                 log_error "Unknown: $1"; return 1 ;;
     esac
 }
 

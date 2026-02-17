@@ -125,23 +125,16 @@ k8s_list_aliases() {
 }
 
 _main() {
-    local cmd="$1"
-
-    if [[ -z "$cmd" ]]; then
-        k8s_help
-        return 0
-    fi
-
-    case "$cmd" in
-        help|--help|-h) k8s_help ;;
-        aliases)        k8s_list_aliases ;;
-        pods)           shift; k8s_pods "$@" ;;
-        logs)           shift; k8s_logs "$@" ;;
-        desc)           shift; k8s_desc "$@" ;;
-        exec)           shift; k8s_exec "$@" ;;
-        restart)        shift; k8s_restart "$@" ;;
-        cheat)          shift; k8s_cheat "$@" ;;
-        *)              k8s_cheat "$cmd" ;;
+    case "${1:-}" in
+        help|--help|-h|"") k8s_help ;;
+        aliases)           k8s_list_aliases ;;
+        pods)              shift; k8s_pods "$@" ;;
+        logs)              shift; k8s_logs "$@" ;;
+        desc)              shift; k8s_desc "$@" ;;
+        exec)              shift; k8s_exec "$@" ;;
+        restart)           shift; k8s_restart "$@" ;;
+        cheat)             shift; k8s_cheat "$@" ;;
+        *)                 k8s_cheat "$1" ;;
     esac
 }
 

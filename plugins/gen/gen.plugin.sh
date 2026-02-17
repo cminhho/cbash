@@ -185,23 +185,16 @@ gen_list_aliases() {
 }
 
 _main() {
-    local cmd="$1"
-
-    if [[ -z "$cmd" ]]; then
-        gen_help
-        return 0
-    fi
-
-    case "$cmd" in
-        help|--help|-h) gen_help ;;
-        uuid)           uuidgen ;;
-        aliases)        gen_list_aliases ;;
-        trouble)        shift; gen_trouble "$@" ;;
-        feat)           shift; gen_feat "$@" ;;
-        workspace)      shift; gen_workspace "$@" ;;
-        project)        shift; gen_project "$@" ;;
-        doc)            shift; gen_doc "$@" ;;
-        *)              _gap; log_error "Unknown gen command: $cmd"; return 1 ;;
+    case "${1:-}" in
+        help|--help|-h|"") gen_help ;;
+        uuid)              uuidgen ;;
+        aliases)           gen_list_aliases ;;
+        trouble)           shift; gen_trouble "$@" ;;
+        feat)              shift; gen_feat "$@" ;;
+        workspace)         shift; gen_workspace "$@" ;;
+        project)           shift; gen_project "$@" ;;
+        doc)               shift; gen_doc "$@" ;;
+        *)                 log_error "Unknown: $1"; return 1 ;;
     esac
 }
 

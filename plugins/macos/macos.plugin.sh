@@ -201,34 +201,27 @@ macos_list_aliases() {
 }
 
 _main() {
-    local cmd="$1"
-
-    if [[ -z "$cmd" ]]; then
-        macos_help
-        return 0
-    fi
-
-    case "$cmd" in
-        help|--help|-h) macos_help ;;
-        list)          macos_list_aliases ;;
-        info)          macos_info ;;
-        lock)           macos_lock ;;
-        speedtest)      macos_speedtest ;;
-        memory)         macos_memory ;;
-        ports)          macos_ports ;;
-        ip-local)       macos_ip_local ;;
-        ip-public)      macos_ip_public ;;
-        users)          macos_users ;;
-        size)           macos_size ;;
-        tree)           macos_tree ;;
-        clean-empty)    macos_clean_empty ;;
-        find)           shift; macos_find "$@" ;;
-        replace)        shift; macos_replace "$@" ;;
-        update)         macos_update ;;
-        ips)            macos_ips ;;
-        myip)           macos_myip ;;
-        passgen)        shift; macos_passgen "$@" ;;
-        *)              log_error "Unknown command: $cmd"; return 1 ;;
+    case "${1:-}" in
+        help|--help|-h|"") macos_help ;;
+        list)              macos_list_aliases ;;
+        info)              macos_info ;;
+        lock)              macos_lock ;;
+        speedtest)         macos_speedtest ;;
+        memory)            macos_memory ;;
+        ports)             macos_ports ;;
+        ip-local)          macos_ip_local ;;
+        ip-public)         macos_ip_public ;;
+        users)             macos_users ;;
+        size)              macos_size ;;
+        tree)              macos_tree ;;
+        clean-empty)       macos_clean_empty ;;
+        find)              shift; macos_find "$@" ;;
+        replace)           shift; macos_replace "$@" ;;
+        update)            macos_update ;;
+        ips)               macos_ips ;;
+        myip)              macos_myip ;;
+        passgen)           shift; macos_passgen "$@" ;;
+        *)                 log_error "Unknown: $1"; return 1 ;;
     esac
 }
 

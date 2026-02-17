@@ -77,25 +77,23 @@ EOF
 # Main Router
 # -----------------------------------------------------------------------------
 
+docs_help() {
+    _describe command 'docs' \
+        '<name>          View document' \
+        'list            List available documents' \
+        'edit <name>     Edit or create document' \
+        'conf            Show configuration' \
+        'Internal documentation viewer'
+}
+
 _main() {
-    local cmd="$1"
-
-    if [[ -z "$cmd" ]]; then
-        _describe command 'docs' \
-            '<name>          View document' \
-            'list            List available documents' \
-            'edit <name>     Edit or create document' \
-            'conf            Show configuration' \
-            'Internal documentation viewer'
-        return 0
-    fi
-
-    case "$cmd" in
-        list)   docs_list ;;
-        edit)   shift; docs_edit "$@" ;;
-        conf)   docs_conf ;;
-        *)      docs_view "$cmd" ;;
+    case "${1:-}" in
+        help|--help|-h|"") docs_help ;;
+        list)              docs_list ;;
+        edit)              shift; docs_edit "$@" ;;
+        conf)              docs_conf ;;
+        *)                 docs_view "$1" ;;
     esac
 }
 
-_main "$@"
+[[ "${BASH_SOURCE[0]}" == "${0}" ]] && _main "$@"

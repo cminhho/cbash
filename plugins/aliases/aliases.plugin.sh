@@ -53,7 +53,7 @@ aliases_load() {
 # Main Router
 # -----------------------------------------------------------------------------
 
-_aliases_help() {
+aliases_help() {
     _describe command 'aliases' \
         'list            List alias files' \
         'show <name>     Show aliases in file' \
@@ -63,15 +63,13 @@ _aliases_help() {
 }
 
 _main() {
-    local cmd="${1:-help}"
-
-    case "$cmd" in
-        help|--help|-h) _aliases_help ;;
-        list)           aliases_list ;;
-        show)           shift; aliases_show "$@" ;;
-        edit)           shift; aliases_edit "$@" ;;
-        load)           aliases_load ;;
-        *)              log_error "Unknown command: $cmd"; return 1 ;;
+    case "${1:-}" in
+        help|--help|-h|"") aliases_help ;;
+        list)              aliases_list ;;
+        show)              shift; aliases_show "$@" ;;
+        edit)              shift; aliases_edit "$@" ;;
+        load)              aliases_load ;;
+        *)                 log_error "Unknown: $1"; return 1 ;;
     esac
 }
 

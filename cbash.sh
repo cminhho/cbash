@@ -24,7 +24,7 @@ _init() {
 }
 
 _help() {
-    [[ -f "$CBASH_DIR/plugins/hint/hint.sh" ]] && bash "$CBASH_DIR/plugins/hint/hint.sh" && return
+    [[ -f "$CBASH_DIR/plugins/hint/hint.plugin.sh" ]] && bash "$CBASH_DIR/plugins/hint/hint.plugin.sh" && return
     echo "cbash v$CBASH_VERSION - Run 'cbash help' for commands"
 }
 

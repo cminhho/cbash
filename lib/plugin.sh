@@ -11,4 +11,5 @@ cbash_list_plugins() {
     [[ -d "$CBASH_DIR/custom/plugins" ]] && find "$CBASH_DIR/custom/plugins" -name "*.plugin.sh" 2>/dev/null | sort | while IFS= read -r f; do
         [[ -f "$f" ]] && basename "$(dirname "$f")"
     done
+    return 0
 }
