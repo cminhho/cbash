@@ -2,9 +2,9 @@
 # Generate with: vhs demo.tape
 
 Output assets/demo.gif
-Set FontSize 11
-Set Width 1400
-Set Height 2000
+Set FontSize 12
+Set Width 1200
+Set Height 900
 Set Theme "Dracula"
 Set Padding 20
 Set Shell "zsh"
@@ -22,7 +22,7 @@ Show
 # Show minimal help
 Type "cbash"
 Enter
-Sleep 5s
+Sleep 4s
 
 Type "clear"
 Enter
@@ -31,7 +31,7 @@ Sleep 0.5s
 # Show full help
 Type "cbash --full"
 Enter
-Sleep 5s
+Sleep 4s
 
 Type "clear"
 Enter
@@ -40,9 +40,24 @@ Sleep 0.5s
 # Clone all repos from file
 Type "clone_all test/repos-example.txt /tmp/demo"
 Enter
-Sleep 3s
+Sleep 2s
 
 # Pull all repos
 Type "pull_all /tmp/demo"
+Enter
+Sleep 2s
+
+# Run command in all repos
+Type 'gitfor "git status" /tmp/demo'
+Enter
+Sleep 2s
+
+# Sync repo
+Type "gitsync"
+Enter
+Sleep 2s
+
+# Auto-commit
+Type "commit"
 Enter
 Sleep 2s
