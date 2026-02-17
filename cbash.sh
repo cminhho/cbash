@@ -34,8 +34,8 @@ _config() {
     printf "%-10s %s\n" "version" "$CBASH_VERSION" "dir" "$CBASH_DIR" "debug" "${DEBUG:-false}"
 }
 
-# Run plugin by name
-_plugin() { bash "$CBASH_DIR/plugins/$1/$1.plugin.sh" "${@:2}"; }
+# Run plugin by name (source common.sh first for plugin access)
+_plugin() { bash -c "source '$CBASH_DIR/lib/common.sh'; source '$CBASH_DIR/plugins/$1/$1.plugin.sh'; _main ${*:2}" ; }
 
 # Command router (built-in + auto-discover)
 _run() {

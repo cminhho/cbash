@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
-# Git plugin for CBASH
-# Git workflow utilities and repository management
-
-[[ -n "$CBASH_DIR" ]] && source "$CBASH_DIR/lib/common.sh"
-[[ -n "$CBASH_DIR" ]] && [[ -f "$CBASH_DIR/plugins/git/git-aliases.sh" ]] && source "$CBASH_DIR/plugins/git/git-aliases.sh"
+# Git plugin for CBASH - Git workflow utilities
 
 # -----------------------------------------------------------------------------
 # Helper Functions

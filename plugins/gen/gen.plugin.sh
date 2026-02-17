@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
-# Gen plugin for CBASH
-# Structure generator (scaffold + doc from templates)
-
-[[ -n "$CBASH_DIR" ]] && source "$CBASH_DIR/lib/common.sh"
+# Gen plugin for CBASH - Structure generator
 
 readonly GEN_TEMPLATE_DIR="$CBASH_DIR/plugins/gen/templates"
 readonly -a GEN_DOC_TYPES=("troubleshooting" "cab" "note" "adr" "meeting" "design" "cab-review" "code-review")

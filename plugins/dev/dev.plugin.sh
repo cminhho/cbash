@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
-# Dev plugin for CBASH
-# Docker Compose development environment management
+# Dev plugin for CBASH - Docker Compose development environment
 
-[[ -n "$CBASH_DIR" ]] && source "$CBASH_DIR/lib/common.sh"
-
-# Configuration
 readonly COMPOSE_FILE="$CBASH_DIR/plugins/dev/development.yml"
 
 # -----------------------------------------------------------------------------

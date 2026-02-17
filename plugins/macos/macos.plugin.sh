@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
-# MacOS plugin for CBASH
-# macOS system utilities and maintenance commands
-
-[[ -n "$CBASH_DIR" ]] && source "$CBASH_DIR/lib/common.sh"
+# MacOS plugin for CBASH - macOS system utilities
 
 # -----------------------------------------------------------------------------
 # Commands

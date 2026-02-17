@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
-# Proxy plugin for CBASH
-# Manage proxy settings for shell, npm, and git
-
-[[ -n "$CBASH_DIR" ]] && source "$CBASH_DIR/lib/common.sh"
+# Proxy plugin for CBASH - Proxy settings management
 
 # -----------------------------------------------------------------------------
 # Commands

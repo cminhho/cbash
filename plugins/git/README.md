@@ -1,4 +1,4 @@
-# git
+# Git plugin - Git workflow utilities
 
 This plugin provides Git workflow utilities including branch management, repository maintenance,
 and automated commit workflows.

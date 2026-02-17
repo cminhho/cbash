@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
-# Docs plugin for CBASH
-# View and manage documentation and cheatsheets
-
-[[ -n "$CBASH_DIR" ]] && source "$CBASH_DIR/lib/common.sh"
+# Docs plugin for CBASH - Documentation and cheatsheets
 
 # Configuration
 readonly DOCS_DIR="${DOCS_DIR:-$HOME/.config/cbash/docs}"

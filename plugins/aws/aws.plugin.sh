@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
-# AWS plugin for CBASH
-# Provides utilities for AWS infrastructure management
+# AWS plugin for CBASH - AWS infrastructure utilities
 
-[[ -n "$CBASH_DIR" ]] && source "$CBASH_DIR/lib/common.sh"
-
-# Configuration
 readonly AWS_LOCALSTACK_ENDPOINT="http://localhost:4566"
 readonly AWS_SSM_REGION="ap-southeast-1"
 

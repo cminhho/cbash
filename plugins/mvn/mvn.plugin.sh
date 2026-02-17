@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
-# Maven plugin for CBASH
-# Uses mvnw when present in project, otherwise system mvn. Defines Maven aliases.
-# Inspired by https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/mvn
-
-[[ -n "$CBASH_DIR" ]] && [[ -f "$CBASH_DIR/lib/common.sh" ]] && source "$CBASH_DIR/lib/common.sh"
+# Maven plugin for CBASH - Maven wrapper and aliases
 
 # -----------------------------------------------------------------------------
 # mvnw support: call mvnw if found in current or parent dir, else mvn

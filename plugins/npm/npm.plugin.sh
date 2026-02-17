@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
-# npm plugin for CBASH
-# Node.js / npm / npx aliases. Inspired by https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/npm
-
-[[ -n "$CBASH_DIR" ]] && [[ -f "$CBASH_DIR/lib/common.sh" ]] && source "$CBASH_DIR/lib/common.sh"
+# npm plugin for CBASH - npm/npx aliases
 
 # -----------------------------------------------------------------------------
 # Plugin commands (cbash npm ...)

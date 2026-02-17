@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
-# Setup plugin for CBASH
-# Development environment setup (see New-Mac-Setup.md)
-
-[[ -n "$CBASH_DIR" ]] && source "$CBASH_DIR/lib/common.sh"
+# Setup plugin for CBASH - Development environment setup
 
 # -----------------------------------------------------------------------------
 # Commands

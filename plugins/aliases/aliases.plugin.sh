@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
-# Aliases plugin for CBASH
-# Shell aliases management
-
-[[ -n "$CBASH_DIR" ]] && source "$CBASH_DIR/lib/common.sh"
+# Aliases plugin for CBASH - Shell aliases management
 
 readonly ALIASES_DIR="$CBASH_DIR/plugins/aliases"
 

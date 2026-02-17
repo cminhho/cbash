@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
-# Docker plugin for CBASH
-# Helper functions and short aliases for Docker CLI. Inspired by https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/docker
-
-[[ -n "$CBASH_DIR" ]] && [[ -f "$CBASH_DIR/lib/common.sh" ]] && source "$CBASH_DIR/lib/common.sh"
+# Docker plugin for CBASH - Docker CLI helpers
 
 # -----------------------------------------------------------------------------
 # Helper functions (from aliases/docker.sh)

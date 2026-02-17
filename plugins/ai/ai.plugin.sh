@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
-# AI plugin for CBASH
-# Chat with AI models via Ollama
-
-[[ -n "$CBASH_DIR" ]] && source "$CBASH_DIR/lib/common.sh"
+# AI plugin for CBASH - Chat with AI models via Ollama
 
 readonly DEFAULT_MODEL="deepseek-r1:14b"
 
