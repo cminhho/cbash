@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # CBASH Help - Display help and command reference
+# shellcheck disable=SC2154
+# (SC2154: color vars from colors.sh, sourced at runtime)
 
 source "$CBASH_DIR/lib/colors.sh"
 

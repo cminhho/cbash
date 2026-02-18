@@ -10,7 +10,8 @@ mvn-or-mvnw() {
 }
 
 mvn-root() {
-    local root=$(git rev-parse --show-toplevel 2>/dev/null || echo ".")
+    local root
+    root=$(git rev-parse --show-toplevel 2>/dev/null || echo ".")
     mvn-or-mvnw -f "$root/pom.xml" "$@"
 }
 

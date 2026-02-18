@@ -39,10 +39,23 @@ plugins/<name>/
 
 ## Testing
 
-Test your changes before submitting:
+Run the same checks as CI locally before pushing:
+
 ```bash
-./test/verify_commands.sh  # Run all tests (26 tests)
-shellcheck plugins/*/*.plugin.sh  # Lint scripts
+./tools/check.sh
+```
+
+This runs: **shellcheck** (plugins, lib, tools), **verify_commands** (test suite), and **actionlint** (workflow files). Install once:
+
+- **shellcheck** (required for lint): `brew install shellcheck` (macOS) or `apt install shellcheck` (Linux)
+- **actionlint** (optional, for workflow lint): `brew install actionlint` (macOS)
+
+Or run individual steps:
+
+```bash
+./test/verify_commands.sh              # Run all tests (26 tests)
+shellcheck plugins/*/*.plugin.sh lib/*.sh tools/*.sh   # Lint scripts
+actionlint -config-file .github/actionlint.yaml        # Lint workflows (if installed)
 ```
 
 - Test on clean environment

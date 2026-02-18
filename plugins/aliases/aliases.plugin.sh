@@ -8,7 +8,9 @@ aliases_list() {
     echo "Available aliases:"
     for f in "$ALIASES_DIR"/*.sh; do
         [[ -f "$f" ]] || continue
-        local name=$(basename "$f" .sh); [[ "$name" == "aliases.plugin" ]] && continue
+        local name
+        name=$(basename "$f" .sh)
+        [[ "$name" == "aliases.plugin" ]] && continue
         echo "  $name ($(grep -c "^alias " "$f" 2>/dev/null || echo 0) aliases)"
     done
 }
@@ -27,6 +29,7 @@ aliases_edit() {
 
 aliases_load() {
     for f in "$ALIASES_DIR"/*.sh; do
+        # shellcheck disable=SC1090
         [[ -f "$f" && "$(basename "$f")" != "aliases.plugin.sh" ]] && source "$f"
     done
     log_success "Aliases loaded"

@@ -3,16 +3,17 @@
 
 # Commands
 docker_running()       { docker ps --format "table {{.Names}}\t{{.ID}}\t{{.Image}}"; }
-docker_stop_all()      { docker stop $(docker ps -q) 2>/dev/null; log_success "Stopped all"; }
-docker_remove_stopped(){ docker rm $(docker ps -a -q) 2>/dev/null; log_success "Removed stopped"; }
+docker_stop_all()      { local ids; ids=$(docker ps -q 2>/dev/null); [[ -n "$ids" ]] && echo "$ids" | xargs docker stop 2>/dev/null; log_success "Stopped all"; }
+docker_remove_stopped(){ local ids; ids=$(docker ps -a -q 2>/dev/null); [[ -n "$ids" ]] && echo "$ids" | xargs docker rm 2>/dev/null; log_success "Removed stopped"; }
 docker_prune_images()  { docker image prune -a -f && log_success "Pruned images"; }
 
 docker_kill_all() {
     log_info "Killing all..."
-    docker ps -a -q | xargs -n 1 -P 8 -I {} docker stop {} 2>/dev/null || true
-    docker kill $(docker ps -q) 2>/dev/null || true
-    docker rm $(docker ps -a -q) 2>/dev/null || true
-    docker volume rm $(docker volume ls -q) 2>/dev/null || true
+    local ids
+    docker ps -a -q 2>/dev/null | xargs -n 1 -P 8 -I {} docker stop {} 2>/dev/null || true
+    ids=$(docker ps -q 2>/dev/null); [[ -n "$ids" ]] && echo "$ids" | xargs docker kill 2>/dev/null || true
+    ids=$(docker ps -a -q 2>/dev/null); [[ -n "$ids" ]] && echo "$ids" | xargs docker rm 2>/dev/null || true
+    ids=$(docker volume ls -q 2>/dev/null); [[ -n "$ids" ]] && echo "$ids" | xargs docker volume rm 2>/dev/null || true
     log_success "Done"
 }
 

@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # CBASH logging - level-based with color support
 # Set CBASH_LOG_LEVEL: 0=off, 1=fatal, 3=error, 4=warn, 6=info, 7=debug (default 7)
-# shellcheck disable=SC2034
+# shellcheck disable=SC2034,SC2154
+# (SC2154: color vars from colors.sh, set when lib is used via common.sh)
 
 # Log levels
 : "${CBASH_LOG_LEVEL:=7}"

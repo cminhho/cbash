@@ -1,0 +1,57 @@
+# CI: shellcheck, command tests, actionlint (workflows)
+# Runs on push to master and on pull requests.
+
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  lint:
+    name: Shellcheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Shellcheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+
+      - name: Run Shellcheck
+        run: |
+          for f in plugins/*/*.plugin.sh lib/*.sh tools/*.sh; do
+            [ -f "$f" ] || continue
+            shellcheck -S warning "$f"
+          done
+
+  test:
+    name: Verify commands
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run tests
+        run: ./test/verify_commands.sh
+
+  actionlint:
+    name: Actionlint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install actionlint
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash | bash -s 1.7.11
+          sudo mv actionlint /usr/local/bin/
+          actionlint -version
+
+      - name: Run actionlint
+        run: actionlint -config-file .github/actionlint.yaml
