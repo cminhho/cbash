@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://github.com/cminhho/cbash/blob/master/docs/COMMANDS.md
+    about: Full command list and architecture in the repo docs.
+  - name: Contributing
+    url: https://github.com/cminhho/cbash/blob/master/.github/CONTRIBUTING.md
+    about: How to contribute and submit PRs.

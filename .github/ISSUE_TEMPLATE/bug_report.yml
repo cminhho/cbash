@@ -1,0 +1,94 @@
+name: Bug report
+description: Report a defect or unexpected behavior in cbash-cli.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for filing this report. Keep it concise, reproducible, and evidence-based.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: One-sentence statement of what is broken.
+      placeholder: "pull_all fails with 'not a git repository' when one subdir is not a repo."
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Provide the shortest deterministic repro path.
+      placeholder: |
+        1. Create directory with mix of git and non-git subdirs.
+        2. Run pull_all from parent.
+        3. Observe error.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What should happen if the bug does not exist.
+      placeholder: Skip non-repos and pull only git repos, or list which dirs were skipped.
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What happened instead, including user-visible errors.
+      placeholder: Command exits with error; no pulls performed.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: cbash-cli version / source
+      description: How you run cbash (version if known, e.g. from Homebrew or install path).
+      placeholder: Homebrew latest / one-liner install / ~/.cbash from git
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      description: OS and version where this occurs.
+      placeholder: macOS 15.4 / Ubuntu 24.04 / WSL2
+    validations:
+      required: true
+  - type: input
+    id: shell
+    attributes:
+      label: Shell
+      description: Shell and version (Bash 4+ or Zsh).
+      placeholder: zsh 5.9 / bash 5.2
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs, screenshots, and evidence
+      description: Include redacted logs/screenshots that prove the behavior.
+      render: shell
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact and severity
+      description: |
+        Who is affected, how severe, how often, and practical consequence.
+        - Affected (e.g. plugin/command, all users or specific setup)
+        - Severity (annoying, blocks workflow, etc.)
+        - Frequency (always / intermittent / edge case)
+        - Consequence (workaround, manual steps, etc.)
+      placeholder: |
+        Affected: users of pull_all with mixed dirs
+        Severity: Medium (blocks batch pull)
+        Frequency: 100% when non-git dir present
+        Consequence: Must run pull manually per repo
+  - type: textarea
+    id: additional_information
+    attributes:
+      label: Additional information
+      description: Any context that helps triage but does not fit above.
+      placeholder: Workaround: run pull_all only in repo roots; regression since X.

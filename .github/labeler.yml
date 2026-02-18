@@ -1,0 +1,100 @@
+# Plugin labels (one per plugin directory)
+"plugin: git":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "plugins/git/**"
+"plugin: docker":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "plugins/docker/**"
+"plugin: k8s":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "plugins/k8s/**"
+"plugin: aws":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "plugins/aws/**"
+"plugin: gen":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "plugins/gen/**"
+"plugin: docs":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "plugins/docs/**"
+"plugin: ai":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "plugins/ai/**"
+"plugin: macos":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "plugins/macos/**"
+"plugin: proxy":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "plugins/proxy/**"
+"plugin: npm":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "plugins/npm/**"
+"plugin: mvn":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "plugins/mvn/**"
+"plugin: dev":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "plugins/dev/**"
+"plugin: setup":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "plugins/setup/**"
+"plugin: aliases":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "plugins/aliases/**"
+
+# Core (entry point + shared lib)
+"core":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "cbash.sh"
+          - "lib/**"
+
+# Docs
+"docs":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "docs/**"
+          - "README.md"
+          - "plugins/**/README.md"
+
+# Install / upgrade / uninstall
+"tools":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "tools/**"
+          - "templates/dotfiles/**"
+          - "templates/plugin.template.sh"
+          - "templates/aliases.template.sh"
+
+# Tests
+"test":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "test/**"
+          - "assets/*.tape"
+
+# CI / GitHub
+"ci":
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/**"
+
+# Assets (demo, media)
+"assets":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "assets/**"
