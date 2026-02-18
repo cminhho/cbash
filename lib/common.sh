@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Common utilities for CBASH plugins
-# shellcheck disable=SC2034
+# shellcheck disable=SC2034,SC2154
+# (SC2154: color vars from colors.sh, sourced at runtime)
 
 source "$CBASH_DIR/lib/colors.sh"
 source "$CBASH_DIR/lib/log.sh"

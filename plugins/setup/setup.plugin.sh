@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # Setup plugin for CBASH - Development environment setup
+# shellcheck disable=SC2154
+# (SC2154: style_label, clr, style_ok, etc. from lib, sourced at runtime)
 
 # Commands
 

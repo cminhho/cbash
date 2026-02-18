@@ -91,7 +91,8 @@ git_backup() {
 git_auto_commit() {
     _git_in_repo || return 1
     _git_has_changes || { log_info "Nothing to commit"; return 0; }
-    local branch=$(git rev-parse --abbrev-ref HEAD)
+    local branch
+    branch=$(git rev-parse --abbrev-ref HEAD)
     log_info "Changes:"; git status --short
     git add . && git commit -m "chore: auto-commit $(date +%Y-%m-%d)" && git push origin "$branch"
     log_success "Pushed to $branch"
@@ -113,10 +114,11 @@ git_squash() {
 
 git_auto_squash() {
     _git_in_repo || return 1
-    local cur=$(git rev-parse --abbrev-ref HEAD)
-    local def=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@' || echo "master")
+    local cur def count
+    cur=$(git rev-parse --abbrev-ref HEAD)
+    def=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@' || echo "master")
     [[ "$cur" == "$def" ]] && { log_info "Already on $def"; return 1; }
-    local count=$(git rev-list --count "$def".."$cur")
+    count=$(git rev-list --count "$def".."$cur")
     [[ "$count" -eq 0 ]] && { log_info "No commits to squash"; return 0; }
     log_info "Squashing $count commits..."
     local msg; read -rp "Commit message: " msg; [[ -z "$msg" ]] && msg="Squashed $cur"
@@ -164,7 +166,8 @@ git_sync() {
 
 git_open() {
     _git_in_repo || return 1
-    local url=$(git config --get remote.origin.url)
+    local url
+    url=$(git config --get remote.origin.url)
     [[ -z "$url" ]] && { log_error "No remote.origin.url"; return 1; }
     url=${url/git@github.com:/https://github.com/}
     url=${url/git@bitbucket.org:/https://bitbucket.org/}

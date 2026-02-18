@@ -1,6 +1,8 @@
 # actionlint configuration
 # https://github.com/rhysd/actionlint/blob/main/docs/config.md
 
+# cbash-cli uses GitHub-hosted runners (ubuntu-latest) only; no self-hosted runner config.
+
 # Ignore patterns for known issues
 paths:
   .github/workflows/**/*.yml:

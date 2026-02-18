@@ -8,7 +8,7 @@ _dev_check_docker() {
     command -v docker &>/dev/null || { log_error "Docker not installed"; return 1; }
     docker info &>/dev/null && return 0
     log_info "Starting Docker..."; open -a Docker 2>/dev/null
-    for i in {1..30}; do docker info &>/dev/null && return 0; sleep 1; done
+    for _ in {1..30}; do docker info &>/dev/null && return 0; sleep 1; done
     log_error "Docker failed to start"; return 1
 }
 
@@ -40,7 +40,8 @@ dev_stats() {
 
 dev_ip() {
     _dev_check_docker || return 1
-    local containers=$(_dev_compose ps -q 2>/dev/null)
+    local containers
+    containers=$(_dev_compose ps -q 2>/dev/null)
     [[ -z "$containers" ]] && { log_info "No containers"; return 0; }
     for c in $containers; do
         echo "$(docker inspect -f '{{.Name}}' "$c" | tr -d '/'): $(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}' "$c")"
@@ -50,8 +51,11 @@ dev_ip() {
 dev_kill_all() {
     _dev_check_docker || return 1
     log_info "Killing all..."
-    docker stop $(docker ps -q) 2>/dev/null; docker rm $(docker ps -aq) 2>/dev/null
-    docker volume rm $(docker volume ls -q) 2>/dev/null; log_success "Done"
+    local ids
+    ids=$(docker ps -q 2>/dev/null); [[ -n "$ids" ]] && echo "$ids" | xargs docker stop 2>/dev/null
+    ids=$(docker ps -aq 2>/dev/null); [[ -n "$ids" ]] && echo "$ids" | xargs docker rm 2>/dev/null
+    ids=$(docker volume ls -q 2>/dev/null); [[ -n "$ids" ]] && echo "$ids" | xargs docker volume rm 2>/dev/null
+    log_success "Done"
 }
 
 # Help and router

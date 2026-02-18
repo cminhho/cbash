@@ -56,8 +56,9 @@
 
 ## Commands
 
+- **Run all CI checks locally**: `./tools/check.sh` (shellcheck + verify_commands + actionlint)
 - **Lint**: `shellcheck plugins/*/*.plugin.sh lib/*.sh tools/*.sh`
 - **Tests**: `./test/verify_commands.sh`
 - **New plugin**: Copy `templates/plugin.template.sh` to `plugins/<name>/<name>.plugin.sh`
 
-When coding with a human, run the above commands manually to ensure quality before committing.
+Require `shellcheck` for lint (e.g. `brew install shellcheck`). Optionally `actionlint` for workflow lint. When coding with a human, run `./tools/check.sh` or the above commands manually to ensure quality before committing.

@@ -11,7 +11,7 @@ readonly -a VALID_ENVS=("dev" "test" "staging" "production")
 
 _aws_validate_env() {
     local env="$1"
-    [[ " ${VALID_ENVS[*]} " =~ " ${env} " ]]
+    [[ " ${VALID_ENVS[*]} " == *" ${env} "* ]]
 }
 
 _aws_check_cli() {
@@ -63,12 +63,12 @@ aws_sqs_create() {
         return 1
     }
 
-    local response
+    local response ret
     response=$(aws sqs create-queue \
         --queue-name "$queue_name" \
         --endpoint-url "$AWS_LOCALSTACK_ENDPOINT" 2>&1)
-
-    if [[ $? -eq 0 ]]; then
+    ret=$?
+    if [[ $ret -eq 0 ]]; then
         log_success "Queue created: $response"
     else
         log_error "$response"
@@ -145,14 +145,14 @@ aws_ssm_get() {
 
     _aws_check_profile "$profile" || return 1
 
-    local value
+    local value ret
     value=$(aws ssm get-parameter \
         --name "$param_name" \
         --profile "$profile" \
         --query "Parameter.Value" \
         --output text 2>&1)
-
-    if [[ $? -eq 0 ]]; then
+    ret=$?
+    if [[ $ret -eq 0 ]]; then
         log_info "$param_name: $value"
     else
         log_error "$value"

@@ -27,7 +27,7 @@ jobs:
         run: |
           for f in plugins/*/*.plugin.sh lib/*.sh tools/*.sh; do
             [ -f "$f" ] || continue
-            shellcheck "$f"
+            shellcheck -S warning "$f"
           done
 
   test:

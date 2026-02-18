@@ -115,7 +115,7 @@ gen_doc() {
     local doc_type="$1" name="$2"
 
     [[ -z "$doc_type" ]] && doc_type=$(_gen_select_doc_type)
-    [[ " ${GEN_DOC_TYPES[*]} " =~ " ${doc_type} " ]] || {
+    [[ " ${GEN_DOC_TYPES[*]} " == *" ${doc_type} "* ]] || {
         _gap; log_error "Invalid document type. Allowed: ${GEN_DOC_TYPES[*]}"
         return 1
     }
