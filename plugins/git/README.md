@@ -1,131 +1,69 @@
-# Git plugin - Git workflow utilities
+# Git plugin
 
-This plugin provides Git workflow utilities including branch management, repository maintenance,
-and automated commit workflows.
-
-To use it, the plugin is automatically loaded by CBASH. No additional configuration required.
+Git workflow utilities: branch management, batch pull/clone, auto-commit, squash, sync. Loaded automatically by CBASH.
 
 ## Plugin commands
 
-* `cbash git config`: displays local Git configuration settings using `git config --list`.
+| Command | Description |
+|---------|-------------|
+| `cbash git config` | Show local git config |
+| `cbash git log` | Last 20 commits (oneline) |
+| `cbash git branches` | List branches with dates |
+| `cbash git branch <name>` | Create branch from default (main/master), pull, then checkout new branch |
+| `cbash git rename <name>` | Rename current branch |
+| `cbash git undo` | Undo last commit (soft), keep changes |
+| `cbash git backup` | Add all, commit `chore: backup YYYY-MM-DD`, push |
+| `cbash git auto-commit` | Add all, commit with timestamp, push |
+| `cbash git squash` | Interactive squash; prompts branch + message, then force push |
+| `cbash git auto-squash` | Squash all on feature branch |
+| `cbash git clean` | Prune, repack, gc |
+| `cbash git size` | Repo size (bundle of refs) |
+| `cbash git sync` | Fetch all + pull |
+| `cbash git open` | Open repo in browser (GitHub/GitLab/Bitbucket) |
+| `cbash git pull-all [dir]` | Pull in all repos under dir (default: cwd) |
+| `cbash git clone-all <file> [dir]` | Clone from list file |
+| `cbash git for "<cmd>" [dir]` | Run command in every repo under dir |
 
-* `cbash git log`: shows the last 20 commits in one-line format for quick history review.
+## Shortcuts (aliases)
 
-* `cbash git branches`: lists all local branches sorted by last commit date, showing branch name,
-  short commit hash, commit message, and relative time.
+When the plugin is loaded, these aliases call the plugin:
 
-* `cbash git branch <name>`: creates a new branch from master. Checks out master, pulls latest
-  changes, then creates and switches to the new branch.
+| Alias | Runs |
+|-------|------|
+| `commit` | `cbash git auto-commit` |
+| `undo` | `cbash git undo` |
+| `pull_all` | `cbash git pull-all` |
+| `repos_pull` | `cbash git pull-all $WORKSPACE_ROOT` |
+| `clone_all` | `cbash git clone-all` |
+| `gitfor` | `cbash git for` |
+| `gitsync` | `cbash git sync` |
+| `gitclean` | `cbash git clean` |
+| `auto_squash`, `squash` | `cbash git auto-squash`, `cbash git squash` |
 
-* `cbash git rename <name>`: renames the current branch to the specified name.
-
-* `cbash git undo`: undoes the last commit while preserving changes in the working directory
-  (soft reset). Useful for fixing commit mistakes.
-
-* `cbash git backup`: quick commit and push workflow. Adds all changes, commits with message
-  `chore: backup YYYY-MM-DD`, and pushes to remote.
-
-* `cbash git auto-commit`: automated commit workflow. Shows changed files, adds all changes,
-  commits with timestamp message, and pushes to current branch.
-
-* `cbash git squash`: interactively squashes commits on a branch. Prompts for branch name and
-  commit message, then squashes all commits into one and force pushes.
-
-* `cbash git clean`: cleans and optimizes the repository by pruning remote branches, repacking,
-  expiring old reflogs, and running aggressive garbage collection.
-
-* `cbash git size`: calculates repository size by creating a temporary bundle of all refs.
-
-* `cbash git sync`: syncs current repository by fetching all remotes with prune and pulling.
-
-* `cbash git open`: opens the repository in browser. Converts SSH URLs to HTTPS and opens in
-  default browser. Supports GitHub, GitLab, and Bitbucket.
-
-* `cbash git pull-all [dir]`: pulls (rebase or merge) in all git repos under the given directory (default: current dir).
-
-* `cbash git for "<command>" [dir]`: runs the given command in every git repo under the directory (default: current dir). Use for batch operations like `git pull` or `git reset --hard && git pull`.
+Plus many `g*` aliases (e.g. `g`, `gs`, `gp`, `gcom`) — see `plugins/git/git.aliases.sh`.
 
 ## Prerequisites
 
-The plugin requires [Git](https://git-scm.com/) to be installed:
-
-```bash
-# Install Git
-brew install git  # macOS
-apt-get install git  # Linux
-```
+[Git](https://git-scm.com/) — `brew install git` (macOS) or `apt-get install git` (Linux).
 
 ## Examples
 
-Create a feature branch:
-
 ```bash
-cbash git branch feature/user-auth
-```
-
-Quick backup of work in progress:
-
-```bash
-cbash git backup
-```
-
-Undo last commit (keep changes):
-
-```bash
-cbash git undo
-```
-
-View branches by recent activity:
-
-```bash
-cbash git branches
-```
-
-Squash commits before merge:
-
-```bash
-cbash git squash
-# Branch to squash: feature/my-feature
-# Commit message: feat: add user authentication
-```
-
-Clean up repository:
-
-```bash
-cbash git clean
-```
-
-Open repository in browser:
-
-```bash
-cbash git open
-```
-
-Run a command in every repo (e.g. pull latest):
-
-```bash
-cbash git for "git pull"
-cbash git for "git reset --hard && git pull"
-cbash git for "git status" ~/workspace
+cbash git branch feature/user-auth   # create branch from default, pull, checkout
+cbash git backup                      # quick commit + push
+undo                                 # or: cbash git undo (undo last commit, keep changes)
+commit                               # or: cbash git auto-commit
+cbash git branches                    # branches by recent activity
+cbash git squash                      # interactive squash (prompts branch + message)
+cbash git clean                       # prune, repack, gc
+cbash git open                        # open repo in browser
+gitfor "git pull"                     # pull in every repo (or: cbash git for "git pull")
+gitfor "git status" ~/workspace       # run in custom dir
 ```
 
 ## Troubleshooting
 
-**Git not found:**
-```bash
-brew install git
-```
-
-**Not a git repository:**
-- Ensure you're in a directory with `.git` folder
-- Run `git init` to initialize a new repository
-
-**Push failed:**
-- Check remote is configured: `git remote -v`
-- Verify SSH keys or credentials are set up
-- Pull latest changes first: `cbash git sync`
-
-**Squash failed:**
-- Ensure branch exists: `git branch -a`
-- Commit any uncommitted changes first
-- Check you have push access to remote
+- **Git not found:** `brew install git`
+- **Not a git repo:** run from a dir with `.git` or `git init`
+- **Push failed:** `git remote -v`, check SSH/credentials, run `gitsync` or `cbash git sync`
+- **Squash failed:** ensure branch exists, commit first, check push access
