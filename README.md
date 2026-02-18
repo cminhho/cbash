@@ -30,20 +30,92 @@ auto_squash             # Squash all commits on feature branch
 
 **200+ aliases** included — type less, do more.
 
-## Features
+## Commands
 
-| Feature | Description | Commands |
-|---------|-------------|----------|
-| 🔀 **Git Automation** | Batch operations across repos, auto-commit with timestamps, squash before PR | `commit`, `auto_squash`, `pull_all`, `clone_all`, `gitfor`, `gitsync` |
-| 🐳 **Docker & Dev** | Start/stop Docker Compose, follow logs, shell into containers | `start`, `stop`, `devlogs`, `devexec`, `devkill` |
-| ☸️ **Kubernetes** | Quick access to pods, logs, exec, rollout restarts | `k8pods`, `k8logs`, `k8exec`, `k8restart` |
-| ☁️ **AWS & Cloud** | SSM session manager, parameter store access | `awsssh`, `awsssmget` |
-| 🛠️ **Generators** | Scaffold projects, features, generate docs from templates | `gfeat`, `gproject`, `gdoc` |
-| 📚 **Docs & Cheat** | Personal docs, community cheatsheets (tldr, cheat.sh) | `doc`, `ch`, `chsetup` |
-| 🤖 **AI Chat** | Chat with local LLMs via Ollama | `chat`, `aipull` |
-| 🍎 **macOS Utils** | Ports, updates, lock screen, IP info | `mports`, `mupdate`, `mlock` |
-| 🌐 **Proxy** | Toggle proxy for shell, npm, git | `proxon`, `proxoff` |
-| 🔨 **Build Tools** | Maven and npm/npx shortcuts | `mci`, `ni`, `nr`, `nx` |
+CLI: `cbash <plugin> <subcommand>`. Run `cbash --full` for full list, `cbash <plugin> help` for plugin help.
+
+| Plugin | Command | Description |
+|--------|---------|-------------|
+| Setup | `cbash setup check` | Check dev environment |
+| Setup | `cbash setup brew [group]` | Install tools (dev, cloud, ide, apps, all) |
+| Setup | `cbash setup workspace [name]` | Create workspace structure |
+| Aliases | `cbash aliases list` | List alias files |
+| Aliases | `cbash aliases show <name>` | Show aliases in file |
+| Aliases | `cbash aliases edit <name>` | Edit alias file |
+| Aliases | `cbash aliases load` | Load all aliases |
+| Git | `cbash git auto-commit` | Auto commit and push |
+| Git | `cbash git auto-squash` | Squash feature branch |
+| Git | `cbash git squash` | Squash commits interactively |
+| Git | `cbash git pull-all [dir]` | Pull all repos |
+| Git | `cbash git clone-all <file>` | Clone repos from file |
+| Git | `cbash git for "<cmd>"` | Run command in all repos |
+| Git | `cbash git branch <name>` | Create branch from master |
+| Git | `cbash git rename <name>` | Rename current branch |
+| Git | `cbash git undo` | Undo last commit |
+| Git | `cbash git backup` | Quick commit and push |
+| Git | `cbash git config` | Show git config |
+| Git | `cbash git log` | Recent commits |
+| Git | `cbash git branches` | List branches with dates |
+| Git | `cbash git clean` | Clean and optimize repo |
+| Git | `cbash git size` | Show repo size |
+| Git | `cbash git sync` | Fetch and pull |
+| Git | `cbash git open` | Open repo in browser |
+| Dev | `cbash dev start [svc]` | Start Docker services |
+| Dev | `cbash dev stop [svc]` | Stop services |
+| Dev | `cbash dev restart [svc]` | Restart services |
+| Dev | `cbash dev reload [svc]` | Recreate and start |
+| Dev | `cbash dev status` | Service status |
+| Dev | `cbash dev list` | List services |
+| Dev | `cbash dev logs [svc]` | Follow logs |
+| Dev | `cbash dev exec <svc>` | Shell into service |
+| Dev | `cbash dev stats` | Container stats |
+| Dev | `cbash dev ip` | Container IPs |
+| Dev | `cbash dev kill-all` | Stop and remove all |
+| Docker | `cbash docker running` | List running containers |
+| Docker | `cbash docker stop-all` | Stop all containers |
+| Docker | `cbash docker remove-stopped` | Remove stopped containers |
+| Docker | `cbash docker prune-images` | Remove unused images |
+| Docker | `cbash docker kill-all` | Stop, remove all and volumes |
+| K8s | `cbash k8s pods [opts]` | List pods |
+| K8s | `cbash k8s logs <pod>` | Follow pod logs |
+| K8s | `cbash k8s desc <pod>` | Describe pod |
+| K8s | `cbash k8s exec <pod>` | Shell into pod |
+| K8s | `cbash k8s restart <deploy>` | Rollout restart |
+| K8s | `cbash k8s cheat [pod]` | Show kubectl commands |
+| AWS | `cbash aws ssh <profile>` | Connect via SSM |
+| AWS | `cbash aws ssm-get` | Get SSM parameter |
+| AWS | `cbash aws sqs-create` | Create SQS queue (localstack) |
+| AWS | `cbash aws sqs-test` | Test SQS (localstack) |
+| Gen | `cbash gen feat [name]` | Create feature dir |
+| Gen | `cbash gen trouble [name]` | Create troubleshooting dir |
+| Gen | `cbash gen workspace [name]` | Create workspace structure |
+| Gen | `cbash gen project [name]` | Create project structure |
+| Gen | `cbash gen doc [type]` | Generate doc from template |
+| Docs | `cbash docs <name>` | View document |
+| Docs | `cbash docs list` | List documents |
+| Docs | `cbash docs edit <name>` | Edit document |
+| Docs | `cbash docs cheat <name>` | View cheatsheet |
+| Docs | `cbash docs cheat-list` | List cheatsheets |
+| Docs | `cbash docs cheat-setup` | Download community cheatsheets |
+| Docs | `cbash docs cheat-edit <name>` | Edit personal cheatsheet |
+| AI | `cbash ai chat [model]` | Chat with AI (Ollama) |
+| AI | `cbash ai list` | List Ollama models |
+| AI | `cbash ai pull <model>` | Pull model |
+| MacOS | `cbash macos info` | macOS version |
+| MacOS | `cbash macos lock` | Lock screen |
+| MacOS | `cbash macos speedtest` | Internet speed |
+| MacOS | `cbash macos memory` | Processes by memory |
+| MacOS | `cbash macos ports` | List listening ports |
+| MacOS | `cbash macos ip-local` | Local IP |
+| MacOS | `cbash macos ip-public` | Public IP |
+| MacOS | `cbash macos update` | Update Homebrew, npm, pip |
+| MacOS | `cbash macos passgen [n]` | Random password (n words) |
+| Proxy | `cbash proxy enable [url]` | Enable proxy |
+| Proxy | `cbash proxy disable` | Disable proxy |
+| Proxy | `cbash proxy show` | Show proxy settings |
+| Build | `cbash mvn` | Maven wrapper + aliases (mci, build, …) |
+| Build | `cbash npm` | npm/npx aliases (ni, nr, nx, …) |
+| CLI | `cbash cli update` | Upgrade CBASH CLI |
 
 ## Installation
 
