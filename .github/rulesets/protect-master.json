@@ -1,0 +1,27 @@
+{
+  "name": "Protect master",
+  "target": "branch",
+  "enforcement": "active",
+  "conditions": {
+    "ref_name": {
+      "include": ["refs/heads/master"],
+      "exclude": []
+    }
+  },
+  "rules": [
+    {
+      "type": "pull_request"
+    },
+    {
+      "type": "required_status_checks",
+      "parameters": {
+        "required_status_checks": [
+          { "context": "Shellcheck" },
+          { "context": "Verify commands" },
+          { "context": "Actionlint" }
+        ],
+        "strict_required_status_checks_policy": true
+      }
+    }
+  ]
+}
