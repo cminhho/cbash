@@ -47,7 +47,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install actionlint
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash | bash -s 1.7.11
+          sudo mv actionlint /usr/local/bin/
+          actionlint -version
+
       - name: Run actionlint
-        uses: rhysd/actionlint@v1
-        with:
-          config-file: .github/actionlint.yaml
+        run: actionlint -config-file .github/actionlint.yaml
