@@ -58,6 +58,8 @@ Optional dependencies:
 
 ## Configuration
 
+Optional: set in `~/.cbashrc` (see `docs/CONFIG.md`) — `AWS_SSM_REGION`, `AWS_LOCALSTACK_ENDPOINT`, `CBASH_AWS_SSH_TARGET_PREFIX`, `CBASH_AWS_SSH_ENVS`.
+
 ### AWS Credentials
 
 Configure your AWS credentials in `~/.aws/credentials`:

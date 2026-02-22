@@ -1,15 +1,38 @@
-# CBASH CLI config (sourced by cbash at startup)
-# Edit this file. See docs/CONFIG.md for all variables.
-# If you had an existing config, install may have backed it up to ~/.cbashrc.bak
+# CBASH CLI — config (sourced at startup)
+# Copy: ~/.cbashrc — edit there. See docs/CONFIG.md for full reference.
+# Install may have backed up an existing file to ~/.cbashrc.bak
 
-# Paths
-# export CBASH_DATA_DIR="$HOME/.cbash"
-# export CBASH_DEV_COMPOSE_FILE="$HOME/.cbash/dev/development.yml"
-# export CBASH_GIT_DEFAULT_PULL_DIR="$HOME/repos"
+# -----------------------------------------------------------------------------
+# Paths (global data dir, dev, git, docs)
+# -----------------------------------------------------------------------------
+export CBASH_DATA_DIR="${CBASH_DATA_DIR:-$HOME/.cbash}"
+export CBASH_DEV_COMPOSE_FILE="${CBASH_DEV_COMPOSE_FILE:-$HOME/.cbash/dev/development.yml}"
+export CBASH_GIT_DEFAULT_PULL_DIR="${CBASH_GIT_DEFAULT_PULL_DIR:-$HOME/repos}"
+export CBASH_GIT_DEFAULT_REPO_LIST="${CBASH_GIT_DEFAULT_REPO_LIST:-$HOME/.cbash/repos-sample.txt}"
+export DOCS_DIR="${DOCS_DIR:-$HOME/.config/cbash/docs}"
 
+# -----------------------------------------------------------------------------
 # Proxy
-# export CBASH_PROXY_DEFAULT_URL="http://proxy:8080"
-# export CBASH_PROXY_NO_PROXY="127.0.0.1,localhost,.local"
+# -----------------------------------------------------------------------------
+export CBASH_PROXY_DEFAULT_URL="${CBASH_PROXY_DEFAULT_URL:-http://proxy:8080}"
+export CBASH_PROXY_NO_PROXY="${CBASH_PROXY_NO_PROXY:-127.0.0.1,localhost,.local}"
 
-# Endpoints
-# export AWS_SSM_REGION="ap-southeast-1"
+# -----------------------------------------------------------------------------
+# AWS (SSM, SSH gateway, LocalStack SQS)
+# -----------------------------------------------------------------------------
+# SSM / SSH gateway (cbash aws ssh)
+export AWS_SSM_REGION="${AWS_SSM_REGION:-ap-southeast-1}"
+export CBASH_AWS_SSH_TARGET_PREFIX="${CBASH_AWS_SSH_TARGET_PREFIX:-ssh-gateway}"
+export CBASH_AWS_SSH_ENVS="${CBASH_AWS_SSH_ENVS:-dev test staging production}"
+# LocalStack (cbash aws sqs-create / sqs-test)
+export AWS_LOCALSTACK_ENDPOINT="${AWS_LOCALSTACK_ENDPOINT:-http://localhost:4566}"
+
+# -----------------------------------------------------------------------------
+# AI (Ollama)
+# -----------------------------------------------------------------------------
+export CBASH_AI_DEFAULT_MODEL="${CBASH_AI_DEFAULT_MODEL:-deepseek-r1:14b}"
+
+# -----------------------------------------------------------------------------
+# Other (Kubernetes, etc.)
+# -----------------------------------------------------------------------------
+export K8S_NAMESPACE="${K8S_NAMESPACE:-default}"

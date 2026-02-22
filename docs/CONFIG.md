@@ -52,17 +52,28 @@ Plugins read these if set; otherwise they use the default in the table.
 | `CBASH_GIT_DEFAULT_REPO_LIST` | git | (none) |
 | `CBASH_GIT_DEFAULT_PULL_DIR` | git | (none) |
 | `DOCS_DIR` | docs | `$HOME/.config/cbash/docs` |
-| `CHEAT_COMMUNITY_DIR` | docs | `$HOME/.config/cbash/cheatsheets/community` |
-| `CHEAT_PERSONAL_DIR` | docs | `$HOME/.config/cbash/cheatsheets/personal` |
 
-**Endpoints / proxy**
+**Proxy**
 
 | Variable | Used by | Default |
 |----------|---------|---------|
 | `CBASH_PROXY_DEFAULT_URL` | proxy | (none) |
 | `CBASH_PROXY_NO_PROXY` | proxy | `127.0.0.1,localhost` |
-| `AWS_LOCALSTACK_ENDPOINT` | aws | `http://localhost:4566` |
-| `AWS_SSM_REGION` | aws | `ap-southeast-1` |
+
+**AWS (SSM, SSH gateway, LocalStack)**
+
+| Variable | Used by | Default |
+|----------|---------|---------|
+| `AWS_SSM_REGION` | aws | `ap-southeast-1` (SSM/SSH region) |
+| `AWS_LOCALSTACK_ENDPOINT` | aws | `http://localhost:4566` (SQS local) |
+| `CBASH_AWS_SSH_TARGET_PREFIX` | aws | `ssh-gateway` (SSM target name prefix) |
+| `CBASH_AWS_SSH_ENVS` | aws | `dev test staging production` (allowed envs for `aws ssh`) |
+
+**AI (Ollama)**
+
+| Variable | Used by | Default |
+|----------|---------|---------|
+| `CBASH_AI_DEFAULT_MODEL` | ai | `deepseek-r1:14b` |
 
 **Other**
 
@@ -85,6 +96,10 @@ export CBASH_DEV_COMPOSE_FILE="$HOME/.cbash/dev/development.yml"
 # Proxy
 # export CBASH_PROXY_DEFAULT_URL="http://proxy:8080"
 
-# Endpoints
+# AWS
 # export AWS_SSM_REGION="us-east-1"
+# export CBASH_AWS_SSH_TARGET_PREFIX="bastion"
+
+# AI (Ollama)
+# export CBASH_AI_DEFAULT_MODEL="llama3.2"
 ```

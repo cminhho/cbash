@@ -1,0 +1,10 @@
+# Repos list for cbash git clone-all
+# Format: <url> [dir]
+#   url  — Git clone URL (HTTPS or SSH)
+#   dir  — optional directory name (default: derived from URL)
+# Lines starting with # and empty lines are ignored.
+#
+# Example (uncomment and edit):
+# https://github.com/user/repo-one
+# https://github.com/user/repo-two	my-repo-two
+# git@github.com:user/repo-three.git

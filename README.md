@@ -40,14 +40,6 @@ Works with Bash 4+ and Zsh on macOS, Linux, and WSL. No config files required to
 
 ---
 
-## Demo
-
-<p align="center">
-  <img src="assets/demo.gif" alt="CBASH CLI Demo" style="width: 100%; max-width: 720px; height: auto;" />
-</p>
-
----
-
 ## Why CBASH
 
 - **Composable by default:** One binary entry (`cbash`), plugins for Git, Docker, K8s, AWS, dev, docs, AI. Add your own in `plugins/<name>/`.
@@ -85,7 +77,7 @@ auto_squash             # Squash all commits on feature branch
 | **Docker & Dev** | Start/stop/restart Docker Compose services, follow logs, exec into containers, list running containers, prune images, manage local dev stacks from one CLI |
 | **Kubernetes** | List pods, follow logs, describe, exec into pods, rollout restart deployments, kubectl cheat commands |
 | **AWS** | SSH via SSM, read SSM parameters; with LocalStack: create and test SQS queues |
-| **Scaffolding & docs** | Generate feature/troubleshooting dirs, workspace and project structures, docs from templates; view, list, edit built-in docs and cheatsheets |
+| **Scaffolding & docs** | Generate feature/troubleshooting dirs, workspace and project structures, docs from templates; view, list, edit docs in DOCS_DIR |
 | **AI (Ollama)** | Chat with local models, list and pull Ollama models from the shell |
 | **System & proxy** | macOS: lock screen, speedtest, memory/ports, IP (local/public), system update, password generator. Proxy: enable/disable/show |
 
@@ -185,10 +177,6 @@ CLI form: `cbash <plugin> <subcommand>`. Use `cbash --full` for the full list an
 | Docs | `cbash docs <name>` | View document |
 | Docs | `cbash docs list` | List documents |
 | Docs | `cbash docs edit <name>` | Edit document |
-| Docs | `cbash docs cheat <name>` | View cheatsheet |
-| Docs | `cbash docs cheat-list` | List cheatsheets |
-| Docs | `cbash docs cheat-setup` | Download community cheatsheets |
-| Docs | `cbash docs cheat-edit <name>` | Edit personal cheatsheet |
 | AI | `cbash ai chat [model]` | Chat with AI (Ollama) |
 | AI | `cbash ai list` | List Ollama models |
 | AI | `cbash ai pull <model>` | Pull model |
@@ -248,12 +236,13 @@ CBASH_DIR="$PWD" ./cbash.sh git sync
 ```
 cbash-cli/
 ├── cbash.sh              # Main entry point
+├── assets/               # Demo and media (e.g. demo.tape for VHS GIFs)
 ├── lib/                  # Core (common, help, colors, cli)
 ├── plugins/              # Feature plugins
 │   └── <name>/
 │       ├── <name>.plugin.sh
 │       └── <name>.aliases.sh
-├── templates/            # Scaffolding templates
+├── templates/            # Scaffolding templates (repos-sample.txt, dotfiles, …)
 ├── tools/                # Install/upgrade scripts
 └── test/                 # Test suite
 ```

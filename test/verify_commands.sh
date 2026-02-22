@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # CBASH CLI test suite - TAP format
+# Runs cbash as a subprocess (bash cbash.sh <args>), so shell aliases (doc, pull_all, etc.) are not exercised.
 # Usage: ./test/verify_commands.sh [-v|--verbose]
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -59,6 +60,7 @@ contains "cli help shows update" "update" cli help
 # Plugins
 ok "git" git
 ok "docs" docs
+ok "docs list" docs list
 ok "aliases" aliases
 ok "gen uuid" gen uuid
 contains "git shows USAGE" "USAGE" git

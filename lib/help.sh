@@ -106,10 +106,6 @@ help_show_full() {
     _h_cmd "docs"             "<name>"        "View document"                            "doc"
     _h_cmd "docs list"        ""              "List documents"
     _h_cmd "docs edit"        "<name>"        "Edit document"
-    _h_cmd "docs cheat"       "<name>"        "View cheatsheet"                          "ch"
-    _h_cmd "docs cheat-list"  ""              "List cheatsheets"                         "chlist"
-    _h_cmd "docs cheat-setup" ""              "Download community cheatsheets"           "chsetup"
-    _h_cmd "docs cheat-edit"  "<name>"        "Edit personal cheatsheet"                 "chedit"
 
     _h_title "AI"
     _h_cmd "ai chat"          "[model]"       "Chat with AI (Ollama)"                    "chat"
@@ -184,8 +180,6 @@ help_show() {
 
     _h_title "Docs"
     _h_cmd "docs"             "<name>"        "View document"                            "doc"
-    _h_cmd "docs cheat"       "<name>"        "View cheatsheet"                          "ch"
-    _h_cmd "docs cheat-setup" ""              "Download community cheatsheets"           "chsetup"
 
     _h_title "AI"
     _h_cmd "ai chat"          "[model]"       "Chat with AI (Ollama)"                    "chat"

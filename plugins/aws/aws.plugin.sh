@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
 # AWS plugin for CBASH - AWS infrastructure utilities
+# Config: AWS_SSM_REGION, AWS_LOCALSTACK_ENDPOINT, CBASH_AWS_SSH_* (see ~/.cbashrc / docs/CONFIG.md)
 
-readonly AWS_LOCALSTACK_ENDPOINT="http://localhost:4566"
-readonly AWS_SSM_REGION="ap-southeast-1"
+# SSM / SSH gateway & LocalStack — use env with fallbacks
+AWS_SSM_REGION="${AWS_SSM_REGION:-ap-southeast-1}"
+AWS_LOCALSTACK_ENDPOINT="${AWS_LOCALSTACK_ENDPOINT:-http://localhost:4566}"
+CBASH_AWS_SSH_TARGET_PREFIX="${CBASH_AWS_SSH_TARGET_PREFIX:-ssh-gateway}"
+CBASH_AWS_SSH_ENVS="${CBASH_AWS_SSH_ENVS:-dev test staging production}"
 
-# Valid environments for SSH gateway
-readonly -a VALID_ENVS=("dev" "test" "staging" "production")
+# Valid environments for SSH gateway (array from space-separated config)
+VALID_ENVS=($CBASH_AWS_SSH_ENVS)
 
 # Helper Functions
 
@@ -47,10 +51,11 @@ aws_ssh_gateway() {
     _aws_check_cli || return 1
     _aws_check_profile "$profile" || return 1
 
-    log_info "Connecting to $env using profile $profile..."
+    local target="${CBASH_AWS_SSH_TARGET_PREFIX}-$env"
+    log_info "Connecting to $env using profile $profile (target: $target)..."
     aws ssm start-session \
         --profile "$profile" \
-        --target "ssh-gateway-$env" \
+        --target "$target" \
         --region "$AWS_SSM_REGION"
 }
 

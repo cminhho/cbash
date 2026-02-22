@@ -4,3 +4,7 @@ Template files copied to the global data dir (`$CBASH_DATA_DIR`, default `~/.cba
 
 - **Add a template:** put the file under `templates/<plugin>/` (or any path). Install will copy it on next run (no overwrite).
 - **Plugin usage:** plugins prefer 1) env/config path, 2) file in `$CBASH_DATA_DIR`, 3) repo fallback `$CBASH_DIR/templates/...`.
+
+## Included templates
+
+- **repos-sample.txt** — sample repos list for `cbash git clone-all`. Copy to e.g. `~/.cbash/repos.txt` or your workspace, uncomment/edit URLs, then run `clone_all repos.txt`.

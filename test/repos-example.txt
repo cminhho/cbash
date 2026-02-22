@@ -1,4 +1,0 @@
-# Example repo list for cbash git clone-all
-# One URL per line; optional second column = directory name
-
-https://github.com/cminhho/cbash.git
