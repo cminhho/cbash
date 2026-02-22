@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Tag and push a release. Triggers .github/workflows/release.yml (GitHub Release + tarball).
 # Usage:
-#   ./tools/release.sh           # use version from VERSION
-#   ./tools/release.sh 1.2.0     # set VERSION to 1.2.0, then tag & push
+#   ./tools/release.sh           # use version from VERSION, tag & push
+#   ./tools/release.sh 1.2.0     # set VERSION to 1.2.0, commit, tag & push
+# If master is protected: bump VERSION in a PR and merge, then run ./tools/release.sh (no arg).
 # Options:
 #   --dry-run   print commands only, do not commit/tag/push
 #   --no-push   create tag locally but do not push
@@ -87,9 +88,11 @@ git tag "$TAG"
 ok "Tag $TAG created."
 
 if [ -z "$NO_PUSH" ]; then
-  git push origin HEAD
+  if ! git push origin HEAD 2>/dev/null; then
+    warn "Branch push skipped (e.g. protected branch). Pushing tag only."
+  fi
   git push origin "$TAG"
-  ok "Pushed branch and $TAG. GitHub Actions will create the release."
+  ok "Pushed $TAG. GitHub Actions will create the release."
 else
   warn "Not pushing (--no-push). Run: git push origin HEAD && git push origin $TAG"
 fi

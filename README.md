@@ -259,6 +259,8 @@ From repo root, use the release script (tags and pushes; CI creates the GitHub R
 ./tools/release.sh --no-push # create tag locally only
 ```
 
+If `master` is protected: bump `VERSION` in a PR and merge, then run `./tools/release.sh` (no version arg) so only the tag is pushed.
+
 Then update the Homebrew formula with the tarball URL and SHA256 printed by the [Release workflow](.github/workflows/release.yml).
 
 ### Adding a plugin
