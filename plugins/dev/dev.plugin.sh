@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 # Dev plugin for CBASH - Docker Compose development environment
 
-readonly COMPOSE_FILE="$CBASH_DIR/plugins/dev/development.yml"
+# Compose file: CBASH_DEV_COMPOSE_FILE > ~/.cbash/dev/development.yml > templates/
+COMPOSE_FILE="${CBASH_DEV_COMPOSE_FILE:-}"
+[[ ! -f "${COMPOSE_FILE:-}" ]] && COMPOSE_FILE="${CBASH_DATA_DIR:-$HOME/.cbash}/dev/development.yml"
+[[ ! -f "${COMPOSE_FILE:-}" ]] && COMPOSE_FILE="$CBASH_DIR/templates/dev/development.yml"
+readonly COMPOSE_FILE
 
 # Helpers
 _dev_check_docker() {

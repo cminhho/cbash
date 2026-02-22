@@ -23,7 +23,7 @@ Describe the problem and fix in 2–5 bullets:
 - [ ] Kubernetes (`k8pods`, `k8logs`, `k8exec`, `k8restart`)
 - [ ] AWS / Cloud (`awsssh`, `awsssmget`)
 - [ ] Generators (`gfeat`, `gproject`, `gdoc`)
-- [ ] Docs & cheat (`doc`, `ch`, `chsetup`)
+- [ ] Docs (`doc`, docs list/edit)
 - [ ] AI Chat (`chat`, `aipull`)
 - [ ] macOS utils / Proxy / Build tools
 - [ ] Plugins / core (plugin structure, `cbash.sh`, lib)

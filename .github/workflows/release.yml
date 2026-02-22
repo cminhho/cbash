@@ -1,0 +1,51 @@
+# Release: on tag v* create GitHub Release and output tarball URL + sha256 for Homebrew
+# Usage: git tag v1.1.0 && git push origin v1.1.0
+
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get version from tag
+        id: version
+        run: |
+          v="${GITHUB_REF#refs/tags/v}"
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+          echo "Version: $v"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          name: v${{ steps.version.outputs.version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Tarball URL and SHA256 for Homebrew
+        id: homebrew
+        run: |
+          V="${{ steps.version.outputs.version }}"
+          URL="https://github.com/${{ github.repository }}/archive/refs/tags/v${V}.tar.gz"
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          SHA=$(curl -sL "$URL" | shasum -a 256 | awk '{print $1}')
+          echo "sha256=$SHA" >> "$GITHUB_OUTPUT"
+          echo "--- Homebrew Formula update (copy to homebrew-tap Formula/cbash-cli.rb) ---"
+          echo "  url \"$URL\""
+          echo "  sha256 \"$SHA\""
+          echo "  (and set version \"$V\" if you use a version variable)"
+          echo "---"

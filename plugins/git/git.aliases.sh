@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # Git aliases for CBASH (sourced by git plugin)
 
 # Subcommand shortcuts

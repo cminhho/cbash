@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # npm/npx aliases for CBASH
 
 alias n='npm'

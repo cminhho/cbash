@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # Kubernetes aliases for CBASH
 
 alias k8pods='k8s_pods'

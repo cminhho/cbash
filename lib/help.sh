@@ -17,9 +17,19 @@ _h_cmd() {
 _h_quick() { printf "  ${txtgrn}%-28s${clr} %s\n" "$1" "$2"; }
 
 help_show_full() {
-    printf "${bldwht}CBASH CLI${clr} ${bldcyn}(%s)${clr} – macOS command line tools for developers\n\n" "${CBASH_VERSION:-1.0}"
+    printf "${bldwht}CBASH CLI${clr} ${bldcyn}(%s)${clr} — Command. Compose. Control. A composable CLI toolkit for Bash automation. \n\n" "${CBASH_VERSION:-1.0.0}"
     printf "${bldwht}USAGE${clr}\n"
     printf "  cbash [COMMAND] [SUBCOMMAND] [OPTIONS]\n"
+
+    _h_title "Onboard"
+    _h_cmd "onboard"          ""              "Quick setup (check + workspace)"
+    _h_cmd "onboard -i"       ""              "Interactive wizard"
+    _h_cmd "onboard --force"  ""              "Re-run even if already done"
+    _h_cmd "onboard --workspace-only" ""      "Only check + workspace"
+    _h_cmd "onboard --tools-only" ""          "Only check + install dev tools"
+    _h_cmd "onboard welcome"  ""              "Welcome and quick start"
+    _h_cmd "onboard check"    ""              "Verify CBASH and env setup"
+    _h_cmd "onboard guide"    ""              "Short usage guide"
 
     _h_title "Setup"
     _h_cmd "setup check"      ""              "Check dev environment"                    "scheck"
@@ -96,10 +106,6 @@ help_show_full() {
     _h_cmd "docs"             "<name>"        "View document"                            "doc"
     _h_cmd "docs list"        ""              "List documents"
     _h_cmd "docs edit"        "<name>"        "Edit document"
-    _h_cmd "docs cheat"       "<name>"        "View cheatsheet"                          "ch"
-    _h_cmd "docs cheat-list"  ""              "List cheatsheets"                         "chlist"
-    _h_cmd "docs cheat-setup" ""              "Download community cheatsheets"           "chsetup"
-    _h_cmd "docs cheat-edit"  "<name>"        "Edit personal cheatsheet"                 "chedit"
 
     _h_title "AI"
     _h_cmd "ai chat"          "[model]"       "Chat with AI (Ollama)"                    "chat"
@@ -131,7 +137,7 @@ help_show_full() {
 }
 
 help_show() {
-    printf "${bldwht}CBASH CLI${clr} ${bldcyn}(%s)${clr} – macOS command line tools for developers\n\n" "${CBASH_VERSION:-1.0}"
+    printf "${bldwht}CBASH CLI${clr} ${bldcyn}(%s)${clr} — Command. Compose. Control. A composable CLI toolkit for Bash automation. \n\n" "${CBASH_VERSION:-1.0.0}"
     printf "${bldwht}USAGE${clr}\n"
     printf "  cbash [COMMAND] [SUBCOMMAND] [OPTIONS]\n"
 
@@ -174,8 +180,6 @@ help_show() {
 
     _h_title "Docs"
     _h_cmd "docs"             "<name>"        "View document"                            "doc"
-    _h_cmd "docs cheat"       "<name>"        "View cheatsheet"                          "ch"
-    _h_cmd "docs cheat-setup" ""              "Download community cheatsheets"           "chsetup"
 
     _h_title "AI"
     _h_cmd "ai chat"          "[model]"       "Chat with AI (Ollama)"                    "chat"
@@ -191,6 +195,9 @@ help_show() {
     _h_cmd "proxy disable"    ""              "Disable proxy"                            "proxoff"
 
     _h_title "More"
+    _h_cmd "onboard"          ""              "Quick setup (check + workspace)"           "onboard"
+    _h_cmd "onboard -i"       ""              "Interactive wizard"
+    _h_cmd "onboard check"    ""              "Verify CBASH and env"
     _h_cmd "setup check"      ""              "Check dev environment"                    "scheck"
     _h_cmd "aliases list"     ""              "List all aliases"
     _h_cmd "mvn / npm"        ""              "Build tool aliases (mci, ni, nr, ...)"

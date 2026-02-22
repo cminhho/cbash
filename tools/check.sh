@@ -12,7 +12,7 @@ failed=0
 # 1. Shellcheck (same globs as .github/workflows/ci.yml)
 echo "==> Shellcheck (plugins, lib, tools)"
 if command -v shellcheck &>/dev/null; then
-  for f in plugins/*/*.plugin.sh lib/*.sh tools/*.sh; do
+  for f in cbash.sh plugins/*/*.plugin.sh plugins/*/*.aliases.sh lib/*.sh tools/*.sh; do
     [ -f "$f" ] || continue
     shellcheck -S warning "$f" || failed=1
   done

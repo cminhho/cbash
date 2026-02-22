@@ -1,12 +1,13 @@
 #!/bin/sh
 # Install cbash-cli
 # Usage: sh -c "$(curl -fsSL https://raw.githubusercontent.com/cminhho/cbash/master/tools/install.sh)"
-# Env: CBASH_DIR (default: ~/.cbash), REPO (default: cminhho/cbash), BRANCH (default: master)
+# Env: CBASH_DIR, CBASH_DATA_DIR (default: ~/.cbash), REPO, BRANCH. Creates ~/.cbashrc if missing.
 
 set -e
 
 # Config
 CBASH_DIR="${CBASH_DIR:-$HOME/.cbash}"
+CBASH_DATA_DIR="${CBASH_DATA_DIR:-$HOME/.cbash}"
 REPO="${REPO:-cminhho/cbash}"
 REMOTE="https://github.com/${REPO}.git"
 BRANCH="${BRANCH:-master}"
@@ -30,6 +31,39 @@ else
 fi
 chmod +x "$CBASH_DIR/cbash.sh"
 
+# Copy templates/ tree to global data dir. One source: add files under templates/ and they are copied.
+# Never overwrites existing files (user edits in ~/.cbash are kept).
+copy_global_templates() {
+    data_dir="$1"
+    repo_dir="$2"
+    src_dir="${repo_dir}/templates"
+    [ -d "$src_dir" ] || return 0
+    src_dir="${src_dir%/}"
+    find "$src_dir" -type f 2>/dev/null | while IFS= read -r f; do
+        [ -n "$f" ] || continue
+        rel="${f#"$src_dir"/}"
+        dest="$data_dir/$rel"
+        if [ ! -f "$dest" ]; then
+            dir="${dest%/*}"
+            mkdir -p "$dir" && cp "$f" "$dest" && info "Copied to $dest"
+        fi
+    done
+}
+info "Setting up global config in $CBASH_DATA_DIR..."
+copy_global_templates "$CBASH_DATA_DIR" "$CBASH_DIR"
+
+# Copy default .cbashrc to user home. If one exists, rename to .cbashrc.bak then copy default.
+CBASHRC="${HOME}/.cbashrc"
+CBASHRC_DEFAULT="${CBASH_DIR}/tools/cbashrc.default"
+if [ -f "$CBASHRC_DEFAULT" ]; then
+    if [ -f "$CBASHRC" ]; then
+        mv "$CBASHRC" "${CBASHRC}.bak"
+        info "Backed up to ${CBASHRC}.bak"
+    fi
+    cp "$CBASHRC_DEFAULT" "$CBASHRC"
+    info "Installed $CBASHRC"
+fi
+
 # Add to shell config
 add_to_shell() {
     [ -f "$1" ] || return 0
@@ -42,5 +76,5 @@ add_to_shell "$HOME/.bashrc"
 add_to_shell "$HOME/.bash_profile"
 
 success "cbash-cli installed!"
-printf "${YELLOW}Restart terminal or: source ~/.zshrc${RST}\n"
-printf "${YELLOW}Then try: cbash help${RST}\n"
+printf '%b\n' "${YELLOW}Restart terminal or: source ~/.zshrc${RST}"
+printf '%b\n' "${YELLOW}Then try: cbash help${RST}"
