@@ -1,6 +1,6 @@
 # Dev plugin for CBASH - Docker Compose development environment
 
-Docker Compose development environment. Uses `plugins/dev/development.yml` to start, stop, and manage local services (e.g. Localstack).
+Docker Compose development environment. Uses a compose file from `~/.cbash/dev/development.yml` (or `$CBASH_DIR/templates/dev/development.yml`). See [Config](../../docs/CONFIG.md). Manages local services (e.g. Localstack).
 
 Source CBASH to get aliases. Use `cbash dev` or `cbash log|logs|stop|exec|status|kill|kill-all` for commands.
 
@@ -53,7 +53,7 @@ Shortcuts from cbash: `cbash log`, `cbash logs`, `cbash stop`, `cbash exec`, `cb
 ## Prerequisites
 
 * Docker and Docker Compose.
-* Compose file: `$CBASH_DIR/plugins/dev/development.yml`.
+* Compose file: `$CBASH_DEV_COMPOSE_FILE` or `~/.cbash/dev/development.yml` or `$CBASH_DIR/templates/dev/development.yml`.
 
 ## Examples
 
@@ -68,4 +68,4 @@ cbash dev status
 
 ## Configuration
 
-Edit `development.yml` in this directory to add or change services. Default includes Localstack (S3, SQS, SNS, SSM) on port 4566.
+Edit `~/.cbash/dev/development.yml` (copied from `templates/dev/development.yml` at install) or set `CBASH_DEV_COMPOSE_FILE` in config. Default template includes Localstack (S3, SQS, SNS, SSM) on port 4566.

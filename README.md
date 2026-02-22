@@ -1,14 +1,70 @@
-# CBASH CLI
+<h1 align="center">
+  <code style="font-size:1.15em;letter-spacing:0.15em;font-weight:600;color:#00aa00">CBASH</code> <code style="font-size:1.15em;font-weight:600;color:#00aa00">CLI</code>
+</h1>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE) [![Shell](https://img.shields.io/badge/Shell-Bash%20%7C%20Zsh-blue?style=flat-square)](https://github.com/cminhho/cbash) [![macOS](https://img.shields.io/badge/macOS-Linux-lightgrey?style=flat-square)](https://github.com/cminhho/cbash)
+<p align="center">
+  <strong>Command. Compose. Control.</strong><br />
+  A composable CLI toolkit for Bash automation.
+</p>
 
-> 🚀 **Shell productivity toolkit for developers** — Automate Git workflows, manage Docker/K8s, connect to AWS, and save hours with 200+ ready-to-use aliases. Works with Bash & Zsh on macOS, Linux, and WSL.
+<p align="center">
+  <a href="#overview">Overview</a> •
+  <a href="#why-cbash">Why CBASH</a> •
+  <a href="#features">Features</a> •
+  <a href="#quick-start">Quick Start</a> •
+  <a href="#commands">Commands</a> •
+  <a href="#architecture">Architecture</a> •
+  <a href="#development">Development</a> •
+  <a href="#contributing">Contributing</a>
+</p>
 
-![CBASH CLI Demo](assets/demo.gif)
+<p align="center">
+  <img src="https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20WSL-blue" alt="Platform" />
+  <img src="https://img.shields.io/badge/shell-Bash%20%7C%20Zsh-4EAA25?logo=gnubash" alt="Shell" />
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT" /></a>
+</p>
 
-## Why CBASH?
+A composable CLI toolkit for Bash automation — no runtime, no config files. One entry point, 15+ plugins, 200+ aliases. Works with Bash 4+ and Zsh on macOS, Linux, and WSL.
 
-**Stop typing long commands. Start shipping faster.**
+```
+200+ aliases · 15+ plugins · Bash & Zsh · Zero config · Git · Docker · K8s · AWS · Ollama
+```
+
+---
+
+## Overview
+
+**CBASH CLI** turns repetitive terminal workflows into short, memorable commands. Automate Git (clone from lists, pull-all, run commands across repos), manage Docker and Kubernetes, connect to AWS via SSM, scaffold workspaces and docs, and chat with local AI—all through a single plugin-based CLI.
+
+Works with Bash 4+ and Zsh on macOS, Linux, and WSL. No config files required to get started.
+
+---
+
+## Demo
+
+<p align="center">
+  <img src="assets/demo.gif" alt="CBASH CLI Demo" style="width: 100%; max-width: 720px; height: auto;" />
+</p>
+
+---
+
+## Why CBASH
+
+- **Composable by default:** One binary entry (`cbash`), plugins for Git, Docker, K8s, AWS, dev, docs, AI. Add your own in `plugins/<name>/`.
+- **Zero config:** No config files to get started. Optional aliases and env vars when you need them.
+- **Shell-native:** Bash 4+ and Zsh. Sourced aliases, no daemon, no runtime. Fits your existing workflow.
+- **Copy-paste friendly:** Short commands and 200+ aliases so you type less and ship faster.
+
+| Task | Without CBASH | With CBASH |
+|------|---------------|------------|
+| Clone from list | Manual clone each repo | `clone_all repos.txt` |
+| Pull all repos | `for d in */; do cd "$d" && git pull && cd ..; done` | `pull_all` |
+| Run cmd in all repos | Loop + cd + eval | `gitfor "cmd"` |
+| Sync repo | `git fetch && git pull` | `gitsync` |
+| Auto-commit & push | `git add . && git commit -m "..." && git push` | `commit` |
+| Squash feature branch | Interactive rebase, force push | `auto_squash` |
+
+**Quick examples:**
 
 ```bash
 clone_all repos.txt     # Clone repos from a list file
@@ -19,20 +75,55 @@ commit                  # Auto-commit all changes with timestamp
 auto_squash             # Squash all commits on feature branch
 ```
 
-| Task | Without CBASH | With CBASH |
-|------|---------------|------------|
-| Clone from list | Manual clone each | `clone_all repos.txt` |
-| Pull all repos | `for d in */; do cd "$d" && git pull && cd ..; done` | `pull_all` |
-| Run cmd in all repos | Loop + cd + eval | `gitfor "cmd"` |
-| Sync repo | `git fetch && git pull` | `gitsync` |
-| Auto-commit & push | `git add . && git commit -m "..." && git push` | `commit` |
-| Squash feature branch | Interactive rebase, force push | `auto_squash` |
+---
 
-**200+ aliases** included — type less, do more.
+## Features
+
+| Category | Description |
+|----------|-------------|
+| **Git & repos** | Batch clone from a file, pull-all in a directory, run any command across repos, auto-commit with timestamp, squash feature branches, sync, undo, backup, open repo in browser |
+| **Docker & Dev** | Start/stop/restart Docker Compose services, follow logs, exec into containers, list running containers, prune images, manage local dev stacks from one CLI |
+| **Kubernetes** | List pods, follow logs, describe, exec into pods, rollout restart deployments, kubectl cheat commands |
+| **AWS** | SSH via SSM, read SSM parameters; with LocalStack: create and test SQS queues |
+| **Scaffolding & docs** | Generate feature/troubleshooting dirs, workspace and project structures, docs from templates; view, list, edit built-in docs and cheatsheets |
+| **AI (Ollama)** | Chat with local models, list and pull Ollama models from the shell |
+| **System & proxy** | macOS: lock screen, speedtest, memory/ports, IP (local/public), system update, password generator. Proxy: enable/disable/show |
+
+---
+
+## Quick Start
+
+```bash
+# Install (Homebrew recommended)
+brew install cminhho/tap/cbash-cli
+
+# Or one-liner
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/cminhho/cbash/master/tools/install.sh)"
+
+# First run
+cbash                           # Minimal help
+cbash --full                    # All commands
+cbash onboard welcome            # Welcome and quick start
+cbash onboard check              # Verify setup
+
+# Daily use
+cbash git sync                   # Fetch and pull
+cbash git pull-all ~/repos       # Pull all repos
+cbash dev start                  # Start Docker Compose
+cbash setup check                # Check dev environment
+
+# Upgrade
+cbash cli update                 # Self-upgrade
+brew upgrade cbash-cli            # If installed via Homebrew
+```
+
+> **Requirements:** macOS, Linux (e.g. Ubuntu 20.04+), or WSL2 · Bash 4.0+ or Zsh · Git
+
+---
 
 ## Commands
 
-CLI: `cbash <plugin> <subcommand>`. Run `cbash --full` for full list, `cbash <plugin> help` for plugin help.
+CLI form: `cbash <plugin> <subcommand>`. Use `cbash --full` for the full list and `cbash <plugin> help` for plugin help.
 
 | Plugin | Command | Description |
 |--------|---------|-------------|
@@ -117,50 +208,101 @@ CLI: `cbash <plugin> <subcommand>`. Run `cbash --full` for full list, `cbash <pl
 | Build | `cbash npm` | npm/npx aliases (ni, nr, nx, …) |
 | CLI | `cbash cli update` | Upgrade CBASH CLI |
 
-## Installation
+---
 
-**Homebrew (recommended):**
-```bash
-brew install cminhho/tap/cbash-cli
+## Architecture
+
+Single entry script discovers and loads plugins. Each plugin lives in `plugins/<name>/` with a main script and optional aliases file. The entry point sets `CBASH_DIR`, detects shell (Bash/Zsh), and routes `cbash <plugin> <args...>` to the plugin’s `_main()`.
+
+| Layer | Purpose | Extend |
+|-------|---------|--------|
+| **Entry** | `cbash.sh` — shell detection, plugin discovery, routing | — |
+| **Lib** | `common`, `help`, `colors`, `cli` — logging, help, styles | — |
+| **Plugins** | Git, dev, docker, k8s, aws, setup, gen, docs, ai, macos, onboard, … | Add `plugins/<name>/<name>.plugin.sh` with `_main()` |
+| **Aliases** | Optional per-plugin `*.aliases.sh` sourced on init | Add `<name>.aliases.sh` next to plugin |
+
+```
+User → cbash.sh → plugin loader → plugin.sh → _main()
+                    ↓
+              lib/ (common, help, colors, cli)
 ```
 
-**One-liner:**
-```bash
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/cminhho/cbash/master/tools/install.sh)"
-```
+Full system design and plugin contract: [Architecture](docs/ARCHITECTURE.md).
 
-> **Requirements:** macOS/Linux/WSL2, Bash 4.0+ or Zsh, Git
+---
 
-## Usage
+## Development
 
-```bash
-cbash                   # Show help (minimal)
-cbash --full            # Show all commands
-cbash <plugin>          # Run plugin
-cbash <plugin> help     # Plugin help
-```
-
-## Upgrade & Uninstall
+**Prerequisites:** Bash 4+ or Zsh, Git
 
 ```bash
-cbash cli update        # Upgrade
-brew upgrade cbash-cli  # Homebrew upgrade
+# Clone and run (no install)
+git clone https://github.com/cminhho/cbash.git
+cd cbash
+CBASH_DIR="$PWD" ./cbash.sh onboard check
+CBASH_DIR="$PWD" ./cbash.sh git sync
 ```
+
+### Project structure
+
+```
+cbash-cli/
+├── cbash.sh              # Main entry point
+├── lib/                  # Core (common, help, colors, cli)
+├── plugins/              # Feature plugins
+│   └── <name>/
+│       ├── <name>.plugin.sh
+│       └── <name>.aliases.sh
+├── templates/            # Scaffolding templates
+├── tools/                # Install/upgrade scripts
+└── test/                 # Test suite
+```
+
+### Adding a plugin
+
+1. Add `plugins/<name>/<name>.plugin.sh` with a `_main()` that handles subcommands.
+2. Optionally add `plugins/<name>/<name>.aliases.sh` for shell aliases.
+3. Plugins are auto-discovered on the next `cbash` run.
+4. Register in `lib/help.sh` for minimal and full help.
+
+---
 
 ## Documentation
 
 - [Architecture](docs/ARCHITECTURE.md) — System design, plugin structure
 - [Commands Reference](docs/COMMANDS.md) — Full command list
+- [Config](docs/CONFIG.md) — Optional `~/.config/cbash/config` and `CBASH_*` variables
+
+---
 
 ## Contributing
 
-PRs welcome! See [CONTRIBUTING.md](.github/CONTRIBUTING.md).
+Add a plugin or improve an existing one:
+
+- **New plugin** → `plugins/<name>/<name>.plugin.sh` + optional `*.aliases.sh`, then register in `lib/help.sh`
+- **New command** → Add a case in the plugin’s `_main()` and a line in the plugin’s help
+- **Docs or fixes** → Open a PR
+
+1. Fork the repository  
+2. Create a branch (`git checkout -b feature/your-feature`)  
+3. Commit with clear messages  
+4. Push and open a Pull Request  
+
+See [CONTRIBUTING.md](.github/CONTRIBUTING.md) for guidelines and code style.
+
+---
 
 ## Support
 
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/cminhho?logo=githubsponsors&style=flat-square)](https://github.com/sponsors/cminhho)
 [![Buy Me A Coffee](https://img.shields.io/badge/Buy_Me_A_Coffee-FFDD00?style=flat-square&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/chungho)
 
+---
+
 ## License
 
 [MIT](LICENSE)
+
+---
+
+**CBASH CLI** — Command. Compose. Control. One entry point, plug in the rest.

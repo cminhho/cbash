@@ -11,6 +11,7 @@ export CBASH_DIR
 # Load plugins and aliases
 _init() {
     [[ -d "$CBASH_DIR" ]] || { echo "Error: CBASH_DIR not found" >&2; exit 1; }
+    [[ -f "$CBASH_DIR/lib/config.sh" ]] && source "$CBASH_DIR/lib/config.sh"
     source "$CBASH_DIR/lib/common.sh"
     local dir name
     for dir in "$CBASH_DIR/plugins/"*/; do

@@ -21,6 +21,16 @@ help_show_full() {
     printf "${bldwht}USAGE${clr}\n"
     printf "  cbash [COMMAND] [SUBCOMMAND] [OPTIONS]\n"
 
+    _h_title "Onboard"
+    _h_cmd "onboard"          ""              "Quick setup (check + workspace)"
+    _h_cmd "onboard -i"       ""              "Interactive wizard"
+    _h_cmd "onboard --force"  ""              "Re-run even if already done"
+    _h_cmd "onboard --workspace-only" ""      "Only check + workspace"
+    _h_cmd "onboard --tools-only" ""          "Only check + install dev tools"
+    _h_cmd "onboard welcome"  ""              "Welcome and quick start"
+    _h_cmd "onboard check"    ""              "Verify CBASH and env setup"
+    _h_cmd "onboard guide"    ""              "Short usage guide"
+
     _h_title "Setup"
     _h_cmd "setup check"      ""              "Check dev environment"                    "scheck"
     _h_cmd "setup brew"       "[group]"       "Install tools (dev|cloud|ide|apps|all)"   "sbrew"
@@ -191,6 +201,9 @@ help_show() {
     _h_cmd "proxy disable"    ""              "Disable proxy"                            "proxoff"
 
     _h_title "More"
+    _h_cmd "onboard"          ""              "Quick setup (check + workspace)"           "onboard"
+    _h_cmd "onboard -i"       ""              "Interactive wizard"
+    _h_cmd "onboard check"    ""              "Verify CBASH and env"
     _h_cmd "setup check"      ""              "Check dev environment"                    "scheck"
     _h_cmd "aliases list"     ""              "List all aliases"
     _h_cmd "mvn / npm"        ""              "Build tool aliases (mci, ni, nr, ...)"

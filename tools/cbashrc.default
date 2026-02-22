@@ -1,0 +1,15 @@
+# CBASH CLI config (sourced by cbash at startup)
+# Edit this file. See docs/CONFIG.md for all variables.
+# If you had an existing config, install may have backed it up to ~/.cbashrc.bak
+
+# Paths
+# export CBASH_DATA_DIR="$HOME/.cbash"
+# export CBASH_DEV_COMPOSE_FILE="$HOME/.cbash/dev/development.yml"
+# export CBASH_GIT_DEFAULT_PULL_DIR="$HOME/repos"
+
+# Proxy
+# export CBASH_PROXY_DEFAULT_URL="http://proxy:8080"
+# export CBASH_PROXY_NO_PROXY="127.0.0.1,localhost,.local"
+
+# Endpoints
+# export AWS_SSM_REGION="ap-southeast-1"
