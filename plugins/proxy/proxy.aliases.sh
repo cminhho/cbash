@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # Proxy aliases for CBASH
 
 alias proxon='proxy_enable'

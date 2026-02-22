@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # Docker aliases for CBASH
 
 alias d='docker'

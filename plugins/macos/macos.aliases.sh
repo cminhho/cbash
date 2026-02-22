@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # MacOS aliases for CBASH
 
 alias mac='cbash macos'

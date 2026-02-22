@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # AI aliases for CBASH
 
 alias aichat='ai_chat'

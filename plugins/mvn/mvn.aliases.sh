@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # Maven aliases for CBASH
 
 alias mvn='mvn-or-mvnw'

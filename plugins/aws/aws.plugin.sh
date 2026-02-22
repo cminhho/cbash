@@ -9,7 +9,7 @@ CBASH_AWS_SSH_TARGET_PREFIX="${CBASH_AWS_SSH_TARGET_PREFIX:-ssh-gateway}"
 CBASH_AWS_SSH_ENVS="${CBASH_AWS_SSH_ENVS:-dev test staging production}"
 
 # Valid environments for SSH gateway (array from space-separated config)
-VALID_ENVS=($CBASH_AWS_SSH_ENVS)
+read -ra VALID_ENVS <<< "$CBASH_AWS_SSH_ENVS"
 
 # Helper Functions
 

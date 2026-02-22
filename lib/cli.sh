@@ -19,10 +19,13 @@ EOF
 }
 
 cli_version() {
-    [[ -d "$CBASH_DIR/.git" ]] || { echo "CBASH ${CBASH_VERSION:-unknown}"; return; }
-    local ver
-    ver=$(git -C "$CBASH_DIR" describe --tags HEAD 2>/dev/null || git -C "$CBASH_DIR" rev-parse --short HEAD)
-    echo "CBASH ${ver:-unknown}"
+    local v="${CBASH_VERSION:-unknown}"
+    if [[ -d "$CBASH_DIR/.git" ]]; then
+        local git_info
+        git_info=$(git -C "$CBASH_DIR" describe --tags --always 2>/dev/null)
+        [[ -n "$git_info" ]] && v="$v ($git_info)"
+    fi
+    echo "cbash $v"
 }
 
 cli_install_local() {

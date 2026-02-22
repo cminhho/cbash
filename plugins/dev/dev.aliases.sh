@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # Dev aliases for CBASH
 
 # Subcommand shortcuts

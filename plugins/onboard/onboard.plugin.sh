@@ -85,7 +85,7 @@ _onboard_step_copy_templates() {
 
     while IFS= read -r -d '' f; do
         [[ -n "$f" ]] || continue
-        rel="${f#$src_dir/}"
+        rel="${f#"$src_dir"/}"
         dest="$data_dir/$rel"
         if [[ -f "$dest" ]]; then
             kept+=("$rel")

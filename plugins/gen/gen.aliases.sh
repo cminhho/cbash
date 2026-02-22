@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # Gen aliases for CBASH
 
 alias gtrouble='gen_trouble'

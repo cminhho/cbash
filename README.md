@@ -235,6 +235,7 @@ CBASH_DIR="$PWD" ./cbash.sh git sync
 
 ```
 cbash-cli/
+├── VERSION               # Single source of truth for version (SemVer)
 ├── cbash.sh              # Main entry point
 ├── assets/               # Demo and media (e.g. demo.tape for VHS GIFs)
 ├── lib/                  # Core (common, help, colors, cli)

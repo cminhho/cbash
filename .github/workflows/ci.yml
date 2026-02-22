@@ -25,7 +25,7 @@ jobs:
 
       - name: Run Shellcheck
         run: |
-          for f in plugins/*/*.plugin.sh lib/*.sh tools/*.sh; do
+          for f in cbash.sh plugins/*/*.plugin.sh plugins/*/*.aliases.sh lib/*.sh tools/*.sh; do
             [ -f "$f" ] || continue
             shellcheck -S warning "$f"
           done

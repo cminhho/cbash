@@ -1,5 +1,7 @@
+# shellcheck shell=bash
 ## Control ls command behavior
-alias ls="/bin/ls $LS_OPTIONS"
+# SC2139: LS_OPTIONS intentionally expands when alias is used (single quotes)
+alias ls='/bin/ls $LS_OPTIONS'
 alias ll='ls -l'
 alias lsd='ls -ld'
 alias la='ls -a'

@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # AWS aliases for CBASH
 
 # Subcommand shortcuts

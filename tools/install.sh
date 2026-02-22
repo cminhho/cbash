@@ -41,7 +41,7 @@ copy_global_templates() {
     src_dir="${src_dir%/}"
     find "$src_dir" -type f 2>/dev/null | while IFS= read -r f; do
         [ -n "$f" ] || continue
-        rel="${f#$src_dir/}"
+        rel="${f#"$src_dir"/}"
         dest="$data_dir/$rel"
         if [ ! -f "$dest" ]; then
             dir="${dest%/*}"
@@ -76,5 +76,5 @@ add_to_shell "$HOME/.bashrc"
 add_to_shell "$HOME/.bash_profile"
 
 success "cbash-cli installed!"
-printf "${YELLOW}Restart terminal or: source ~/.zshrc${RST}\n"
-printf "${YELLOW}Then try: cbash help${RST}\n"
+printf '%b\n' "${YELLOW}Restart terminal or: source ~/.zshrc${RST}"
+printf '%b\n' "${YELLOW}Then try: cbash help${RST}"

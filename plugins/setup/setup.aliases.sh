@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # Setup aliases for CBASH
 
 alias scheck='setup_check'
