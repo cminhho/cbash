@@ -71,9 +71,13 @@ actionlint -config-file .github/actionlint.yaml        # Lint workflows (if inst
 
 ## Versioning and releases
 
-- **Single source of truth:** `VERSION` in the repo root (one line, e.g. `1.0.0`). The CLI reads it at startup; no version strings in code.
+- **Single source of truth:** `VERSION` in the repo root (one line, e.g. `1.1.0`). The CLI reads it at startup; no version strings in code.
 - **SemVer:** MAJOR.MINOR.PATCH. Bump MAJOR for breaking changes, MINOR for new features, PATCH for fixes.
-- **Release:** Update `VERSION`, commit, then tag: `git tag v1.0.0` and `git push origin v1.0.0`. Homebrew/install scripts can use the tag.
+- **Release:**  
+  1. Update `VERSION`, commit, push.  
+  2. Tag and push: `git tag v1.1.0 && git push origin v1.1.0`.  
+  3. The **Release** workflow runs: creates a GitHub Release and prints the tarball URL + sha256 for Homebrew.
+- **Homebrew tap:** After a release, update [cminhho/homebrew-tap](https://github.com/cminhho/homebrew-tap) — in `Formula/cbash-cli.rb` set `url` and `sha256` to the values printed by the Release workflow (or copy from `tools/homebrew/cbash-cli.rb` and replace sha256). Then `brew upgrade cbash-cli` will pick up the new version.
 - **Version commands:** `cbash -v`, `cbash --version`, and `cbash cli version` (latter appends git describe when run from a repo).
 
 ## Reporting Issues

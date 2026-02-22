@@ -17,7 +17,7 @@ _h_cmd() {
 _h_quick() { printf "  ${txtgrn}%-28s${clr} %s\n" "$1" "$2"; }
 
 help_show_full() {
-    printf "${bldwht}CBASH CLI${clr} ${bldcyn}(%s)${clr} – macOS command line tools for developers\n\n" "${CBASH_VERSION:-1.0.0}"
+    printf "${bldwht}CBASH CLI${clr} ${bldcyn}(%s)${clr} — Command. Compose. Control. A composable CLI toolkit for Bash automation. \n\n" "${CBASH_VERSION:-1.0.0}"
     printf "${bldwht}USAGE${clr}\n"
     printf "  cbash [COMMAND] [SUBCOMMAND] [OPTIONS]\n"
 
@@ -137,7 +137,7 @@ help_show_full() {
 }
 
 help_show() {
-    printf "${bldwht}CBASH CLI${clr} ${bldcyn}(%s)${clr} – macOS command line tools for developers\n\n" "${CBASH_VERSION:-1.0.0}"
+    printf "${bldwht}CBASH CLI${clr} ${bldcyn}(%s)${clr} — Command. Compose. Control. A composable CLI toolkit for Bash automation. \n\n" "${CBASH_VERSION:-1.0.0}"
     printf "${bldwht}USAGE${clr}\n"
     printf "  cbash [COMMAND] [SUBCOMMAND] [OPTIONS]\n"
 

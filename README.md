@@ -248,6 +248,19 @@ cbash-cli/
 └── test/                 # Test suite
 ```
 
+### Releasing
+
+From repo root, use the release script (tags and pushes; CI creates the GitHub Release):
+
+```bash
+./tools/release.sh           # tag using version from VERSION
+./tools/release.sh 1.2.0      # set VERSION to 1.2.0, commit, tag v1.2.0, push
+./tools/release.sh --dry-run # show what would run
+./tools/release.sh --no-push # create tag locally only
+```
+
+Then update the Homebrew formula with the tarball URL and SHA256 printed by the [Release workflow](.github/workflows/release.yml).
+
 ### Adding a plugin
 
 1. Add `plugins/<name>/<name>.plugin.sh` with a `_main()` that handles subcommands.
