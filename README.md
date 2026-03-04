@@ -1,10 +1,10 @@
-<h1 align="center">
-  <code style="font-size:1.15em;letter-spacing:0.15em;font-weight:600;color:#00aa00">CBASH</code> <code style="font-size:1.15em;font-weight:600;color:#00aa00">CLI</code>
-</h1>
+<p align="center">
+  <img src="assets/cbash-logo.png" alt="CBash CLI" width="96" height="96"  />
+</p>
 
 <p align="center">
   <strong>Command. Compose. Control.</strong><br />
-  A composable CLI toolkit for Bash automation.
+  Shell productivity toolkit for developers — 200+ aliases, 15+ plugins, zero configuration. Works today on Bash 4+/Zsh.
 </p>
 
 <p align="center">
