@@ -1,10 +1,10 @@
-<h1 align="center">
-  <code style="font-size:1.15em;letter-spacing:0.15em;font-weight:600;color:#00aa00">CBASH</code> <code style="font-size:1.15em;font-weight:600;color:#00aa00">CLI</code>
-</h1>
+<p align="center">
+  <img src="assets/cbash-logo.png" alt="CBash CLI" width="96" height="96"  />
+</p>
 
 <p align="center">
-  <strong>Command. Compose. Control.</strong><br />
-  A composable CLI toolkit for Bash automation.
+  <strong>CBASH CLI</strong><br />
+  Command. Compose. Control.
 </p>
 
 <p align="center">
@@ -24,11 +24,7 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT" /></a>
 </p>
 
-A composable CLI toolkit for Bash automation — no runtime, no config files. One entry point, 15+ plugins, 200+ aliases. Works with Bash 4+ and Zsh on macOS, Linux, and WSL.
-
-```
-200+ aliases · 15+ plugins · Bash & Zsh · Zero config · Git · Docker · K8s · AWS · Ollama
-```
+Shell productivity toolkit for developers — 200+ aliases, 15+ plugins, zero configuration. Works today on Bash 4+/Zsh.
 
 ---
 
@@ -269,6 +265,16 @@ Then update the Homebrew formula with the tarball URL and SHA256 printed by the 
 2. Optionally add `plugins/<name>/<name>.aliases.sh` for shell aliases.
 3. Plugins are auto-discovered on the next `cbash` run.
 4. Register in `lib/help.sh` for minimal and full help.
+
+### Website
+
+The official site source lives in `website/` (single static HTML page). To deploy to GitHub Pages:
+
+```bash
+./tools/deploy-gh-pages.sh
+```
+
+Run from the repo root. Requires a clean working tree. This updates the `gh-pages` branch with the contents of `website/`.
 
 ---
 
