@@ -21,6 +21,11 @@ if [[ -n $(git status --porcelain) ]]; then
   exit 1
 fi
 
-git subtree push --prefix website origin gh-pages
+# Split website/ into a temporary branch, then force-push to gh-pages so we overwrite
+# (subtree push alone fails if remote gh-pages history has diverged).
+TEMP_BRANCH="deploy-gh-pages-$$"
+git subtree split --prefix website -b "$TEMP_BRANCH"
+git push origin "$TEMP_BRANCH:gh-pages" --force
+git branch -D "$TEMP_BRANCH"
 
 echo "Deployed. Site: https://cminhho.github.io/cbash/"
