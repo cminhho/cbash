@@ -270,6 +270,16 @@ Then update the Homebrew formula with the tarball URL and SHA256 printed by the 
 3. Plugins are auto-discovered on the next `cbash` run.
 4. Register in `lib/help.sh` for minimal and full help.
 
+### Website
+
+The official site source lives in `website/` (single static HTML page). To deploy to GitHub Pages:
+
+```bash
+./tools/deploy-gh-pages.sh
+```
+
+Run from the repo root. Requires a clean working tree. This updates the `gh-pages` branch with the contents of `website/`.
+
 ---
 
 ## Documentation
