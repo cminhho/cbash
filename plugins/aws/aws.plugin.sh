@@ -8,14 +8,12 @@ AWS_LOCALSTACK_ENDPOINT="${AWS_LOCALSTACK_ENDPOINT:-http://localhost:4566}"
 CBASH_AWS_SSH_TARGET_PREFIX="${CBASH_AWS_SSH_TARGET_PREFIX:-ssh-gateway}"
 CBASH_AWS_SSH_ENVS="${CBASH_AWS_SSH_ENVS:-dev test staging production}"
 
-# Valid environments for SSH gateway (array from space-separated config)
-read -ra VALID_ENVS <<< "$CBASH_AWS_SSH_ENVS"
-
-# Helper Functions
+# Valid environments for SSH gateway (space-separated; portable for bash/zsh)
+# Use string + pattern match instead of read -ra (bash-only)
 
 _aws_validate_env() {
     local env="$1"
-    [[ " ${VALID_ENVS[*]} " == *" ${env} "* ]]
+    [[ " ${CBASH_AWS_SSH_ENVS} " == *" ${env} "* ]]
 }
 
 _aws_check_cli() {
@@ -44,7 +42,7 @@ aws_ssh_gateway() {
     local profile="$1" env="$2"
 
     _aws_validate_env "$env" || {
-        log_error "Invalid environment. Use: ${VALID_ENVS[*]}"
+        log_error "Invalid environment. Use: $CBASH_AWS_SSH_ENVS"
         return 1
     }
 
