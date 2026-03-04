@@ -3,8 +3,8 @@
 </p>
 
 <p align="center">
-  <strong>Command. Compose. Control.</strong><br />
-  Shell productivity toolkit for developers — 200+ aliases, 15+ plugins, zero configuration. Works today on Bash 4+/Zsh.
+  <strong>CBASH CLI</strong><br />
+  Command. Compose. Control.
 </p>
 
 <p align="center">
@@ -24,11 +24,7 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT" /></a>
 </p>
 
-A composable CLI toolkit for Bash automation — no runtime, no config files. One entry point, 15+ plugins, 200+ aliases. Works with Bash 4+ and Zsh on macOS, Linux, and WSL.
-
-```
-200+ aliases · 15+ plugins · Bash & Zsh · Zero config · Git · Docker · K8s · AWS · Ollama
-```
+Shell productivity toolkit for developers — 200+ aliases, 15+ plugins, zero configuration. Works today on Bash 4+/Zsh.
 
 ---
 
