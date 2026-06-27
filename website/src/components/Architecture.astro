@@ -1,0 +1,40 @@
+---
+const flow = [
+  { h: "User", p: "cbash <plugin>", primary: false },
+  { h: "cbash.sh", p: "Entry point", primary: true },
+  { h: "lib/", p: "Core functions", primary: false },
+  { h: "plugins/", p: "Plugin system", primary: false },
+];
+const chips = ["git", "docker", "k8s", "aws", "dev", "docs", "ai", "system", "proxy", "+ your own"];
+---
+<section id="architecture" class="border-t border-border/60 py-20 sm:py-28">
+  <div class="mx-auto max-w-content px-4 sm:px-6 lg:px-8">
+    <div class="reveal mx-auto max-w-2xl text-center">
+      <span class="section-label">Architecture</span>
+      <h2 class="font-mono text-2xl font-bold tracking-tight sm:text-3xl">Simple &amp; extensible</h2>
+      <p class="mt-3 text-muted-foreground">A single entry point with plugin discovery. Build your own in minutes.</p>
+    </div>
+
+    <div class="reveal mt-12 flex flex-wrap items-stretch justify-center gap-3">
+      {flow.map((b, i) => (
+        <>
+          <div class:list={["card-surface w-40 rounded-md p-5 text-center", b.primary ? "primary" : ""]} style={b.primary ? "border-color:var(--green-ink);box-shadow:var(--glow)" : ""}>
+            <h4 class:list={["font-mono text-sm", b.primary ? "ink" : ""]}>{b.h}</h4>
+            <p class="mt-1 text-xs text-muted-foreground">{b.p}</p>
+          </div>
+          {i < flow.length - 1 && <div class="flex items-center text-muted-foreground arch-arrow">→</div>}
+        </>
+      ))}
+    </div>
+
+    <div class="reveal mt-7 flex flex-wrap justify-center gap-2">
+      {chips.map((c) => (
+        <span class="rounded-md border border-border bg-[hsl(var(--surface-3))] px-3 py-1.5 font-mono text-xs text-muted-foreground">{c}</span>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  @media (max-width: 640px) { .arch-arrow { transform: rotate(90deg); width: 100%; justify-content: center; } }
+</style>

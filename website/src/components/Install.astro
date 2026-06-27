@@ -1,0 +1,98 @@
+---
+import { Icon } from "astro-icon/components";
+import { BREW_CMD, CURL_CMD } from "../consts";
+
+const tabs = [
+  { id: "homebrew", label: "Homebrew", lines: [
+    { c: "# Install CBASH CLI", k: false },
+    { c: BREW_CMD, k: true },
+    { c: "", k: false },
+    { c: "# Verify", k: false },
+    { c: "cbash --version", k: true },
+  ]},
+  { id: "curl", label: "curl", lines: [
+    { c: "# One-liner install", k: false },
+    { c: CURL_CMD, k: true },
+    { c: "", k: false },
+    { c: "# Reload your shell", k: false },
+    { c: "source ~/.bashrc", k: true },
+  ]},
+  { id: "manual", label: "Manual", lines: [
+    { c: "# Clone the repository", k: false },
+    { c: "git clone https://github.com/cminhho/cbash.git ~/.cbash", k: true },
+    { c: "", k: false },
+    { c: "# Source it from your shell profile", k: false },
+    { c: "echo 'source ~/.cbash/cbash.sh' >> ~/.bashrc", k: true },
+  ]},
+];
+---
+<section id="install" class="border-t border-border/60 py-20 sm:py-28">
+  <div class="mx-auto max-w-content px-4 sm:px-6 lg:px-8">
+    <div class="reveal mx-auto max-w-2xl text-center">
+      <span class="section-label">Install</span>
+      <h2 class="font-mono text-2xl font-bold tracking-tight sm:text-3xl">Get started in seconds</h2>
+      <p class="mt-3 text-muted-foreground">Pick a method and start being productive immediately. Zero config required.</p>
+    </div>
+
+    <div class="reveal mx-auto mt-10 max-w-2xl">
+      <div class="mb-4 flex flex-wrap justify-center gap-2">
+        {tabs.map((t, i) => (
+          <button class:list={["install-tab font-mono text-sm rounded-full px-4 py-2 border transition-colors", i === 0 ? "is-active" : ""]} data-tab={t.id} type="button">{t.label}</button>
+        ))}
+      </div>
+
+      <div class="terminal overflow-hidden rounded-md">
+        <div class="t-head justify-between">
+          <span id="code-title" class="t-title ml-0">Install via Homebrew</span>
+          <button id="copy-btn" type="button" class="inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 font-mono text-xs transition-colors" aria-label="Copy commands">
+            <Icon name="lucide:copy" class="h-3.5 w-3.5" /> <span class="copy-label">Copy</span>
+          </button>
+        </div>
+        {tabs.map((t, i) => (
+          <pre class:list={["code-pane overflow-x-auto px-5 py-4 font-mono text-[13px] leading-[1.9]", i === 0 ? "" : "hidden"]} data-pane={t.id}><code>{t.lines.map((l) => (
+            <span class="block" style={l.k ? "color:var(--green)" : "color:hsl(var(--terminal-faint))"}>{l.c || " "}</span>
+          ))}</code></pre>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  const tabs = document.querySelectorAll(".install-tab");
+  const panes = document.querySelectorAll(".code-pane");
+  const codeTitle = document.getElementById("code-title");
+  const titles = { homebrew: "Install via Homebrew", curl: "Install via curl", manual: "Manual installation" };
+
+  function selectTab(id) {
+    tabs.forEach((t) => t.classList.toggle("is-active", t.getAttribute("data-tab") === id));
+    panes.forEach((p) => p.classList.toggle("hidden", p.getAttribute("data-pane") !== id));
+    if (codeTitle && titles[id]) codeTitle.textContent = titles[id];
+  }
+  tabs.forEach((tab) => tab.addEventListener("click", () => selectTab(tab.getAttribute("data-tab"))));
+
+  // Auto-detect OS → preselect the most relevant method
+  const ua = (navigator.userAgent || "").toLowerCase();
+  if (ua.includes("linux") && !ua.includes("android")) selectTab("curl");
+  else if (ua.includes("mac")) selectTab("homebrew");
+
+  const copyBtn = document.getElementById("copy-btn");
+  copyBtn?.addEventListener("click", () => {
+    const pane = document.querySelector(".code-pane:not(.hidden)");
+    const text = (pane?.innerText || "").split("\n").filter((l) => l.trim() && !l.trim().startsWith("#")).join("\n");
+    navigator.clipboard.writeText(text).then(() => {
+      const label = copyBtn.querySelector(".copy-label");
+      if (label) { label.textContent = "Copied!"; setTimeout(() => (label.textContent = "Copy"), 1600); }
+    });
+  });
+</script>
+
+<style>
+  .install-tab { background: hsl(var(--surface-2)); border-color: hsl(var(--border)); color: hsl(var(--text-muted)); }
+  .install-tab:hover { color: hsl(var(--text)); border-color: hsl(var(--border-strong)); }
+  .install-tab.is-active { background: var(--green); color: var(--on-green); border-color: var(--green); }
+  .code-pane { background: hsl(var(--terminal-bg)); color: hsl(var(--terminal-text)); }
+  .code-pane code { display: block; white-space: pre; }
+  #copy-btn { border-color: hsl(var(--terminal-border)); color: hsl(var(--terminal-faint)); }
+  #copy-btn:hover { border-color: var(--green); color: var(--green); }
+</style>

@@ -1,0 +1,33 @@
+---
+import { Icon } from "astro-icon/components";
+import { PLUGINS, GITHUB } from "../consts";
+---
+<section id="plugins" class="border-t border-border/60 py-20 sm:py-28">
+  <div class="mx-auto max-w-content px-4 sm:px-6 lg:px-8">
+    <div class="reveal flex flex-wrap items-end justify-between gap-4">
+      <div class="max-w-2xl">
+        <span class="section-label">Plugins</span>
+        <h2 class="font-mono text-2xl font-bold tracking-tight sm:text-3xl">15+ plugins, one entry point</h2>
+        <p class="mt-3 text-muted-foreground">Everything behind a single <code class="font-mono text-foreground">cbash &lt;plugin&gt;</code> command — Git, DevOps, AI, and system utilities.</p>
+      </div>
+      <a href={`${GITHUB}/blob/master/docs/COMMANDS.md`} target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-md border border-border bg-surface-2 px-4 py-2.5 text-sm font-medium transition-colors hover-green">
+        Full command reference <Icon name="lucide:arrow-up-right" class="h-4 w-4" />
+      </a>
+    </div>
+
+    <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {PLUGINS.map((p) => (
+        <div class="reveal card-surface rounded-md p-5 transition-colors hover-green">
+          <div class="flex items-center gap-2.5">
+            <span class="icon-chip h-9 w-9"><Icon name={p.icon} class="h-4 w-4" /></span>
+            <h3 class="font-semibold">{p.name}</h3>
+          </div>
+          <p class="mt-3 text-sm text-muted-foreground">{p.blurb}</p>
+          <div class="mt-4 flex flex-wrap gap-1.5">
+            {p.commands.map((c) => <span class="pill">{c}</span>)}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

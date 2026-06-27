@@ -1,0 +1,165 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── CBASH design system — terminal aesthetic, lime-green identity ──────────
+   Dark default + light theme. Terminal/code surfaces stay dark in both themes
+   (terminals are dark by nature); page chrome adapts. Green accents use an
+   adaptive --green-ink (bright on dark, AA-darkened on light); bright --green
+   is reserved for fills and for text inside the always-dark terminal frames. */
+:root {
+  /* Brand fills (constant across themes) */
+  --green: #00ff88;
+  --green-strong: #2dffa0;
+  --on-green: #04130b;
+  --indigo: #8b93ff;
+
+  /* Adaptive green for accent TEXT on the page background */
+  --green-ink: #00ff88;
+  --green-soft: rgba(0, 255, 136, 0.12);
+
+  /* Page surfaces (dark) */
+  --bg: 240 13% 5%;
+  --surface: 240 12% 7%;
+  --surface-2: 240 11% 10%;
+  --surface-3: 240 10% 13%;
+  --border: 240 8% 18%;
+  --border-strong: 240 8% 26%;
+  --text: 210 30% 96%;
+  --text-muted: 220 10% 70%;
+  --text-faint: 220 8% 50%;
+
+  /* Terminal / code surfaces (locked dark in both themes) */
+  --terminal-bg: 240 14% 6%;
+  --terminal-head: 240 11% 11%;
+  --terminal-border: 240 8% 18%;
+  --terminal-text: 210 30% 96%;
+  --terminal-faint: 220 8% 55%;
+
+  /* Effects */
+  --ring: 0 0 0 3px rgba(0, 255, 136, 0.35);
+  --glow: 0 0 60px -20px rgba(0, 255, 136, 0.5);
+  --shadow: 0 24px 60px -28px rgba(0, 0, 0, 0.85);
+
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+
+  --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+
+  color-scheme: dark;
+}
+
+/* Light theme — terminal frames stay dark (terminal-* not overridden). */
+.light {
+  --green-ink: #0a8f50;
+  --green-soft: rgba(10, 143, 80, 0.12);
+  --bg: 0 0% 100%;
+  --surface: 220 20% 98%;
+  --surface-2: 0 0% 100%;
+  --surface-3: 220 16% 96%;
+  --border: 220 14% 90%;
+  --border-strong: 220 14% 82%;
+  --text: 222 24% 14%;
+  --text-muted: 220 9% 38%;
+  --text-faint: 220 8% 48%;
+  --shadow: 0 20px 50px -28px rgba(20, 30, 60, 0.35);
+  color-scheme: light;
+}
+
+@layer base {
+  * { border-color: hsl(var(--border)); }
+  html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+  body {
+    background: hsl(var(--bg));
+    color: hsl(var(--text));
+    font-family: var(--sans);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  ::selection { background: var(--green-soft); }
+  :focus-visible { outline: none; box-shadow: var(--ring); border-radius: var(--r-sm); }
+}
+
+@layer components {
+  .glass {
+    background: hsl(var(--bg) / 0.72);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border-bottom: 1px solid hsl(var(--border));
+  }
+  /* Card with subtle top-light depth */
+  .card-surface {
+    background: linear-gradient(180deg, hsl(var(--text) / 0.025), transparent 42%), hsl(var(--surface-2));
+    border: 1px solid hsl(var(--border));
+    box-shadow: inset 0 1px 0 0 hsl(var(--text) / 0.04);
+  }
+  .bg-grid {
+    background-image: radial-gradient(hsl(var(--text) / 0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  /* Always-dark terminal / code frame */
+  .terminal {
+    background: hsl(var(--terminal-bg));
+    border: 1px solid hsl(var(--terminal-border));
+    color: hsl(var(--terminal-text));
+  }
+  .terminal .t-head {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 14px;
+    background: hsl(var(--terminal-head));
+    border-bottom: 1px solid hsl(var(--terminal-border));
+  }
+  .t-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .t-title { margin-left: 8px; font-family: var(--mono); font-size: 0.78rem; color: hsl(var(--terminal-faint)); }
+  .t-prompt { color: var(--green); }
+  .t-ok { color: var(--green); }
+  .t-info { color: var(--indigo); }
+  .t-faint { color: hsl(var(--terminal-faint)); }
+  .t-text { color: hsl(var(--terminal-text)); }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-weight: 600; font-size: 0.95rem; padding: 12px 20px;
+    border-radius: var(--r-sm); border: 1px solid transparent; cursor: pointer;
+    text-decoration: none; transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  }
+  .btn svg { width: 18px; height: 18px; flex: none; }
+  .btn-primary { background: var(--green); color: var(--on-green); box-shadow: var(--glow); }
+  .btn-primary:hover { background: var(--green-strong); transform: translateY(-1px); }
+  .btn-secondary { background: transparent; color: hsl(var(--text)); border-color: hsl(var(--border-strong)); }
+  .btn-secondary:hover { border-color: var(--green-ink); color: var(--green-ink); }
+
+  .section-label {
+    display: inline-block; font-family: var(--mono); font-size: 0.78rem; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--green-ink); margin-bottom: 14px;
+  }
+  .section-label::before { content: "// "; color: hsl(var(--text-faint)); }
+
+  .ink { color: var(--green-ink); }
+  .icon-chip {
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: var(--r-sm); background: var(--green-soft); color: var(--green-ink);
+  }
+  .hover-green:hover { border-color: var(--green-ink); }
+  .pill {
+    border: 1px solid hsl(var(--border)); background: hsl(var(--surface-3));
+    border-radius: var(--r-sm); padding: 4px 10px; font-family: var(--mono);
+    font-size: 0.72rem; color: hsl(var(--text-muted));
+  }
+}
+
+@layer utilities {
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.is-visible { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .animate-blink { animation: none; }
+    * { transition: none !important; }
+  }
+}
