@@ -1,0 +1,78 @@
+---
+import { Icon } from "astro-icon/components";
+import { GITHUB } from "../consts";
+const badges = ["Bash 4+ / Zsh", "macOS · Linux · WSL", "Zero config", "MIT licensed"];
+---
+<section id="top" class="relative overflow-hidden bg-grid pt-32 pb-20 sm:pt-40">
+  <div class="pointer-events-none absolute left-1/2 top-0 -z-10 h-[440px] w-[860px] max-w-full -translate-x-1/2 rounded-full opacity-40 blur-3xl"
+       style="background: radial-gradient(ellipse at center, rgba(0,255,136,0.16), transparent 65%);" aria-hidden="true"></div>
+
+  <div class="mx-auto max-w-content px-4 sm:px-6 lg:px-8">
+    <div class="grid items-center gap-12 lg:grid-cols-2">
+      <div class="reveal">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="inline-flex items-center gap-2 rounded-full border border-border bg-surface-2/60 px-3 py-1 font-mono text-xs text-muted-foreground">
+            <span class="h-1.5 w-1.5 rounded-full" style="background:var(--green)"></span>
+            200+ aliases · 15+ plugins · zero config
+          </span>
+          <a id="gh-stars" href={GITHUB} target="_blank" rel="noopener"
+             class="hidden items-center gap-1.5 rounded-full border border-border bg-surface-2/60 px-3 py-1 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground">
+            <Icon name="lucide:star" class="h-3.5 w-3.5 ink" />
+            <span id="gh-stars-count">★</span>
+          </a>
+        </div>
+
+        <h1 class="mt-5 font-mono text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl">
+          One CLI for your<br /><span class="ink">whole terminal</span> workflow.
+        </h1>
+
+        <p class="mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground">
+          <span class="font-mono text-foreground">cbash</span> turns repetitive shell tasks — Git, Docker, Kubernetes, AWS, AI —
+          into short, memorable commands. Sourced, not installed. Works today on Bash 4+/Zsh.
+        </p>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="#install" class="btn btn-primary"><Icon name="lucide:terminal" class="h-4 w-4" /> Install now</a>
+          <a href={GITHUB} target="_blank" rel="noopener" class="btn btn-secondary"><Icon name="lucide:star" class="h-4 w-4" /> Star on GitHub</a>
+        </div>
+
+        <ul class="mt-8 flex flex-wrap gap-x-5 gap-y-2 font-mono text-xs text-muted-foreground">
+          {badges.map((b) => (
+            <li class="inline-flex items-center gap-1.5"><Icon name="lucide:check" class="ink h-3.5 w-3.5" />{b}</li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Terminal mock (signature element, always dark) -->
+      <div class="reveal">
+        <div class="terminal overflow-hidden rounded-md" style="box-shadow: var(--shadow);">
+          <div class="t-head">
+            <span class="t-dot bg-[#ff5f57]"></span><span class="t-dot bg-[#febc2e]"></span><span class="t-dot bg-[#28c840]"></span>
+            <span class="t-title">cbash — zsh</span>
+          </div>
+          <div id="terminal-body" class="px-5 py-4 font-mono text-[13px] leading-[1.9]" style="min-height:236px">
+            <div><span class="t-prompt">$</span> <span class="t-text">cbash git pull-all</span></div>
+            <div class="t-ok">✓ Pulled 12 repositories in 3.2s</div>
+            <div><span class="t-prompt">$</span> <span class="t-text">cbash dev start</span></div>
+            <div class="t-info">→ Starting development environment…</div>
+            <div class="t-ok">✓ Server started on http://localhost:3000</div>
+            <div><span class="t-prompt">$</span> <span class="t-text">cbash ai chat "explain docker compose"</span><span class="ml-0.5 inline-block w-2 animate-blink" style="background:var(--green)">&nbsp;</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  // GitHub star count (graceful — pill stays hidden if it fails)
+  fetch("https://api.github.com/repos/cminhho/cbash")
+    .then((r) => (r.ok ? r.json() : null))
+    .then((d) => {
+      if (!d || typeof d.stargazers_count !== "number") return;
+      const el = document.getElementById("gh-stars");
+      const c = document.getElementById("gh-stars-count");
+      if (el && c) { c.textContent = "★ " + d.stargazers_count.toLocaleString(); el.classList.remove("hidden"); el.classList.add("inline-flex"); }
+    })
+    .catch(() => {});
+</script>

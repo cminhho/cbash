@@ -1,0 +1,82 @@
+---
+import { Icon } from "astro-icon/components";
+import { NAV, GITHUB } from "../consts";
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+---
+<header id="site-header" class="fixed inset-x-0 top-0 z-50 transition-colors duration-200">
+  <div class="mx-auto flex h-14 max-w-content items-center justify-between px-4 sm:px-6 lg:px-8">
+    <a href="#top" class="inline-flex items-center gap-2.5 font-mono text-[15px] font-bold tracking-tight text-foreground" aria-label="cbash home">
+      <img src={`${base}/assets/cbash-logo.png`} alt="cbash" width="28" height="28" class="h-7 w-7 rounded-md" />
+      <span>CBASH CLI</span>
+    </a>
+
+    <nav id="nav" class="hidden items-center gap-1 md:flex">
+      {NAV.map((i) => (
+        <a href={i.href} data-nav={i.href} class="nav-link rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground">{i.name}</a>
+      ))}
+    </nav>
+
+    <div class="flex items-center gap-1.5">
+      <button id="theme-toggle" type="button" class="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-surface-2 hover:text-foreground" aria-label="Toggle theme">
+        <Icon name="lucide:sun" class="hidden h-4 w-4 [.light_&]:block" />
+        <Icon name="lucide:moon" class="h-4 w-4 [.light_&]:hidden" />
+      </button>
+      <a href={GITHUB} target="_blank" rel="noopener" class="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-surface-2 hover:text-foreground" aria-label="GitHub">
+        <Icon name="lucide:github" class="h-4 w-4" />
+      </a>
+      <a href="#install" class="ml-1 hidden rounded-md bg-[var(--green)] px-3.5 py-2 text-sm font-semibold text-[color:var(--on-green)] transition-colors hover:bg-[var(--green-strong)] sm:inline-flex">Install</a>
+      <button id="menu-btn" type="button" class="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground hover:text-foreground md:hidden" aria-label="Toggle menu" aria-expanded="false">
+        <Icon name="lucide:menu" class="h-5 w-5" />
+      </button>
+    </div>
+  </div>
+  <div id="mobile-nav" class="hidden border-b border-border bg-background/95 px-4 pb-4 md:hidden">
+    {NAV.map((i) => (
+      <a href={i.href} class="block rounded-md px-3 py-2 text-sm text-muted-foreground hover:text-foreground">{i.name}</a>
+    ))}
+  </div>
+</header>
+
+<style>
+  .nav-link.active { color: hsl(var(--text)); }
+  .nav-link.active::after {
+    content: ""; display: block; height: 2px; margin-top: 2px; border-radius: 2px; background: var(--green-ink);
+  }
+</style>
+
+<script is:inline>
+  const header = document.getElementById("site-header");
+  const onScroll = () => header?.classList.toggle("glass", window.scrollY > 8);
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  // Theme toggle (persisted)
+  document.getElementById("theme-toggle")?.addEventListener("click", () => {
+    const light = document.documentElement.classList.toggle("light");
+    try { localStorage.setItem("cbash-theme", light ? "light" : "dark"); } catch (e) {}
+  });
+
+  // Mobile menu
+  const btn = document.getElementById("menu-btn");
+  const mobileNav = document.getElementById("mobile-nav");
+  btn?.addEventListener("click", () => {
+    const open = mobileNav?.classList.toggle("hidden") === false;
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+  mobileNav?.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => mobileNav.classList.add("hidden")));
+
+  // Scroll-spy: highlight the nav link for the section in view
+  const links = Array.from(document.querySelectorAll(".nav-link"));
+  const targets = links.map((l) => document.querySelector(l.getAttribute("data-nav"))).filter(Boolean);
+  if (targets.length && "IntersectionObserver" in window) {
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          const id = "#" + e.target.id;
+          links.forEach((l) => l.classList.toggle("active", l.getAttribute("data-nav") === id));
+        }
+      });
+    }, { rootMargin: "-45% 0px -50% 0px" });
+    targets.forEach((t) => spy.observe(t));
+  }
+</script>
